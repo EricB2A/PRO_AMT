@@ -28,6 +28,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
+      - name: asd
+        run: ls
+      
       - name: Set up dockerized mysql
         run: docker-compose -f /docker/docker-mysql/docker-compose.yml up -d
         
