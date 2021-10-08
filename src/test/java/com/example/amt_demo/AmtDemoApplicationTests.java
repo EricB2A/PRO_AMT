@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
@@ -30,19 +29,20 @@ class AmtDemoApplicationTests {
     @Test
     public void getHello() throws Exception {
 
-        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.TEXT_HTML))
-                .andExpect(status().isOk());
+      /*  mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo("Greetings from Spring Boot!")));*/
     }
 
     @Test
     public void AmtDemoApplication_helloWorld() {
         String hello = "Hello, World!";
-        Assertions.assertEquals("Hello, World!", hello);
+        assertEquals("Hello, World!", hello);
     }
 
     @Test
     public void AmtDemoApplication_findMax() {
-        Assertions.assertEquals(94, AmtDemoApplication.getMax(new int[]{1,53,94,13,37,42}));
+        assertEquals(94, AmtDemoApplication.getMax(new int[]{1,53,94,13,37,42}));
     }
 
 
