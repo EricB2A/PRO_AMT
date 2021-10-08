@@ -38,4 +38,4 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Stop dockerized mysql
-        run: docker-compose -f /docker/docker-mysql/docker-compose.yml down
+        run: docker-compose -f docker/docker-mysql/docker-compose.yml down
