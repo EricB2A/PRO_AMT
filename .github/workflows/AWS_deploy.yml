@@ -43,7 +43,10 @@ jobs:
       
       - name: Start screen
         run: sudo screen -dmS screen1
-        
+      
+      - name: Show screens
+        run: sudo screen -ls
+       
       - name: SSH to silkyroad 
         run: screen -S screen1 -X stuff 'sudo ssh ssh ubuntu@localhost -p 23 -i "SSH.pem"\n'
       
