@@ -25,11 +25,25 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo "${{secrets.SSH_DMZ}}" >> DMZ.pem
+        
+      - name: Create file
+        run: touch SSH.pem
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo "${{secrets.SSH}}" >> SSH.pem
       
       - name: change perm
         run: chmod 600 DMZ.pem
       
+      - name: change perm
+        run: chmod 600 SSH.pem
+      
       - name: Connect to DMZ
         run: sudo ssh -T -o StrictHostKeyChecking=no -L 23:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 -i "DMZ.pem"
       
+      - name: Start screen
+        run: sudo screen -S screen1
+        
+      - name: SSH to silkyroad 
+        run: sudo ssh ssh ubuntu@localhost -p 23 -i "SSH.pem"
       
