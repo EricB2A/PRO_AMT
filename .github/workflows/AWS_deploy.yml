@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Create file
-        run: cat DMZ.pem
+        run: touch DMZ.pem
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo ${{secrets.SSH_DMZ}} >> DMZ.pem
