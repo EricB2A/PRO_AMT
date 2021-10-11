@@ -43,6 +43,9 @@ jobs:
           sudo screen -dmS screen1 
           sudo screen -S screen1 -X stuff 'sudo ssh -T -o StrictHostKeyChecking=no -L 12000:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 -i "DMZ.pem"\n'
       #sudo screen -S screen1 -X stuff 'sudo ssh -T -o StrictHostKeyChecking=no -L 23:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 -i "DMZ.pem"\n'
+      - name: open port 23
+        run: sudo iptables -I INPUT -p tcp --dport 23 --syn -j ACCEPT
+      
       - name: displayPorts
         run: netstat -lntu
       
