@@ -26,7 +26,7 @@ jobs:
       - name: Run a one-line script
         run: echo "${{secrets.SSH_DMZ}}" >> DMZ.pem
       
-      - name: test
-        run: cat DMZ.pem
+      - name: Connect to DMZ
+        run: ssh -L 23:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 -i "DMZ.pem"
       
       
