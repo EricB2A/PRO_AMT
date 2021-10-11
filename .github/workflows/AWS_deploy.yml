@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: AWS_Deploy
 
 # Controls when the workflow will run
 on:
@@ -22,4 +22,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: ssh -L 23:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 ${{secrets.SSH_DMZ}}
+        run: ssh -L 23:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 -${{secrets.SSH_DMZ}}
