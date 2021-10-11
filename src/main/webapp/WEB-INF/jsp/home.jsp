@@ -4,14 +4,18 @@
 
 <t:base_layout>
     <jsp:attribute name="title">
-      Le titre
+        SilkyRoad
     </jsp:attribute>
     <jsp:attribute name="withbanner">
         true
     </jsp:attribute>
     <jsp:body>
         <div class="layout_padding gallery_section">
+
             <div class="container">
+                <button class="add_bt">
+                    <a href="/carpets/new">Nouvel article</a>
+                </button>
                 <h2>
                     Boutique
                 </h2>
@@ -27,7 +31,7 @@
                         <t:article_thumbnail>
                             <jsp:attribute name="article_name">${article.name}</jsp:attribute>
                             <jsp:attribute name="article_price">${article.price}</jsp:attribute>
-                            <jsp:attribute name="article_img_path">${article.imagePath}</jsp:attribute>
+                            <jsp:attribute name="article_img_path">${article.photosImagePath}</jsp:attribute>
                             <jsp:attribute name="article_nb_stars">${idx.index}</jsp:attribute>
                         </t:article_thumbnail>
 

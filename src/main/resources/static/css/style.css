@@ -308,6 +308,15 @@ button {
     color: #ffffff;
     font-size: 16pt;
 }
+.add_bt {
+    width: 32%;
+    height: 50px;
+    color: #ffffff;
+    background-color: #ffffff;
+    color: #ff4e5b;
+    font-size: 16pt;
+}
+
 
 .more_bt {
     width: 32%;

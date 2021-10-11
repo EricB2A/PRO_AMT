@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -63,6 +64,15 @@ public class Carpet {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (imagePath == null || id == null){
+            return null;
+        }
+
+        return "/carpet-photos/" + id + "/" + imagePath;
     }
 
     public String getImagePath() {

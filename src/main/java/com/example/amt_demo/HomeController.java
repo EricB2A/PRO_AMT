@@ -21,4 +21,6 @@ public class HomeController {
         mp.addAttribute("articles", carpetRepository.findAll());
         return "home";
     }
+
+
 }

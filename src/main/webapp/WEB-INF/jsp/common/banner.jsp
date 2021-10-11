@@ -17,9 +17,11 @@
                         <div class="carousel-item active">
                             <div class="row">
                                 <div class="col-sm-2 padding_0">
+                                    <!--
                                     <p class="mens_taital">Tapis persan</p>
                                     <div class="page_no">0/2</div>
                                     <p class="mens_taital_2">Men Shoes</p>
+                                    -->
                                 </div>
                                 <div class="col-sm-5">
                                     <div class="banner_taital">

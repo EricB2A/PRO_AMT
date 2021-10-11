@@ -28,7 +28,7 @@
     <!-- Responsive-->
     <link rel="stylesheet" href="/css/responsive.css">
     <!-- fevicon -->
-    <link rel="icon" href="images/fevicon.png" type="image/gif"/>
+    <link rel="icon" type="image/png" href="/fav.png"/>
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.min.css">
     <!-- Tweaks for older IEs-->
@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
           media="screen">
+
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -98,7 +99,23 @@
                 $(this).off("touchmove");
             });
         });
-    })
+
+    });
+
+    // Non à jQuery.
+    function deleteArticle(){
+        if (confirm("Supprimer ?")){
+
+            fetch(window.location.href, { method: 'DELETE' })
+                .then((res)=>{
+                    if(res.ok){
+                        window.location.href = window.location.origin + "/accueil"
+                    }else{
+                        //TODO: Rediriger je ne sais pas où.
+                    }
+                });
+        }
+    }
 </script>
 </body>
 </html>
