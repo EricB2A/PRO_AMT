@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <div class="header_section">
     <div class="container">
         <div class="row">
@@ -17,7 +19,14 @@
                             <a class="nav-item nav-link" href="/accueil">Accueil</a>
                             <a class="nav-item nav-link" href="collection.html">Epices</a>
                             <a class="nav-item nav-link" href="shoes.html">Tapis</a>
-                            <a class="nav-item nav-link" href="contact.html">Login</a>
+
+                            <sec:authorize access="isAuthenticated()">
+                                <a class="nav-item nav-link" href="/logout">Déconnexion de <sec:authentication property="principal.username" /></a>
+                            </sec:authorize>
+                            <sec:authorize access="!isAuthenticated()">
+                                <a class="nav-item nav-link" href="/login">Login</a>
+                            </sec:authorize>
+
                             <a class="nav-item nav-link last" href="#"><img src="/images/search_icon.png"></a>
                             <a class="nav-item nav-link last" href="contact.html"><img src="/images/shop_icon.png"></a>
                         </div>
