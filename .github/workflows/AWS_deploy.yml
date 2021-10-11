@@ -46,8 +46,11 @@ jobs:
       - name: connect to SSH
         run: |
           sleep 5 && 
-          sudo ssh -T ubuntu@localhost -p 23 -i "/chemin/vers/SSH.pem"
+          sudo ssh -T ubuntu@localhost -p 23 -i "SSH.pem"
         
       - name: create file
         run: echo "test" >> test.txt
+        
+      - name: displayPorts
+        run: netstat -lntu
 
