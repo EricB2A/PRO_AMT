@@ -4,8 +4,8 @@ services:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: shit
+      MYSQL_DATABASE: silkyRoad 
     ports:
       - "3307:3306"
     volumes:
-      - .shit.sql:/shit.sql
+      - .silkyRoad.sql:/silkyRoad.sql
