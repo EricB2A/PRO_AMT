@@ -24,6 +24,7 @@ jobs:
       - name: Run a one-line script
       - run: echo ${{secrets.SSH_DMZ}} >> DMZ.pem
       
+      - name: test
       - run: cat DMZ.pem
       
       
