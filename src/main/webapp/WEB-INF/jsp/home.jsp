@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <t:base_layout>
     <jsp:attribute name="title">
@@ -13,9 +14,9 @@
         <div class="layout_padding gallery_section">
 
             <div class="container">
-                <button class="add_bt">
-                    <a href="/carpets/new">Nouvel article</a>
-                </button>
+                <sec:authorize access="hasRole('admin')">
+                    <a class="btn add_bt" href="/carpets/new">Nouvel article</a>
+                </sec:authorize>
                 <h2>
                     Boutique
                 </h2>

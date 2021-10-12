@@ -19,6 +19,9 @@
                                 <div class="racing_shoes ">
                                     
                                     <form name="newCarpetForm" action="/carpets" enctype="multipart/form-data"  method="POST" class="m-2"> <!-- TODO: changer lien hardcodé, mais trop fatigué pour le faire -->
+                                        <input type="hidden"
+                                               name="${_csrf.parameterName}"
+                                               value="${_csrf.token}"/>
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Nom</label>
                                             <div class="col-sm-10">

@@ -13,14 +13,14 @@
         <div class="vh-100">
             <div class="layout_padding gallery_section">
                 <div class="container ">
-                    <form name="login" action="${pageContext.request.contextPath}/login" method="POST">
+                    <form name="login" action="/login" method="POST">
                         <input type="hidden"
                                name="${_csrf.parameterName}"
                                value="${_csrf.token}"/>
                         <div class="row">
                             <div class="offset-3 col-6">
                                 <label for="login_email" class="form-label">Email</label>
-                                <input id="login_email" type="email"  class="enter_email" placeholder="Entrez votre e-mail" name="username" for="email">
+                                <input id="login_email" type="email"  class="enter_email" placeholder="Entrez votre e-mail" name="email">
 
                             </div>
                         </div>

@@ -20,8 +20,16 @@
                             <a class="nav-item nav-link" href="collection.html">Epices</a>
                             <a class="nav-item nav-link" href="shoes.html">Tapis</a>
 
+
                             <sec:authorize access="isAuthenticated()">
-                                <a class="nav-item nav-link" href="/logout">Déconnexion de <sec:authentication property="principal.username" /></a>
+                                <form action="/logout" method=post id="logout-form">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                     <%--Afin de ne pas s'embeter avec le css, utilisation d'un lien pour valider le formulaire...
+                                     Formulaire nécessaire car CSRF pas/mal géré par l'implémenation de base fourni par spring security (pour le logout).
+                                     Il faut donc envoyer le formulaire soit même avec le token CRSF--%>
+                                    <a class="nav-item nav-link clickable" onclick="document.getElementById('logout-form').submit()" >Déconnexion de <sec:authentication property="principal.username" /></a>
+                                </form>
+
                             </sec:authorize>
                             <sec:authorize access="!isAuthenticated()">
                                 <a class="nav-item nav-link" href="/login">Login</a>
