@@ -35,6 +35,3 @@ build/
 
 ### Uploaded imaged ###
 carpet-photos/*
-
-### SQL ###
-*.sql
