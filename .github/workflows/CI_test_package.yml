@@ -20,7 +20,7 @@ jobs:
   # This workflow contains a single job called "CI"
   CI:
     env:
-      db_name: shit
+      db_name: silkyRoad
       db_user: root
       db_password: root
       db_port: 3307
