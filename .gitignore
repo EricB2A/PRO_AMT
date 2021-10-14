@@ -35,3 +35,6 @@ build/
 
 ### Uploaded imaged ###
 carpet-photos/*
+
+### DATABASE ###
+docker/docker-mysql/silkyRoad.sql

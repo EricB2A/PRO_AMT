@@ -4,8 +4,10 @@ services:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: silkyRoad 
+      MYSQL_DATABASE: silkyRoad
     ports:
       - "3307:3306"
+    command: --init-file /data/application/init.sql
     volumes:
       - .silkyRoad.sql:/silkyRoad.sql
+      - ./init.sql:/data/application/init.sql

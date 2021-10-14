@@ -33,8 +33,8 @@ cd docker/docker-mysql && touch silkyRoad.sql && docker compose up
 5. Allez à l'adresse [localhost:8080](http://localhost:8080/) et vous voilà prêt à contribuer :cool:. 
 
 ## SGBD 🐋
-Notre application utilise le SGBD `mySQL`, que nous avons Dockerisé via l'image [mysql-server](https://hub.docker.com/r/mysql/mysql-server/).
-Par défaut, le conteneur Docker sera accessible sur le ``port 3307`` avec le mot de passe ``root``. Les données sont es stockés dans le fichier `silkyRoad.sql`.  
+Notre application utilise le SGBD relationnel `mySQL`, que nous avons Dockerisé via l'image [mysql-server](https://hub.docker.com/r/mysql/mysql-server/).
+Par défaut, le conteneur Docker sera accessible depuis l'hôte sur le ``port 3307`` avec le mot de passe ``root``. Les données sont es stockés dans le fichier `silkyRoad.sql`.  
 Vous pouvez bien évidemment configurer ces paramètres en modifiant le [docker compose](docker/docker-mysql/docker-compose.yml).
 
 Pour accéder à l'instance mySQL *(en ayant un container up & running)* : 
