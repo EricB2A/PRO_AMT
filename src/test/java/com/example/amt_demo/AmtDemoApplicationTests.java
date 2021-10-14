@@ -5,8 +5,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.example.amt_demo.model.Carpet;
 import com.example.amt_demo.model.CarpetRepository;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
+import org.junit.BeforeClass;
+import org.junit.jupiter.api.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,14 +20,29 @@ import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AmtDemoApplicationTests {
-
     @Autowired
     private MockMvc mvc;
 
     @Autowired
     private CarpetRepository carpetRepository;
 
+
+    @BeforeAll
+    public void init() {
+        Carpet carpet = new Carpet(1, "test name", "test carpet", 9.9);
+        carpetRepository.save(carpet);
+    }
+
+    @Test
+    void success() {
+        /* !!!! Mandatory for Git Action Workflow
+         * Dummy run necessary to trigger entity framework creation of DB structure
+         * Next steps will run sql scripts to populate db
+         * */
+        Assertions.assertEquals(1,1);
+    }
     @Test
     void contextLoads() {
     }
@@ -38,14 +53,6 @@ class AmtDemoApplicationTests {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void success() {
-        /* !!!! Mandatory for Git Action Workflow
-        * Dummy run necessary to trigger entity framework creation of DB structure
-        * Next steps will run sql scripts to populate db
-        * */
-        Assertions.assertEquals(1,1);
-    }
 
     @Test
     void firstCarpetExistsInDB(){
@@ -57,5 +64,10 @@ class AmtDemoApplicationTests {
     public void AmtDemoApplication_helloWorld() {
         String hello = "Hello, World!";
         Assertions.assertEquals("Hello, World!", hello);
+    }
+
+    @AfterAll
+    public void cleanUp() {
+        carpetRepository.deleteById(1);
     }
 }
