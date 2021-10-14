@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-15" standalone="no"?>
+<classDiagram>
+  <diagramElements defaultViewEntities="ALL" defaultViewEnum="true" defaultViewMethods="TYPE_AND_NAME" defaultVisibleTypes="true" informations="" name="">
+    <entity entityType="CLASS" id="1" isAbstract="false" name="Carpet" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="id" type="Integer" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="name" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="description" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="price" type="Double" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="imagePath" type="String" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="Carpet" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="Carpet" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="id" type="Integer"/>
+        <variable const="false" name="name" type="String"/>
+        <variable const="false" name="description" type="String"/>
+        <variable const="false" name="price" type="Integer"/>
+      </method>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="Carpet" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="id" type="Integer"/>
+        <variable const="false" name="name" type="String"/>
+        <variable const="false" name="description" type="String"/>
+        <variable const="false" name="price" type="Integer"/>
+        <variable const="false" name="imagePath" type="String"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="getPhotosImagePath" returnType="String" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+  </diagramElements>
+  <umlView grid="10" name="Main view" open="true">
+    <componentView color="-2079" componentID="1" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>300</x>
+        <y>130</y>
+        <w>560</w>
+        <h>190</h>
+      </geometry>
+    </componentView>
+  </umlView>
+</classDiagram>

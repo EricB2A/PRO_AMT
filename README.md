@@ -4,6 +4,11 @@ Dans le cadre de notre cours d'AMT, nous réalisons un **site d'e-commerce** de 
 Vous trouverez dans le [Wiki](../../wiki) toutes les informations pour en savoir plus sur le projet.
 Si vous souhaitez contribuer, nous vous recommendons de commencer par le lire le [Wiki](../../wiki) qui vous donnera une bonne vision du produit, de comment contribuer ainsi que des détails technologiques et techniques utiles à une bonne collaboration 🔥
 
+## Structure
+- Le dossier `src` contiens le code source du projet.
+- Le dossier `docs` contiens tous les éléments utiles à la documentation (fichiers sources, images).
+- Le dossier `docker` contiens les images Docker. Chaque image différente est dans un sous-dosseier (exemple: une image Docker `couchebase` serait dans `docker/docker-couchebase`).
+
 ## Commencer 🏁
 Cette section a pour but de mettre en place un **environnement de développement** similaire à celui de l'équipe de développement.
 Pour en savoir plus sur la stack technologique, référez-vous à la section [choix technologique](../../wiki/Choix-technologiques) du Wiki !
@@ -39,10 +44,24 @@ mysql -uroot -proot
 ```
 
 ## Modèle de domaine 💡
-TODO
+![model](docs/uml/images/model.png)
+
+L'ORM [Hibernate](https://hibernate.org/) va faire un mapping 1-1 entre ce(s) classe(s) et ses(leurs) attributs et une table éponyme et ses champs associés en base de données.
 
 ## Routes 🦦
-*TODO*
+| Verbe HTTP | Route             | Controleur          |
+|------------|-------------------|---------------------|
+| GET        | /accueil          | HomeController      |
+| GET        | /carpets          | CarpetController    |
+| POST       | /carpets          | CarpetController    |
+| GET        | /carpets/new      | CarpetController    |
+| GET        | /carpets/{id}     | CarpetController    |
+| DELETE     | /carpets/{id}     | CarpetController    |
+| GET        | /api/carpets      | CarperControllerAPI |
+| POST       | /api/carpets      | CarperControllerAPI |
+| GET        | /api/carpets/{id} | CarperControllerAPI |
+| PUT        | /api/carpets/{id} | CarperControllerAPI |
+| DELETE     | /api/carpets/{id} | CarperControllerAPI |
 
 ## L'équipe 🦍
 | Développeur       | Github                                                  |
