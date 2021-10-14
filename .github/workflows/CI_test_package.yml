@@ -37,11 +37,11 @@ jobs:
       - name: Set up dockerized mysql
         run: docker-compose -f docker/docker-mysql/docker-compose.yml up -d
         
+      - name: Run Single Test - Force DB structure creation by Entity Framework
+        run : mvn test -Dtest=AmtDemoApplicationTests#success test
         
       - name: Populate database with mockdata
-        run: | 
-          sleep 5
-          sh ./docker/docker-mysql/mockdata/populate_database.sh ${{ env.db_port }} ${{ env.db_name }} ${{ env.db_user }} ${{ env.db_password }}
+        run: sh ./docker/docker-mysql/mockdata/populate_database.sh ${{ env.db_port }} ${{ env.db_name }} ${{ env.db_user }} ${{ env.db_password }}
           
       # Runs a single command using the runners shell
       - name: Run All Tests
