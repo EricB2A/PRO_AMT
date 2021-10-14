@@ -39,8 +39,10 @@ jobs:
         
         
       - name: Populate database with mockdata
-        run: sh ./docker/docker-mysql/mockdata/populate_database.sh ${{ env.db_port }} ${{ env.db_name }} ${{ env.db_user }} ${{ env.db_password }}
-        
+        run: | 
+          sleep 5
+          sh ./docker/docker-mysql/mockdata/populate_database.sh ${{ env.db_port }} ${{ env.db_name }} ${{ env.db_user }} ${{ env.db_password }}
+          
       # Runs a single command using the runners shell
       - name: Run All Tests
         run: mvn test
