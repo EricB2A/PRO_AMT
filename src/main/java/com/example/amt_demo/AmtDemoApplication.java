@@ -23,21 +23,6 @@ public class AmtDemoApplication extends SpringBootServletInitializer {
 
     }
 
-    @Bean
-    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return agrs ->{
-            System.out.println("Let's inspect the beans provided by Spring boot");
-            String[] beanNames = ctx.getBeanDefinitionNames();
-            Arrays.sort(beanNames);
-            for(String beanName : beanNames)
-            {
-                System.out.println(beanName);
-            }
-            System.out.println("End of Run");
-
-        };
-    }
-
     public static int getMax(int arr[]) {
         return Arrays.stream(arr).max().getAsInt();
     }
