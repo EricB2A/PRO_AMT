@@ -1,8 +1,7 @@
 # Silky Road 🐪
 ## Silky Road 
 Dans le cadre de notre cours d'AMT, nous réalisons un **site d'e-commerce** de vente de tapis (😉).
-Vous trouverez dans le [Wiki](../../wiki) toutes les informations pour en savoir plus sur le projet.
-Si vous souhaitez contribuer, nous vous recommendons de commencer par le lire le [Wiki](../../wiki) qui vous donnera une bonne vision du produit, de comment contribuer ainsi que des détails technologiques et techniques utiles à une bonne collaboration 🔥
+Avant de contribuer, nous vous recommandons de commencer par le lire le [**Wiki (si vous êtes assistant, cliquez ici)**](../../wiki) qui vous donnera une bonne vision du produit, de comment contribuer ainsi que des détails technologiques et techniques utiles à une bonne collaboration 🔥
 
 ## Structure
 - Le dossier `src` contiens le code source du projet.
@@ -16,7 +15,8 @@ Pour en savoir plus sur la stack technologique, référez-vous à la section [ch
 - [Java](https://www.java.com/fr/download/) : *1.8*
 - [Maven](https://maven.apache.org/download.cgi) :  *3.8.**
 - [Docker engine](https://docs.docker.com/engine/install/) : *20.10.**
-- [Docker compose](https://docs.docker.com/compose/install/) *NOTE: docker compose est inclus dans les installation de l'engine sur Windows et MacOS*.
+- [Docker compose](https://docs.docker.com/compose/install/) 
+  - *NOTE: docker compose est inclus dans les installation de l'engine sur Windows et MacOS*.
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/download/)
 
 ### Installation 
@@ -33,11 +33,11 @@ cd docker/docker-mysql && touch silkyRoad.sql && docker compose up
 5. Allez à l'adresse [localhost:8080](http://localhost:8080/) et vous voilà prêt à contribuer :cool:. 
 
 ## SGBD 🐋
-Notre application utilise le SGBD *mySQL*, que nous avons "Dockerisé", via l'image [mysql-server](https://hub.docker.com/r/mysql/mysql-server/).
-Par défaut, le conteneur Docker sera accessible sur le **port 3307** avec le mot de passe **root**. Les données sont es stockés dans le fichier **silkyRoad.sql**.  
+Notre application utilise le SGBD `mySQL`, que nous avons Dockerisé via l'image [mysql-server](https://hub.docker.com/r/mysql/mysql-server/).
+Par défaut, le conteneur Docker sera accessible sur le ``port 3307`` avec le mot de passe ``root``. Les données sont es stockés dans le fichier `silkyRoad.sql`.  
 Vous pouvez bien évidemment configurer ces paramètres en modifiant le [docker compose](docker/docker-mysql/docker-compose.yml).
 
-Pour accéder à l'instance mySQL : 
+Pour accéder à l'instance mySQL *(en ayant un container up & running)* : 
 ```bash
 docker exec -it docker-mysql_db_1 bash
 mysql -uroot -proot
@@ -48,20 +48,20 @@ mysql -uroot -proot
 
 L'ORM [Hibernate](https://hibernate.org/) va faire un mapping 1-1 entre ce(s) classe(s) et ses(leurs) attributs et une table éponyme et ses champs associés en base de données.
 
-## Routes 🦦
-| Verbe HTTP | Route             | Controleur          |
-|------------|-------------------|---------------------|
-| GET        | /accueil          | HomeController      |
-| GET        | /carpets          | CarpetController    |
-| POST       | /carpets          | CarpetController    |
-| GET        | /carpets/new      | CarpetController    |
-| GET        | /carpets/{id}     | CarpetController    |
-| DELETE     | /carpets/{id}     | CarpetController    |
-| GET        | /api/carpets      | CarperControllerAPI |
-| POST       | /api/carpets      | CarperControllerAPI |
-| GET        | /api/carpets/{id} | CarperControllerAPI |
-| PUT        | /api/carpets/{id} | CarperControllerAPI |
-| DELETE     | /api/carpets/{id} | CarperControllerAPI |
+## Routes 👀
+| Verbe HTTP | Route               | Contrôleur            |
+|------------|---------------------|-----------------------|
+| GE`        | `/accueil`          | `HomeController`      |
+| GET        | `/carpets`          | `CarpetController`    |
+| POST       | `/carpets`          | `CarpetController`    |
+| GET        | `/carpets/new`      | `CarpetController`    |
+| GET        | `/carpets/{id}`     | `CarpetController`    |
+| DELETE     | `/carpets/{id}`     | `CarpetController`    |
+| GET        | `/api/carpets`      | `CarperControllerAPI` |
+| POST       | `/api/carpets`      | `CarperControllerAPI` |
+| GET        | `/api/carpets/{id}` | `CarperControllerAPI` |
+| PUT        | `/api/carpets/{id}` | `CarperControllerAPI` |
+| DELETE     | `/api/carpets/{id}` | `CarperControllerAPI` |
 
 ## L'équipe 🦍
 | Développeur       | Github                                                  |
@@ -73,4 +73,6 @@ L'ORM [Hibernate](https://hibernate.org/) va faire un mapping 1-1 entre ce(s) cl
 | Stéfan Teofanovic | [OvichHeigVD](https://github.com/OvichHeigVD)           |
 
 ### Discord
-Vous êtes le bienvenue à nous rejoindre sur [https://discord.gg/bwNER8rU](Discord) où nous organisons des sessions hebdomadaires.
+Vous êtes les bienvenus à nous rejoindre sur [Discord](https://discord.gg/bwNER8rU) où nous organisons des sessions de travail hebdomadaires.
+
+Bonne contribution 😎
