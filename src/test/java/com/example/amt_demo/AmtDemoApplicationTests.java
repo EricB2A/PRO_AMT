@@ -66,8 +66,4 @@ class AmtDemoApplicationTests {
         Assertions.assertEquals("Hello, World!", hello);
     }
 
-    @AfterAll
-    public void cleanUp() {
-        carpetRepository.deleteById(1);
-    }
 }
