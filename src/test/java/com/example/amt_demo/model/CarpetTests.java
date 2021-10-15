@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class CarpetTests {
 
     @Test
-    public void Carpet_GetSetName() {
+    public void Carpet_getSetName() {
         Carpet carpet = new Carpet();
         String name = "Alibaba";
         carpet.setName(name);
@@ -14,7 +14,7 @@ public class CarpetTests {
     }
 
     @Test
-    public void Carpet_GetSetDescription() {
+    public void Carpet_getSetDescription() {
         Carpet carpet = new Carpet();
         String desc = "An orient carpet";
         carpet.setDescription(desc);
@@ -22,7 +22,7 @@ public class CarpetTests {
     }
 
     @Test
-    public void Carpet_GetSetPrice() {
+    public void Carpet_getSetPrice() {
         Carpet carpet = new Carpet();
         double price = 10000.00;
         carpet.setPrice(price);
@@ -30,7 +30,7 @@ public class CarpetTests {
     }
 
     @Test
-    public void Carpet_GetSetId() {
+    public void Carpet_getSetId() {
         Carpet carpet = new Carpet();
         int id = 10000;
         carpet.setId(id);
@@ -38,7 +38,7 @@ public class CarpetTests {
     }
 
     @Test
-    public void Carpet_GetSetImagePath() {
+    public void Carpet_getSetImagePath() {
         Carpet carpet = new Carpet();
         String imagePath = "./dummyPath";
         carpet.setImagePath(imagePath);
