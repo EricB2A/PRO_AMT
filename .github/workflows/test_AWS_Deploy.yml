@@ -39,9 +39,6 @@ jobs:
       - name: change perm
         run: chmod 600 SSH.pem
         
-      - name: tmux
-        run: tmux
-        
       - name: SSH to DMZ
-        run: sudo ssh -T -o StrictHostKeyChecking=no -L 12000:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 -i "DMZ.pem"
+        run: sudo ssh & -T -o StrictHostKeyChecking=no -L 12000:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 -i "DMZ.pem"
 
