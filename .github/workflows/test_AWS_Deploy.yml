@@ -45,7 +45,7 @@ jobs:
         run: sudo ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -f -N -L 23:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 -i "DMZ.pem"
 
       - name: SSH to server
-        run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@localhost -p 23 -i "SSH.pem" ./script.sh
+        run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@localhost -p 23 -i "SSH.pem" "./script.sh &" 
         
       - name: Test command
         run: ls
