@@ -48,4 +48,4 @@ jobs:
         run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@localhost -p 23 -i "SSH.pem"
         
       - name: Test command
-        run: touch test.txt
+        run: ls
