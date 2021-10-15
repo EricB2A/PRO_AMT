@@ -18,11 +18,11 @@ public class HomeControllerTests {
 
 
     @Test
-    void contextLoads() {
+    void HomeControllerTests_contextLoads() {
     }
 
     @Test
-    public void getIndex() throws Exception {
+    public void HomeControllerTests_getIndex() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/accueil").accept(MediaType.TEXT_HTML))
                 .andExpect(status().isOk());
     }

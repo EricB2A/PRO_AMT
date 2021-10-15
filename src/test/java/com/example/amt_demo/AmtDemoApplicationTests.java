@@ -25,18 +25,8 @@ class AmtDemoApplicationTests {
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
-    private CarpetRepository carpetRepository;
-
-
-    @BeforeAll
-    public void init() {
-        Carpet carpet = new Carpet(1, "test name", "test carpet", 9.9);
-        carpetRepository.save(carpet);
-    }
-
     @Test
-    void success() {
+    void AmtDemoApplicationTests_success() {
         /* !!!! Mandatory for Git Action Workflow
          * Dummy run necessary to trigger entity framework creation of DB structure
          * Next steps will run sql scripts to populate db
@@ -44,20 +34,13 @@ class AmtDemoApplicationTests {
         Assertions.assertEquals(1,1);
     }
     @Test
-    void contextLoads() {
+    void AmtDemoApplicationTests_contextLoads() {
     }
 
     @Test
-    public void getHello() throws Exception {
+    public void AmtDemoApplication_getHello() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.TEXT_HTML))
                 .andExpect(status().isOk());
-    }
-
-
-    @Test
-    void firstCarpetExistsInDB(){
-        Optional<Carpet> test = carpetRepository.findById(1);
-        Assertions.assertEquals("test name", test.get().getName());
     }
 
     @Test
@@ -65,5 +48,4 @@ class AmtDemoApplicationTests {
         String hello = "Hello, World!";
         Assertions.assertEquals("Hello, World!", hello);
     }
-
 }
