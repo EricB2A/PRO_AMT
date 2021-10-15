@@ -46,23 +46,25 @@ public class CarpetRepositoryTests {
 
     @Test
     void CarpetRepositoryTests_correctDataOfSecondCarpetFromRepository(){
-        Optional<Carpet> test = carpetRepository.findById(2);
-        Assertions.assertEquals("test name 2", test.get().getName());
-        Assertions.assertEquals("test desc 2", test.get().getDescription());
-        Assertions.assertEquals(20.00, test.get().getPrice());
+        Carpet test = carpetRepository.findByName("test name 2");
+
+        Assertions.assertEquals("test name 2", test.getName());
+        Assertions.assertEquals("test desc 2", test.getDescription());
+        Assertions.assertEquals(20.00, test.getPrice());
     }
 
     @Test
     void CarpetRepositoryTests_correctTotalPrice(){
-        Optional<Carpet> test = carpetRepository.findById(4);
-        Optional<Carpet> test2 = carpetRepository.findById(9);
-        Assertions.assertEquals(130, test.get().getPrice() + test2.get().getPrice());
+        Carpet test = carpetRepository.findByName("test name 4");
+        Carpet test2 = carpetRepository.findByName("test name 9");
+
+        Assertions.assertEquals(130, test.getPrice() + test2.getPrice());
     }
 
     @Test
     public void CarpetRepositoryTests_correctDescription(){
-        Optional<Carpet> test = carpetRepository.findById(6);
-        Assertions.assertEquals("test desc 6", test.get().getDescription());
+        Carpet test = carpetRepository.findByName("test name 6");
+        Assertions.assertEquals("test desc 6", test.getDescription());
     }
 
     @Test
