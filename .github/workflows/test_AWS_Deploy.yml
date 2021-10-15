@@ -1,0 +1,47 @@
+# This is a basic workflow to help you get started with Actions
+
+name: AWS Deploy test
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        
+      - name: Create file
+        run: touch DMZ.pem
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo "${{secrets.SSH_DMZ}}" >> DMZ.pem
+        
+      - name: Create file
+        run: touch SSH.pem
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo "${{secrets.SSH}}" >> SSH.pem
+      
+      - name: change perm
+        run: chmod 600 DMZ.pem
+      
+      - name: change perm
+        run: chmod 600 SSH.pem
+        
+      - name: tmux
+        run: tmux
+        
+      - name: SSH to DMZ
+        run: sudo ssh -T -o StrictHostKeyChecking=no -L 12000:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 -i "DMZ.pem"
+
