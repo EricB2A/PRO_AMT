@@ -1,12 +1,12 @@
 # Silky Road 🐪
 ## Silky Road 
 Dans le cadre de notre cours d'AMT, nous réalisons un **site d'e-commerce** de vente de tapis (😉).
-Avant de contribuer, nous vous recommandons de commencer par le lire le [**Wiki (si vous êtes assistant, cliquez ici)**](../../wiki) qui vous donnera une bonne vision du produit, de comment contribuer ainsi que des détails technologiques et techniques utiles à une bonne collaboration 🔥
+Avant de contribuer, nous vous recommandons de commencer par lire le [**Wiki (si vous êtes assistant, cliquez ici)**](../../wiki) qui vous donnera une bonne vision du produit, de comment contribuer ainsi que des détails technologiques et techniques utiles à une bonne collaboration 🔥
 
 ## Structure
-- Le dossier `src` contiens le code source du projet.
-- Le dossier `docs` contiens tous les éléments utiles à la documentation (fichiers sources, images).
-- Le dossier `docker` contiens les images Docker. Chaque image différente est dans un sous-dosseier (exemple: une image Docker `couchebase` serait dans `docker/docker-couchebase`).
+- Le dossier `src` contient le code source du projet.
+- Le dossier `docs` contient tous les éléments utiles à la documentation (fichiers sources, images).
+- Le dossier `docker` contient les images Docker. Chaque image différente est dans un sous-dossier (exemple: une image Docker `couchebase` serait dans `docker/docker-couchebase`).
 
 ## Commencer 🏁
 Cette section a pour but de mettre en place un **environnement de développement** similaire à celui de l'équipe de développement.
@@ -34,7 +34,7 @@ cd docker/docker-mysql && touch silkyRoad.sql && docker compose up
 
 ## SGBD 🐋
 Notre application utilise le SGBD relationnel `mySQL`, que nous avons Dockerisé via l'image [mysql-server](https://hub.docker.com/r/mysql/mysql-server/).
-Par défaut, le conteneur Docker sera accessible depuis l'hôte sur le ``port 3307`` avec le mot de passe ``root``. Les données sont es stockés dans le fichier `silkyRoad.sql`.  
+Par défaut, le conteneur Docker sera accessible depuis l'hôte sur le ``port 3307`` avec le mot de passe ``root``. Les données sont stockées dans le fichier `silkyRoad.sql`.  
 Vous pouvez bien évidemment configurer ces paramètres en modifiant le [docker compose](docker/docker-mysql/docker-compose.yml).
 
 Pour accéder à l'instance mySQL *(en ayant un container up & running)* : 
@@ -51,7 +51,7 @@ L'ORM [Hibernate](https://hibernate.org/) va faire un mapping 1-1 entre ce(s) cl
 ## Routes 👀
 | Verbe HTTP | Route               | Contrôleur            |
 |------------|---------------------|-----------------------|
-| GE`        | `/accueil`          | `HomeController`      |
+| GET        | `/accueil`          | `HomeController`      |
 | GET        | `/carpets`          | `CarpetController`    |
 | POST       | `/carpets`          | `CarpetController`    |
 | GET        | `/carpets/new`      | `CarpetController`    |
