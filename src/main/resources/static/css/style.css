@@ -317,7 +317,6 @@ button {
     font-size: 16pt;
 }
 
-
 .more_bt {
     width: 32%;
     height: 50px;
@@ -923,4 +922,11 @@ a:hover {
     background-repeat: no-repeat;
     position: relative;
     z-index: 100;
+}
+.form-label{
+    font-size: 1.5rem;
+    color: white;
+}
+.clickable{
+    cursor: pointer;
 }

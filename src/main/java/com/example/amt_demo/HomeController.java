@@ -15,7 +15,7 @@ public class HomeController {
     @Autowired
     private CarpetRepository carpetRepository;
 
-    @GetMapping("/accueil")
+    @GetMapping(value={"/accueil","/"})
     public String index(ModelMap mp)
     {
         mp.addAttribute("articles", carpetRepository.findAll());
