@@ -29,7 +29,7 @@ public class CarpetRepositoryTests {
 
     @BeforeAll
     public void CarpetRepositoryTests_init() {
-        for(int i = 1; i <= 10; ++i) {
+        for(int i = 1; i <= 10; i++) {
             carpetRepository.save(new Carpet(i, "test name " + i, "test desc " + i, i * 10.00));
         }
     }
