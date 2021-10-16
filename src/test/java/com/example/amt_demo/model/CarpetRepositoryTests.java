@@ -1,34 +1,19 @@
 package com.example.amt_demo.model;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.example.amt_demo.model.Carpet;
-import com.example.amt_demo.model.CarpetRepository;
-
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CarpetRepositoryTests {
     @Autowired
     private CarpetRepository carpetRepository;
 
     @BeforeAll
-    public void CarpetRepositoryTests_init() {
+    static void CarpetRepositoryTests_init(@Autowired CarpetRepository carpetRepository) {
         for(int i = 1; i <= 10; i++) {
             carpetRepository.save(new Carpet(i, "test name " + i, "test desc " + i, i * 10.00));
         }
@@ -41,6 +26,7 @@ public class CarpetRepositoryTests {
     @Test
     void CarpetRepositoryTests_firstCarpetExistsInDB(){
         Carpet test = carpetRepository.findByName("test name 1");
+
         Assertions.assertEquals("test name 1", test.getName());
     }
 
@@ -73,7 +59,7 @@ public class CarpetRepositoryTests {
     }
 
     @AfterAll
-    public void CarpetRepositoryTests_cleanUp() {
+    static void CarpetRepositoryTests_cleanUp(@Autowired CarpetRepository carpetRepository) {
         carpetRepository.deleteAll();
 
     }
