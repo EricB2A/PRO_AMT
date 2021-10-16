@@ -62,6 +62,12 @@ L'ORM [Hibernate](https://hibernate.org/) va faire un mapping 1-1 entre ce(s) cl
 | GET        | `/api/carpets/{id}` | `CarperControllerAPI` |
 | PUT        | `/api/carpets/{id}` | `CarperControllerAPI` |
 | DELETE     | `/api/carpets/{id}` | `CarperControllerAPI` |
+| GET        | `/login`            | `LoginController`     |
+| POST       | `/login`            | (1)                   |
+| POST       | `/logout`           | (1)                   |
+
+- (1) Routes fourni et gérer par Spring Security 
+
 
 ## L'équipe 🦍
 | Développeur       | Github                                                  |
