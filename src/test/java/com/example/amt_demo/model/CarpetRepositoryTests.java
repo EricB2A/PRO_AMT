@@ -16,8 +16,15 @@ public class CarpetRepositoryTests {
     private CarpetRepository carpetRepository;
 
     @BeforeAll
-    static void CarpetRepositoryTests_init(@Autowired CarpetRepository carpetRepository) {
+    static void CarpetRepositoryTests_init() {
         System.out.println("CarpetRepositoryTests_init");
+        Assertions.assertEquals(1,1);
+    }
+
+    @BeforeAll
+    @Order(2)
+    static void CarpetRepositoryTests_init2(@Autowired CarpetRepository carpetRepository) {
+        System.out.println("CarpetRepositoryTests_init2");
         for(int i = 1; i <= 10; i++) {
             System.out.println("Carpet "+ i +" insert");
             Carpet carpet = carpetRepository.save(new Carpet(i, "test name " + i, "test desc " + i, i * 10.00));
