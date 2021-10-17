@@ -17,11 +17,17 @@ public class CarpetRepositoryTests {
 
     @BeforeAll
     static void CarpetRepositoryTests_init(@Autowired CarpetRepository carpetRepository) {
+        System.out.println("CarpetRepositoryTests_init");
         for(int i = 1; i <= 10; i++) {
             System.out.println("Carpet "+ i +" insert");
             Carpet carpet = carpetRepository.save(new Carpet(i, "test name " + i, "test desc " + i, i * 10.00));
             System.out.println("Carpet "+ carpet.getName() +" inserted");
         }
+        System.out.println("Carpet List");
+        for(Carpet carpet : carpetRepository.findAll()){
+            System.out.println(carpet.getName());
+        }
+        System.out.println("End Carpet List");
     }
 
     @Test
@@ -30,6 +36,7 @@ public class CarpetRepositoryTests {
 
     @Test
     void CarpetRepositoryTests_firstCarpetExistsInDB(){
+        System.out.println("CarpetRepositoryTests_firstCarpetExistsInDB");
         Carpet test = carpetRepository.findByName("test name 1");
         ArrayList<Carpet> carpets = (ArrayList<Carpet>) carpetRepository.findAll();
         System.out.println("Carpet List");
