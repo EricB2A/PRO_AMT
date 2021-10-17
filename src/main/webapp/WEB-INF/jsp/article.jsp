@@ -31,7 +31,8 @@
                                     <div class="number_text"><strong>CHF <span style="color: #0a0506">${article.get().price}</span></strong>
                                     </div>
                                     <button class="seemore">Ajout au panier</button>
-                                        <button class="seemore_bt" onclick="deleteArticle()">Supprimer</button>
+                                  
+                                        <button class="seemore_bt" onclick="deleteArticle('${_csrf.parameterName}', '${_csrf.token}')">Supprimer</button>
                                 </div>
                             </div>
                         </div>

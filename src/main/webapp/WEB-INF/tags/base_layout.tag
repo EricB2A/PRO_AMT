@@ -103,10 +103,15 @@
     });
 
     // Non à jQuery.
-    function deleteArticle(){
+    function deleteArticle(tokenName, csrfToken){
         if (confirm("Supprimer ?")){
 
-            fetch(window.location.href, { method: 'DELETE' })
+            const headers = new Headers({
+                'Content-Type': 'x-www-form-urlencoded',
+                'X-CSRF-TOKEN': csrfToken
+            });
+
+            fetch(window.location.href, { method: 'DELETE', headers })
                 .then((res)=>{
                     if(res.ok){
                         window.location.href = window.location.origin + "/accueil"
