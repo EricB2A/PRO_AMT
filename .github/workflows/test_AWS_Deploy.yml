@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: AWS Deploy test
+name: AWS Deploy latest release
 
 # Controls when the workflow will run
 on:
@@ -24,28 +24,24 @@ jobs:
       - name: Create file
         run: touch DMZ.pem
       # Runs a single command using the runners shell
-      - name: Run a one-line script
+      - name: Write key
         run: echo "${{secrets.SSH_DMZ}}" >> DMZ.pem
         
       - name: Create file
         run: touch SSH.pem
       # Runs a single command using the runners shell
-      - name: Run a one-line script
+      - name: Write key
         run: echo "${{secrets.SSH}}" >> SSH.pem
       
-      - name: change perm
+      - name: Change permission
         run: chmod 600 DMZ.pem
       
-      - name: change perm
+      - name: Change permission
         run: chmod 600 SSH.pem
         
-      #- name: SSH to DMZ
-       # run: sudo ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -f -N -L 12000:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 -i "DMZ.pem"
-      - name: TEST  
+      - name: Establish SSH tunnel  
         run: sudo ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -f -N -L 23:10.0.1.19:22 -L 8081:10.0.1.19:8080 SILKYROAD@16.170.194.237 -i "DMZ.pem"
 
-      - name: SSH to server
+      - name: SSH to server and run a command
         run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@localhost -p 23 -i "SSH.pem" "./script.sh &" 
         
-      - name: Test command
-        run: ls
