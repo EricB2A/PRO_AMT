@@ -26,7 +26,7 @@ public class CarpetRepositoryTests {
     @Test
     void CarpetRepositoryTests_firstCarpetExistsInDB(){
         Carpet test = carpetRepository.findByName("test name 1");
-
+        System.out.println();
         Assertions.assertEquals("test name 1", test.getName());
     }
 
