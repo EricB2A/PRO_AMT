@@ -27,7 +27,7 @@ public class CarpetRepositoryTests {
         System.out.println("CarpetRepositoryTests_init2");
         for(int i = 1; i <= 10; i++) {
             System.out.println("Carpet "+ i +" insert");
-            Carpet carpet = carpetRepository.save(new Carpet(i, "test name " + i, "test desc " + i, i * 10.00));
+            Carpet carpet = carpetRepository.save(new Carpet("test name " + i, "test desc " + i, i * 10.00));
             System.out.println("Carpet "+ carpet.getName() +" inserted");
         }
         System.out.println("Carpet List");
