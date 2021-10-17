@@ -55,7 +55,8 @@ public class CarpetRepositoryTests {
 
     @Test
     public void CarpetRepositoryTests_countMockElement() {
-        Assertions.assertEquals(10, carpetRepository.count());
+        long count = carpetRepository.count();
+        Assertions.assertEquals(10, count);
     }
 
     @AfterAll
