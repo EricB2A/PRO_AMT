@@ -18,7 +18,9 @@ public class CarpetRepositoryTests {
     @BeforeAll
     static void CarpetRepositoryTests_init(@Autowired CarpetRepository carpetRepository) {
         for(int i = 1; i <= 10; i++) {
+            System.out.println("Carpet "+ i +" insert");
             carpetRepository.save(new Carpet(i, "test name " + i, "test desc " + i, i * 10.00));
+            System.out.println("Carpet "+ i +" inserted");
         }
     }
 
