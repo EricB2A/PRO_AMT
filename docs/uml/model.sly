@@ -1,33 +1,20 @@
 <?xml version="1.0" encoding="iso-8859-15" standalone="no"?>
 <classDiagram>
   <diagramElements defaultViewEntities="ALL" defaultViewEnum="true" defaultViewMethods="TYPE_AND_NAME" defaultVisibleTypes="true" informations="" name="">
-    <association aggregation="NONE" direction="BIDIRECTIONAL" id="796" name="possède">
+    <association aggregation="NONE" direction="BIDIRECTIONAL" id="796" name="possède &gt;">
       <role componentId="794" name="" visibility="PRIVATE">
-        <multiplicity>
-          <min>1</min>
-          <max>2147483647</max>
-        </multiplicity>
-      </role>
-      <role componentId="795" name="" visibility="PRIVATE">
         <multiplicity>
           <min>0</min>
           <max>2147483647</max>
         </multiplicity>
       </role>
+      <role componentId="795" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>2147483647</max>
+        </multiplicity>
+      </role>
     </association>
-    <entity entityType="CLASS" id="795" isAbstract="false" name="Role" visibility="PUBLIC">
-      <attribute const="false" defaultValue="" isStatic="false" name="name" type="String" visibility="PRIVATE"/>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="Role" returnType="" view="DEFAULT" visibility="PUBLIC"/>
-    </entity>
-    <entity entityType="CLASS" id="794" isAbstract="false" name="User" visibility="PUBLIC">
-      <attribute const="false" defaultValue="" isStatic="false" name="id" type="Integer" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="email" type="String" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="password" type="String" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="username" type="String" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="firstname" type="String" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="lastname" type="String" visibility="PRIVATE"/>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="User" returnType="" view="DEFAULT" visibility="PUBLIC"/>
-    </entity>
     <entity entityType="CLASS" id="1" isAbstract="false" name="Carpet" visibility="PUBLIC">
       <attribute const="false" defaultValue="" isStatic="false" name="id" type="Integer" visibility="PRIVATE"/>
       <attribute const="false" defaultValue="" isStatic="false" name="name" type="String" visibility="PRIVATE"/>
@@ -50,6 +37,19 @@
       </method>
       <method isAbstract="false" isStatic="false" name="getPhotosImagePath" returnType="String" view="DEFAULT" visibility="PUBLIC"/>
     </entity>
+    <entity entityType="CLASS" id="794" isAbstract="false" name="User" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="id" type="Integer" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="email" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="password" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="username" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="firstname" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="lastname" type="String" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="User" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="795" isAbstract="false" name="Role" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="name" type="String" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="Role" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
   </diagramElements>
   <umlView grid="10" name="Main view" open="true">
     <relationView color="-12566464" relationId="796">
@@ -66,7 +66,7 @@
       <labelAssociation>
         <x>563</x>
         <y>415</y>
-        <w>53</w>
+        <w>64</w>
         <h>16</h>
       </labelAssociation>
       <roleAssociation>
@@ -88,18 +88,18 @@
         <h>16</h>
       </multipliciteAssociation>
       <multipliciteAssociation>
-        <x>707</x>
-        <y>389</y>
+        <x>691</x>
+        <y>391</y>
         <w>22</w>
         <h>16</h>
       </multipliciteAssociation>
     </relationView>
-    <componentView color="-2079" componentID="1" displayAttributes="true" displayDefault="true" displayMethods="true">
+    <componentView color="-2079" componentID="795" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
-        <x>300</x>
-        <y>130</y>
-        <w>560</w>
-        <h>190</h>
+        <x>720</x>
+        <y>370</y>
+        <w>150</w>
+        <h>85</h>
       </geometry>
     </componentView>
     <componentView color="-2079" componentID="794" displayAttributes="true" displayDefault="true" displayMethods="true">
@@ -110,12 +110,12 @@
         <h>160</h>
       </geometry>
     </componentView>
-    <componentView color="-2079" componentID="795" displayAttributes="true" displayDefault="true" displayMethods="true">
+    <componentView color="-2079" componentID="1" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
-        <x>720</x>
-        <y>370</y>
-        <w>150</w>
-        <h>85</h>
+        <x>300</x>
+        <y>130</y>
+        <w>560</w>
+        <h>190</h>
       </geometry>
     </componentView>
   </umlView>
