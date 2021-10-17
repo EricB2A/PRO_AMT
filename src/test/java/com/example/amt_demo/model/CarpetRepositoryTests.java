@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CarpetRepositoryTests {
@@ -13,9 +16,16 @@ public class CarpetRepositoryTests {
     private CarpetRepository carpetRepository;
 
     @BeforeAll
-    static void CarpetRepositoryTests_init(@Autowired CarpetRepository carpetRepository) {
+    static void CarpetRepositoryTests_init() {
+        System.out.println("CarpetRepositoryTests_init");
+        Assertions.assertEquals(1,1);
+    }
+
+    @BeforeAll
+    @Order(2)
+    static void CarpetRepositoryTests_init2(@Autowired CarpetRepository carpetRepository) {
         for(int i = 1; i <= 10; i++) {
-            carpetRepository.save(new Carpet(i, "test name " + i, "test desc " + i, i * 10.00));
+            Carpet carpet = carpetRepository.save(new Carpet("test name " + i, "test desc " + i, i * 10.00));
         }
     }
 
@@ -26,7 +36,7 @@ public class CarpetRepositoryTests {
     @Test
     void CarpetRepositoryTests_firstCarpetExistsInDB(){
         Carpet test = carpetRepository.findByName("test name 1");
-
+        ArrayList<Carpet> carpets = (ArrayList<Carpet>) carpetRepository.findAll();
         Assertions.assertEquals("test name 1", test.getName());
     }
 

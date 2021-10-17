@@ -22,12 +22,11 @@ public class Carpet {
     public Carpet() {
     }
 
-    public Carpet(Integer id, String name, String description, Double price) {
-       this(id, name, description, price, "");
+    public Carpet(String name, String description, Double price) {
+       this(name, description, price, "");
     }
 
-    public Carpet(Integer id, String name, String description, Double price, String imagePath) {
-        this.id = id;
+    public Carpet(String name, String description, Double price, String imagePath) {
         this.name = name;
         this.description = description;
         this.price = price;
