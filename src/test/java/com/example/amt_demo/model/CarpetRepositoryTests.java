@@ -3,14 +3,14 @@ package com.example.amt_demo.model;
 import org.junit.jupiter.api.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@DataJdbcTest
 public class CarpetRepositoryTests {
     @Autowired
     private CarpetRepository carpetRepository;
