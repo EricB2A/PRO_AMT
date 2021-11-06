@@ -14,6 +14,16 @@
             <div class="collection_text">Panier</div>
             <h1>Panier</h1>
 
+            <c:forEach varStatus="idx" items="${articles}" var="article">
+                <div class="row">
+                    Article: ${article.article.name}
+                    , ${article.article.description}
+                    , ${article.article.price}
+                    , Quantity : ${article.quantity}
+                </div>
+
+            </c:forEach>
+
             
         </div>
     </div>
