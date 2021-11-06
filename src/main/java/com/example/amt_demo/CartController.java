@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequestMapping(path = "/cart")
@@ -33,15 +34,17 @@ public class CartController {
 
         List<String> cart = CookieUtils.getArticlesFromCartCookie(request);
 
-        System.out.println("===");
         System.out.println(cart);
-        System.out.println("===");
 
         List<CartInfo> articles = new ArrayList<>();
 
-        for(String articleAsString: cart) {
+
+       for(String articleAsString: cart) {
 
             String articleID = articleAsString.split(CookieUtils.SPLIT_CHAR)[0];
+            if(Objects.equals(articleID, "")) {
+                continue;
+            }
             int quantity = 0;
             if(articleAsString.split(CookieUtils.SPLIT_CHAR).length > 1){
                 quantity = Integer.parseInt( articleAsString.split(CookieUtils.SPLIT_CHAR)[1] );
@@ -64,7 +67,7 @@ public class CartController {
         int quantity = Integer.parseInt((String) payload.get("quantity") );
 
         if(quantity > 0) {
-            CookieUtils.storeArticleToCartCookie(request, response, id, 1);
+            CookieUtils.storeArticleToCartCookie(request, response, id, quantity);
         }
     }
 

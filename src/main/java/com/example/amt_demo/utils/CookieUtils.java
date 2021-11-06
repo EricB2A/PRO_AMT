@@ -44,14 +44,12 @@ public class CookieUtils {
 
         articlesAsString.add(productID+"#"+quantity);
 
-
         // https://datatracker.ietf.org/doc/html/rfc7230#section-3.2.6 :(
         String n = articlesAsString.toString().replaceAll("[\\[\\](){} ]","").replace(",", ARTICLE_SEPARATOR);
 
 
         Cookie cookieUpdated = new Cookie(COOKIE_NAME, n);
         //TODO: pramètres setDomain, setSecure, svp aled
-
 
         response.addCookie(cookieUpdated);
     }
@@ -70,19 +68,16 @@ public class CookieUtils {
             return new ArrayList<>();
         }
 
-
         List<String> articlesAsString = new ArrayList<>(Arrays.asList(cookieValue.split(ARTICLE_SEPARATOR)));
 
         return articlesAsString;
     }
 
-    /*
-    private static String listAsString(List<Integer> list) {
-        list.stream()
-                .map(n -> String.valueOf(n))
-                .collect(Collectors.joining("-", "{", "}"));
-
+    public static void destroyCookie(HttpServletResponse response){
+        Cookie cookie = new Cookie(COOKIE_NAME, "");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
-    
-     */
+
+   
 }
