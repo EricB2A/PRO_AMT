@@ -36,7 +36,7 @@ public class CatalogController {
 
     @GetMapping(path="", produces = {"application/xml"})
     public String getAllCarpets(ModelMap mp) {
-        //this.generateDummyData();
+        this.generateDummyData();
         mp.addAttribute("carpets", carpetRepository.findAll());
         mp.addAttribute("categories", categoryRepository.findAll());
         return "public/catalog";
@@ -49,7 +49,7 @@ public class CatalogController {
         Category arabic = new Category("Arabic");
         categoryRepository.save(turkish);
         categoryRepository.save(arabic);
-        for(int i = 1; i <= 10; i++) {
+        for(int i = 1; i <= 6; i++) {
             Carpet carpet = new Carpet("test name " + i, "test desc " + i, i * 10.00);
             if(i % 2 == 0) {
                 carpet.getCategories().add(turkish);
