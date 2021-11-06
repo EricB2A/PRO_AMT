@@ -90,16 +90,13 @@ public class Carpet {
         return photos;
     }
 
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
     public String getFirstPhotoPath(){
         return photos.stream().findFirst().get().getPath();
     }
 
-
-    public void addPhoto(CarpetPhoto photo){
-        photos.add(photo);
-    }
-    public void removePhoto(CarpetPhoto photo){
-        photos.remove(photo);
-    }
 
 }

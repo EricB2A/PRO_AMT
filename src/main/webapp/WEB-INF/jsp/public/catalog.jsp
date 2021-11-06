@@ -28,14 +28,14 @@
 
                     <c:if test="${not empty carpets}">
                         <c:if test="${not empty categories}">
-                            <div class="category-filters btn-group btn-group-toggle" data-toggle="buttons">
-                                <label class="btn btn-primary active">
-                                    <input type="radio" name="options" id="option1" autocomplete="off" checked> Tous
-                                </label>
+                            <div class="category-filters btn-group btn-group-toggle mb-4">
+                                <a href="/catalog" class="btn btn-primary ${empty filter ? 'active' : '' }">
+                                    <input type="radio" name="options" id="option1" autocomplete="off"> Tous
+                                </a>
                                 <c:forEach varStatus="idx" items="${categories}" var="category">
-                                    <label class="btn btn-primary">
+                                    <a href="/catalog/filter/${category.name}" class="btn btn-primary ${ filter == category.name ? 'active' : '' }">
                                         <input type="radio" name="options" id="option2" autocomplete="off"> ${category.name}
-                                    </label>
+                                    </a>
                                 </c:forEach>
                             </div>
                         </c:if>

@@ -1,9 +1,6 @@
 package com.example.amt_demo.controller.visitor;
 
-import com.example.amt_demo.model.Carpet;
-import com.example.amt_demo.model.CarpetPhoto;
-import com.example.amt_demo.model.CarpetRepository;
-import com.example.amt_demo.model.CategoryRepository;
+import com.example.amt_demo.model.*;
 import com.example.amt_demo.utils.FileUploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,17 +36,32 @@ public class CatalogController {
 
     @GetMapping(path="", produces = {"application/xml"})
     public String getAllCarpets(ModelMap mp) {
-        carpetRepository.deleteAll();
-        for(int i = 1; i <= 10; i++) {
-            Carpet carpet = new Carpet("test name " + i, "test desc " + i, i * 10.00);
-            for (int j = 1; j <= 6; ++j) {
-                carpet.getPhotos().add(new CarpetPhoto("/carpet-photos/carpet"+i+"/"+"carpet"+j+".jpg"));
-            }
-            carpetRepository.save(carpet);
-        }
+        this.generateDummyData();
         mp.addAttribute("carpets", carpetRepository.findAll());
         mp.addAttribute("categories", categoryRepository.findAll());
         return "public/catalog";
+    }
+
+    private void generateDummyData(){
+        carpetRepository.deleteAll();
+        categoryRepository.deleteAll();
+        Category turkish = new Category("Turkish");
+        Category arabic = new Category("Arabic");
+        categoryRepository.save(turkish);
+        categoryRepository.save(arabic);
+        for(int i = 1; i <= 10; i++) {
+            Carpet carpet = new Carpet("test name " + i, "test desc " + i, i * 10.00);
+            if(i % 2 == 0) {
+                carpet.getCategories().add(turkish);
+            }else{
+                carpet.getCategories().add(arabic);
+            }
+            for (int j = 1; j <= 6; ++j) {
+                carpet.getPhotos().add(new CarpetPhoto("/carpet-photos/carpet"+i+"/"+"carpet"+j+".jpg"));
+
+            }
+            carpetRepository.save(carpet);
+        }
     }
 
     @GetMapping(path="/{id}", produces = {"application/xml"})
@@ -58,6 +70,12 @@ public class CatalogController {
         return "public/article";
     }
 
-
+    @GetMapping(path="/filter/{name}", produces = {"application/xml"})
+    public String getCarpetsFilter(ModelMap mp, @PathVariable String name) {
+        mp.addAttribute("carpets", carpetRepository.findByFilter(name));
+        mp.addAttribute("categories", categoryRepository.findAll());
+        mp.addAttribute("filter", name);
+        return "public/catalog";
+    }
 
 }
