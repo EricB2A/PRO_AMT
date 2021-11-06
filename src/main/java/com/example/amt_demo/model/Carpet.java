@@ -1,11 +1,9 @@
 package com.example.amt_demo.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -18,6 +16,9 @@ public class Carpet {
     private String description;
     private Double price;
     private String imagePath;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Category> categories = new HashSet<>();
 
     public Carpet() {
     }
