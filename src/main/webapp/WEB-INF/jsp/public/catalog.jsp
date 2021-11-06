@@ -10,7 +10,12 @@
         false
     </jsp:attribute>
     <jsp:body>
+        <script>
+            (function() {
 
+
+            })();
+        </script>
         <div class="layout_padding gallery_section">
             <div class="container bg-transparent text-white">
 
@@ -22,6 +27,18 @@
                     </c:if>
 
                     <c:if test="${not empty carpets}">
+                        <c:if test="${not empty categories}">
+                            <div class="category-filters btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-primary active">
+                                    <input type="radio" name="options" id="option1" autocomplete="off" checked> Tous
+                                </label>
+                                <c:forEach varStatus="idx" items="${categories}" var="category">
+                                    <label class="btn btn-primary">
+                                        <input type="radio" name="options" id="option2" autocomplete="off"> ${category.name}
+                                    </label>
+                                </c:forEach>
+                            </div>
+                        </c:if>
                         <div class="d-flex flex-wrap">
                            <c:forEach varStatus="idx" items="${carpets}" var="carpet">
                                <a href="/carpets/${carpet.id}">

@@ -3,6 +3,7 @@ package com.example.amt_demo.controller.visitor;
 import com.example.amt_demo.model.Carpet;
 import com.example.amt_demo.model.CarpetPhoto;
 import com.example.amt_demo.model.CarpetRepository;
+import com.example.amt_demo.model.CategoryRepository;
 import com.example.amt_demo.utils.FileUploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,9 @@ public class CatalogController {
     @Autowired
     private CarpetRepository carpetRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @GetMapping(path="", produces = {"application/xml"})
     public String getAllCarpets(ModelMap mp) {
         carpetRepository.deleteAll();
@@ -44,6 +48,7 @@ public class CatalogController {
             carpetRepository.save(carpet);
         }
         mp.addAttribute("carpets", carpetRepository.findAll());
+        mp.addAttribute("categories", categoryRepository.findAll());
         return "public/catalog";
     }
 
@@ -52,6 +57,7 @@ public class CatalogController {
         mp.addAttribute("carpet", carpetRepository.findById(Integer.valueOf(id)));
         return "public/article";
     }
+
 
 
 }
