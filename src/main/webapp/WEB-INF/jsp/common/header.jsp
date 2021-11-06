@@ -17,8 +17,7 @@
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <a class="nav-item nav-link" href="/accueil">Accueil</a>
-                            <a class="nav-item nav-link" href="collection.html">Epices</a>
-                            <a class="nav-item nav-link" href="shoes.html">Tapis</a>
+                            <a class="nav-item nav-link" href="/catalog">Tous les Articles</a>
 
 
                             <sec:authorize access="isAuthenticated()">
