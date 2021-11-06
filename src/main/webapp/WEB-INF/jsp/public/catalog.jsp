@@ -24,16 +24,14 @@
                     <c:if test="${not empty carpets}">
                         <div class="d-flex flex-wrap">
                            <c:forEach varStatus="idx" items="${carpets}" var="carpet">
-                               <a href="/catalog/${carpet.getId()}">
-                               <div class="card shadow-sm" style="width: 18rem;margin: 5px;">
-                                   <c:if test="${not empty carpet.photos}">
-                                       <img style="min-width: 286px;max-width: 286px;min-height: 225px;max-height: 225px;" class="card-img-top" src="${carpet.getFirstPhotoPath()}"/>
-                                   </c:if>
-                                   <div class="card-body">
-                                       <h5 class="card-title">${carpet.name}</h5>
-                                       <div class="card-text text-black-50">${carpet.price} CHF</div>
-                                   </div>
-                               </div>
+                               <a href="/carpets/${carpet.id}">
+                                   <t:article_thumbnail>
+                                       <jsp:attribute name="article_id">${carpet.id}</jsp:attribute>
+                                       <jsp:attribute name="article_name">${carpet.name}</jsp:attribute>
+                                       <jsp:attribute name="article_price">${carpet.price}</jsp:attribute>
+                                       <jsp:attribute name="article_img_path">${carpet.getFirstPhotoPath()}</jsp:attribute>
+                                       <jsp:attribute name="article_nb_stars">${3}</jsp:attribute>
+                                   </t:article_thumbnail>
                                </a>
                             </c:forEach>
                         </div>

@@ -1,24 +1,18 @@
 <%@tag description="Overall Page template" pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@attribute name="article_id" required="true" %>
 <%@attribute name="nb_stars" required="false" %>
 <%@attribute name="article_name" required="true" %>
 <%@attribute name="article_img_path" required="true" %>
 <%@attribute name="article_price" required="true" %>
 <%@attribute name="article_nb_stars" required="false" %>
 
-<div class="best_shoes">
-    <p class="best_text">${article_name}</p>
-    <div class="shoes_icon"><img src="${article_img_path}"></div>
-    <div class="star_text">
-        <div class="left_part">
-            <ul>
-                <c:forEach var = "i" begin = "1" end ="${article_nb_stars}">
-                    <li><a href="#"><img src="images/star-icon.png"></a></li>
-                </c:forEach>
-            </ul>
-        </div>
-        <div class="right_part">
-            <div class="shoes_price">CHF<span style="color: #ff4e5b;">${article_price}</span></div>
+<a href="/catalog/${article_id}">
+    <div class="card shadow-sm" style="width: 18rem;margin: 5px;">
+        <img style="min-width: 286px;max-width: 286px;min-height: 225px;max-height: 225px;" class="card-img-top" src="${article_img_path}"/>
+        <div class="card-body">
+            <h5 class="card-title">${article_name}</h5>
+            <div class="card-text text-black-50">${article_price} CHF</div>
         </div>
     </div>
-</div>
+</a>
