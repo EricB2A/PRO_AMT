@@ -47,15 +47,15 @@
 <body class="main-layout">
 <!-- header section start -->
 
-<jsp:include page="../jsp/common/header.jsp"  />
+<jsp:include page="/WEB-INF/jsp/common/header.jsp"  />
 
 <c:if test="${withbanner.equals(\"true\")}" >
-    <jsp:include page="../jsp/common/banner.jsp" />
+    <jsp:include page="/WEB-INF/jsp/common/banner.jsp" />
 </c:if>
 
 <jsp:doBody/>
 
-<jsp:include page="../jsp/common/footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/common/footer.jsp" />
 
 <!-- Javascript files-->
 <script src="/js/jquery.min.js"></script>

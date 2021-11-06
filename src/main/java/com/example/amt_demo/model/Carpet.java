@@ -20,6 +20,9 @@ public class Carpet {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<CarpetPhoto> photos = new HashSet<>();
+
     public Carpet() {
     }
 
@@ -81,6 +84,22 @@ public class Carpet {
 
     public void setImagePath(String imageName) {
         this.imagePath = imageName;
+    }
+
+    public Set<CarpetPhoto> getPhotos() {
+        return photos;
+    }
+
+    public String getFirstPhotoPath(){
+        return photos.stream().findFirst().get().getPath();
+    }
+
+
+    public void addPhoto(CarpetPhoto photo){
+        photos.add(photo);
+    }
+    public void removePhoto(CarpetPhoto photo){
+        photos.remove(photo);
     }
 
 }

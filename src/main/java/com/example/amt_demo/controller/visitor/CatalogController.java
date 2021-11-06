@@ -1,6 +1,7 @@
-package com.example.amt_demo;
+package com.example.amt_demo.controller.visitor;
 
 import com.example.amt_demo.model.Carpet;
+import com.example.amt_demo.model.CarpetPhoto;
 import com.example.amt_demo.model.CarpetRepository;
 import com.example.amt_demo.utils.FileUploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,76 +26,32 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 
-@RequestMapping(path = "/carpets")
+@RequestMapping(path = "/catalog")
 @Controller
-public class CarpetController {
+public class CatalogController {
 
     @Autowired
     private CarpetRepository carpetRepository;
 
-    @GetMapping(path="/", produces = {"application/xml"})
+    @GetMapping(path="", produces = {"application/xml"})
     public String getAllCarpets(ModelMap mp) {
-        mp.addAttribute("articles", carpetRepository.findAll());
-        return "home";
+        carpetRepository.deleteAll();
+        for(int i = 1; i <= 10; i++) {
+            Carpet carpet = new Carpet("test name " + i, "test desc " + i, i * 10.00);
+            for (int j = 1; j <= 6; ++j) {
+                carpet.getPhotos().add(new CarpetPhoto("/carpet-photos/carpet"+i+"/"+"carpet"+j+".jpg"));
+            }
+            carpetRepository.save(carpet);
+        }
+        mp.addAttribute("carpets", carpetRepository.findAll());
+        return "public/catalog";
     }
 
     @GetMapping(path="/{id}", produces = {"application/xml"})
-    public String getAllCarpets(ModelMap mp, @PathVariable String id) {
-        mp.addAttribute("article", carpetRepository.findById(Integer.valueOf(id)));
-        return "article";
+    public String getCarpet(ModelMap mp, @PathVariable String id) {
+        mp.addAttribute("carpet", carpetRepository.findById(Integer.valueOf(id)));
+        return "public/article";
     }
 
-    @PostMapping(value = "")
-     public String saveCarpet(Carpet newCarpet, @RequestParam("image") MultipartFile multipartFile, ModelMap mp) throws IOException {
-
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        newCarpet.setImagePath(fileName);
-
-        carpetRepository.save(newCarpet);
-        mp.addAttribute("articles", carpetRepository.findAll());
-
-        String uploadDir = "carpet-photos/" + newCarpet.getId();
-
-        FileUploadUtils.saveFile(uploadDir, fileName, multipartFile);
-
-        return "home";
-
-        //return new ResponseEntity<>(newCarpet, HttpStatus.OK);
-    }
-
-    @GetMapping("/new")
-    public String getCarpetRepository(ModelMap mp) {
-        return "articleForm";
-    }
-
-    /*
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Carpet newCarpet) {
-        return carpetRepository.findById(id)
-                .map(carpet-> {
-                    carpet.setName(newCarpet.getName());
-                    carpet.setDescription(newCarpet.getDescription());
-                    carpet.setPrice(newCarpet.getPrice());
-                    carpet.setImagePath(newCarpet.getImagePath());
-                    carpetRepository.save(carpet);
-                    return new ResponseEntity<>(carpet, HttpStatus.OK);
-                })
-                .orElseGet(() -> {
-                    newCarpet.setId(id);
-                    carpetRepository.save(newCarpet);
-                    return new ResponseEntity<>(newCarpet, HttpStatus.OK);
-                });
-    }
-
-     */
-    @DeleteMapping("/{id}")
-    ResponseEntity<?> delete(@PathVariable int id) {
-        if(!carpetRepository.existsById(id)){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        carpetRepository.deleteById(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
-    }
 
 }
