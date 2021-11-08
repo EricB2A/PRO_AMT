@@ -16,18 +16,18 @@ public class LoginService {
         webclient = WebClient.create(url);
     }
 
-    public boolean addUser(UserCredentials credentials) {
+    public boolean registerUser(UserCredentials credentials) {
         JSONObject json = new JSONObject()
                 .put("password", credentials.getPassword())
                 .put("username", credentials.getUsername());
         ResponseEntity<String> response = webclient
                 .post()
-                .uri("/auth/register")
+                .uri("/accounts/register")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(BodyInserters.fromValue(json.toString()))
                 .retrieve()
                 .onStatus(
-                        status -> status.value() == 403,
+                        status -> status.value() == 409 || status.value() == 422,
                         clientResponse -> Mono.empty()
                 )
                 .toEntity(String.class)
@@ -35,7 +35,7 @@ public class LoginService {
 
         JSONObject responseBodyJSON = new JSONObject(response.getBody());
         System.out.println(responseBodyJSON);
-        return response.getStatusCodeValue() == 200;
+        return response.getStatusCodeValue() == 201;
     }
 
     public boolean checkCredentials(UserCredentials credentials) {
