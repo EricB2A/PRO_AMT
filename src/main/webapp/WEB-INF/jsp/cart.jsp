@@ -12,7 +12,7 @@
     <div class="layout_padding gallery_section">
         <div class="container">
             <div class="collection_text">Panier</div>
-            <h1>Panier</h1>
+            <h2>Panier</h2>
 
             <c:forEach varStatus="idx" items="${articles}" var="article">
                 <div class="row">

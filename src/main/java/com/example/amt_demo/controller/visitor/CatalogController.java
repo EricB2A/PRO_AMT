@@ -36,7 +36,7 @@ public class CatalogController {
 
     @GetMapping(path="", produces = {"application/xml"})
     public String getAllCarpets(ModelMap mp) {
-        this.generateDummyData();
+        // this.generateDummyData();
         mp.addAttribute("carpets", carpetRepository.findAll());
         mp.addAttribute("categories", categoryRepository.findAll());
         return "public/catalog";

@@ -95,7 +95,13 @@ public class Carpet {
     }
 
     public String getFirstPhotoPath(){
-        return photos.stream().findFirst().get().getPath();
+
+        if(photos.isEmpty()){
+            //TODO: ajouter constante
+            return "/images/placeholder-image.png";
+        }else {
+             return photos.stream().findFirst().get().getPath();
+        }
     }
 
 

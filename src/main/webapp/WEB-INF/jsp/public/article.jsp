@@ -45,7 +45,7 @@
                                         <h4 class="h4"><strong>${carpet.get().name}</strong></h4>
                                         <div class="text-white">${carpet.get().description}</div>
                                         <div class="h2 text-white"><strong>CHF <span style="color: #ffffee">${carpet.get().price}</span></strong></div>
-                                        <button class="btn btn-primary">Ajout au panier</button>
+                                        <button class="btn btn-primary" onclick="addArticleToBasket('${carpet.get().id}', '1', '${_csrf.parameterName}', '${_csrf.token}')">Ajout au panier</button>
                                     </div>
                                 </div>
                         </div>

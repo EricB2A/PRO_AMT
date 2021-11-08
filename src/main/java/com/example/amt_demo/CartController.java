@@ -34,7 +34,7 @@ public class CartController {
     @GetMapping(path="")
     public String getCart(HttpServletRequest request, HttpServletResponse response, ModelMap mp) {
 
-        List<String> cart = CookieUtils.getArticlesFromCartCookie(request);
+        List<String> cart = CookieUtils.getArticlesFromCartCookie(request, response);
 
         System.out.println(cart);
 
@@ -42,20 +42,17 @@ public class CartController {
 
 
        for(String articleAsString: cart) {
-
             String articleID = articleAsString.split(CookieUtils.SPLIT_CHAR)[0];
+            //TODO: à retirer. Si qqn a une erreur ici, merci de m'envoyer un message telegram @EricB2A
+            /*
             if(Objects.equals(articleID, "")) {
                 continue;
             }
-            int quantity = 0;
-            if(articleAsString.split(CookieUtils.SPLIT_CHAR).length > 1){
-                quantity = Integer.parseInt( articleAsString.split(CookieUtils.SPLIT_CHAR)[1] );
-            }
+             */
+           int quantity = Integer.parseInt( articleAsString.split(CookieUtils.SPLIT_CHAR)[1] );
 
             Optional<Carpet> carpet = carpetRepository.findById(Integer.valueOf(articleID));
-            if(carpet.isPresent()){
-                articles.add(new CartInfo(carpet.get(), quantity));
-            }
+           carpet.ifPresent(value -> articles.add(new CartInfo(value, quantity)));
 
         }
 
@@ -77,8 +74,5 @@ public class CartController {
     public void removeProductFromCart(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) {
         CookieUtils.removeArticleFromCartCookie(request, response, id);
     }
-
-    
-
 
 }

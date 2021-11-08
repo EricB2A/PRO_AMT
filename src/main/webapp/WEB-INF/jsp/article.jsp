@@ -32,7 +32,7 @@
                                     </div>
 
                                     <input id="cartQuantity" type="number" value="1">
-                                    <button class="seemore" onclick="addArticleToBasket('${article.get().id}', document.getElementById('cartQuantity').value, '${_csrf.parameterName}', '${_csrf.token}')">Ajout au panier</button>
+                                    <button class="seemore" onclick="addArticleToBasket('${article.get().id}', document.getElementById('cartQuantity').value, '${_csrf.parameterName}', '${_csrf.token}')">Ajout au papa</button>
                                   
                                         <button class="seemore_bt" onclick="deleteArticle('${_csrf.parameterName}', '${_csrf.token}')">Supprimer</button>
                                 </div>
