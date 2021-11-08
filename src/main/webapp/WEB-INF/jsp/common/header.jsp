@@ -19,7 +19,9 @@
                             <a class="nav-item nav-link" href="/accueil">Accueil</a>
                             <a class="nav-item nav-link" href="/catalog">Tous les Articles</a>
 
-
+                            <sec:authorize access="isAuthenticated() && hasRole('admin')">
+                                <a class="nav-item nav-link" href="/admin/all">Administration</a>
+                            </sec:authorize>
                             <sec:authorize access="isAuthenticated()">
                                 <form action="/logout" method=post id="logout-form">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -30,6 +32,7 @@
                                 </form>
 
                             </sec:authorize>
+
                             <sec:authorize access="!isAuthenticated()">
                                 <a class="nav-item nav-link" href="/login">Login</a>
                             </sec:authorize>

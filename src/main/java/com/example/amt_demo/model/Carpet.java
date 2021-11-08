@@ -95,7 +95,7 @@ public class Carpet {
     }
 
     public String getFirstPhotoPath(){
-        return photos.stream().findFirst().get().getPath();
+        return "" /*photos.stream().findFirst().get().getPath()*/;
     }
 
 

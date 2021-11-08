@@ -12,7 +12,12 @@
     <jsp:body>
 
         <div class="layout_padding gallery_section">
+
             <div class="container bg-white">
+                <c:if test="${not empty error}">
+                    <p>${error}</p>
+                </c:if>
+
                 <div class="tab">
                     <button class="tablinks" onclick="openTab(event, 'Categories')"><b>Catégories</b></button>
                     <button class="tablinks" onclick="openTab(event, 'Articles')"><b>Articles</b></button>
@@ -23,9 +28,8 @@
                     <h3>Catégories</h3>
                     <div style="display: table-row">
                         <div style="width: 600px; display: table-cell;">Vous pouvez ajouter, éditer ou supprimer des catégories</div>
-                        <div style="display: table-cell;"> <a href="/admin/new">+ Ajouter une catégorie</a> </div>
+                        <div style="display: table-cell;"> <a href="/admin/category/new">+ Ajouter une catégorie</a> </div>
                     </div>
-
 
                     <c:if test="${not empty categories}">
 
@@ -39,7 +43,15 @@
                                 <c:forEach varStatus="idx" items="${categories}" var="categories">
                                     <div class="table-row">
                                         <div class="table-data">${categories.name}</div>
-                                        <div class="table-data"></div>
+                                        <div class="table-data">
+                                            <a href="/admin/category/edit/${categories.id}">
+                                                <img alt="Edit" src="../../../../resources/static/images/outline_edit_black_24dp.png">
+                                            </a>
+                                            <a href="/admin/category/delete/${categories.id}">
+                                                <img alt="Delete" src="../../../../resources/static/images/outline_delete_black_24dp.png">
+                                            </a>
+
+                                        </div>
                                     </div>
                                 </c:forEach>
                             </div>

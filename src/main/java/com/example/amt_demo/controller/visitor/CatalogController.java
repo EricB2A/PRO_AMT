@@ -36,9 +36,12 @@ public class CatalogController {
 
     @GetMapping(path="", produces = {"application/xml"})
     public String getAllCarpets(ModelMap mp) {
-        this.generateDummyData();
+
+            //this.generateDummyData();
+
+
         mp.addAttribute("carpets", carpetRepository.findAll());
-        mp.addAttribute("categories", categoryRepository.findAll());
+        mp.addAttribute("categories", categoryRepository.notEmptyCategory());
         return "public/catalog";
     }
 
@@ -73,9 +76,8 @@ public class CatalogController {
     @GetMapping(path="/filter/{name}", produces = {"application/xml"})
     public String getCarpetsFilter(ModelMap mp, @PathVariable String name) {
         mp.addAttribute("carpets", carpetRepository.findByFilter(name));
-        mp.addAttribute("categories", categoryRepository.findAll());
+        mp.addAttribute("categories", categoryRepository.notEmptyCategory());
         mp.addAttribute("filter", name);
         return "public/catalog";
     }
-
 }

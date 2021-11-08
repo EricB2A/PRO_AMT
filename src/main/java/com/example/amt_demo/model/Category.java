@@ -11,8 +11,8 @@ public class Category {
     private Integer id;
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(mappedBy = "categories")
+    private Set<Carpet> carpets = new HashSet<>();
 
     public Category() {
 
@@ -20,6 +20,14 @@ public class Category {
 
     public Category(String name) {
         this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

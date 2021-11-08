@@ -1,17 +1,14 @@
 package com.example.amt_demo;
 
-import com.example.amt_demo.model.Carpet;
 import com.example.amt_demo.model.CarpetRepository;
 import com.example.amt_demo.model.Category;
 import com.example.amt_demo.model.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping(path = "/admin")
 @Controller
@@ -27,36 +24,55 @@ public class CategoryController {
     public String getAllCategories(ModelMap mp) {
         mp.addAttribute("categories", categoryRepository.findAll());
         mp.addAttribute("carpets", carpetRepository.findAll());
-        return "admin";
+        return "admin/admin";
     }
 
-    @GetMapping("/new")
-    public String getCarpetRepository(ModelMap mp) {
-        return "categoryForm";
+    @GetMapping("/category/new")
+    public String getCategoryForm(ModelMap mp) {
+        return "admin/categoryForm";
     }
 
     @PostMapping(path="")
     public String addCategory(Category newCategory, ModelMap mp) {
         Category category = categoryRepository.findByName(newCategory.getName());
 
-        if(category == null) { // TODO : gestion de l'erreur
-            //return an error
+        if(category == null) {
             categoryRepository.save(newCategory);
+        }else {
+            mp.addAttribute("error", "Cette catégorie existe déjà");
         }
 
         mp.addAttribute("categories", categoryRepository.findAll());
         mp.addAttribute("carpets", carpetRepository.findAll());
-        return "admin";
+        return "admin/admin";
     }
 
-    @GetMapping(path="/delete")
-    public String deleteCategory(ModelMap mp, @RequestParam("name") String name) {
-        Category category = categoryRepository.findByName(name);
 
-        if(!category.equals("")) {
-            //return an error
+    @GetMapping("/category/edit/{id}")
+    public String editCategory(ModelMap mp, @PathVariable String id) {
+        System.out.println(id);
+        mp.addAttribute("category", categoryRepository.findById(Integer.valueOf(id)));
+        return "admin/category";
+    }
+
+    @GetMapping("/category/delete/{id}")
+    public String deleteCategory(ModelMap mp, @PathVariable String id) {
+        Category category = categoryRepository.findId(Integer.valueOf(id));
+        //Category category1 = categoryRepository.findById(Integer.valueOf(id));
+
+        List<Category> list = categoryRepository.hasArticlesInCategory(Integer.valueOf(id));
+
+        if(list.isEmpty()) {
+            categoryRepository.delete(category);
+        } else {
+
+            mp.addAttribute("error", "Vous ne pouvez pas supprimer des catégories qui contiennent des articles");
+
         }
 
-        return "";
+        mp.addAttribute("categories", categoryRepository.findAll());
+        mp.addAttribute("carpets", carpetRepository.findAll());
+
+        return "admin/admin";
     }
 }
