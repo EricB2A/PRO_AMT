@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -66,6 +67,16 @@ public class CartController {
     @DeleteMapping(path="/{id}")
     public void removeProductFromCart(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) {
         CookieUtils.removeArticleFromCartCookie(request, response, id);
+    }
+
+    @PutMapping(path="/{id}")
+    public void editProductFromCart(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestBody Map<String, Object> payload) {
+        int quantity = Integer.parseInt((String) payload.get("quantity") );
+
+        if(quantity > 0) {
+            CookieUtils.storeArticleToCartCookie(request, response, id, quantity, true);
+        }
+
     }
 
 }

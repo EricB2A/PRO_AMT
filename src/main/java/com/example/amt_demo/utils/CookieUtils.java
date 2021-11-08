@@ -1,6 +1,5 @@
 package com.example.amt_demo.utils;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +21,7 @@ public class CookieUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(CookieUtils.class);
 
-    public static void storeArticleToCartCookie(HttpServletRequest request, HttpServletResponse response, String productID, int quantity) {
+    public static void storeArticleToCartCookie(HttpServletRequest request, HttpServletResponse response, String productID, int quantity, boolean replaceQuantity) {
         /*
           Si l'utilisateur s'amuse à modifier ses cookies, on aura à coup sûr des problèmes au parsing.
           Donc si le cookie est illisible -> on catch l'erreur -> suppression du cookie -> plus de panier, mais pas d'erreur !
@@ -43,7 +42,10 @@ public class CookieUtils {
                 }
 
                 if(productID.equals(pro)) {
-                    quantity += qtity;
+                    if(!replaceQuantity) {
+                        quantity += qtity;
+                    }
+
                     f = i;
                     break;
                 }
@@ -58,6 +60,7 @@ public class CookieUtils {
             // String n = articlesAsString.toString().replaceAll("[\\[\\](){} ]","").replace(",", ARTICLE_SEPARATOR);
 
             Cookie cookieUpdated = new Cookie(COOKIE_NAME, serialize(articlesAsString));
+            cookieUpdated.setPath("/cart");
             //TODO: pramètres setDomain, setSecure, svp aled
             cookieUpdated.setMaxAge(COOKIE_AGE);
 
@@ -67,7 +70,10 @@ public class CookieUtils {
             logger.error(exception.getMessage());
             destroyCookie(response);
         }
+    }
 
+    public static void storeArticleToCartCookie(HttpServletRequest request, HttpServletResponse response, String productID, int quantity) {
+        storeArticleToCartCookie(request, response, productID, quantity, false);
     }
 
     private static String serialize(List<String> list) {
@@ -87,6 +93,7 @@ public class CookieUtils {
                 .collect(Collectors.toList());
 
         Cookie cookieUpdated = new Cookie(COOKIE_NAME, serialize(articlesAsStringUpdated));
+        cookieUpdated.setPath("/cart");
         cookieUpdated.setMaxAge(COOKIE_AGE);
         response.addCookie(cookieUpdated);
 

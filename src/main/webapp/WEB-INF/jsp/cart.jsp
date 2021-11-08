@@ -30,9 +30,10 @@
                                         <h6 class="card-title">${element.article.description}</h6>
                                         <div class="card-text text-black-50">${element.article.price} CHF</div>
 
-                                        <input type="number" value="${element.quantity}" min="0">
+                                        <input type="number" id="productQuantity_${element.article.id}" value="${element.quantity}" min="0">
+                                        <button class="btn btn-success" onclick="updateArticleToBasket('${element.article.id}', document.getElementById('productQuantity_${element.article.id}').value ,'${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Changer quantiter</button>
 
-                                        <button class="btn btn-danger" onclick="removeArticleFromBasket('${element.article.id}', '${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Retirer du panier</button>
+                                        <button class="btn btn-danger" onclick="removeArticleFromBasket('${element.article.id}', '${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Retirer</button>
 
                                         <!--<button class="btn btn-primary" onclick="addArticleToBasket('${article_id}', '1', '${_csrf.parameterName}', '${_csrf.token}', '')">Ajout au panier</button>-->
 

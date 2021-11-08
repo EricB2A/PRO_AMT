@@ -172,6 +172,37 @@
             });
     }
 
+    function updateArticleToBasket(articleID, quantity,  tokenName, csrfToken, redirect) {
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        });
+
+        if(quantity < 0){
+            alert("Quantité invalide");
+            return;
+        }else if(quantity == 0){
+            if(confirm("Retirer l'article du panier?")){
+                console.log("ouh oh")
+                removeArticleFromBasket(articleID, tokenName, csrfToken, redirect)
+            }
+            return;
+        }
+
+        if(redirect === ""){
+            redirect = window.location.origin
+        }
+
+        fetch(window.location.origin+"/cart/" + articleID, { method: 'PUT', headers, body: JSON.stringify({quantity: quantity}) })
+            .then((res)=>{
+                if(res.ok){
+                    window.location.href = redirect
+                }else{
+                    //TODO: Rediriger je ne sais pas où.
+                }
+            });
+    }
+
     function removeArticleFromBasket(articleID, tokenName, csrfToken, redirect){
         const headers = new Headers({
             'Content-Type': 'application/json',
