@@ -127,7 +127,7 @@
 
 
     // Non à jQuery.
-    function deleteArticle(tokenName, csrfToken){
+    function deleteArticle(tokenName, csrfToken) {
         if (confirm("Supprimer ?")){
 
             const headers = new Headers({
@@ -144,6 +144,30 @@
                     }
                 });
         }
+    }
+
+    function addArticleToBasket(articleID, quantity,  tokenName, csrfToken) {
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        });
+
+     
+        if(quantity <= 0){
+            alert("Quantité invalide");
+            return;
+        }
+
+        fetch(window.location.origin+"/cart/" + articleID, { method: 'POST', headers, body: JSON.stringify({quantity: quantity}) })
+            .then((res)=>{
+                if(res.ok){
+                    window.location.href = window.location.origin + "/carpets/" + articleID
+                }else{
+                    //TODO: Rediriger je ne sais pas où.
+                }
+            });
+
+
     }
 
 </script>

@@ -35,7 +35,7 @@
                             </sec:authorize>
 
                             <a class="nav-item nav-link last" href="#"><img src="/images/search_icon.png"></a>
-                            <a class="nav-item nav-link last" href="contact.html"><img src="/images/shop_icon.png"></a>
+                            <a class="nav-item nav-link last" href="/cart"><img src="/images/shop_icon.png"></a>
                         </div>
                     </div>
                 </nav>
