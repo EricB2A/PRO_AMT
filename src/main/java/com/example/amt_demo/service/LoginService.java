@@ -1,7 +1,13 @@
 package com.example.amt_demo.service;
 
 import com.example.amt_demo.model.UserCredentials;
+import org.json.JSONObject;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 public class LoginService {
     private final WebClient webclient;
@@ -10,13 +16,49 @@ public class LoginService {
         webclient = WebClient.create(url);
     }
 
+    public boolean addUser(UserCredentials credentials) {
+        JSONObject json = new JSONObject()
+                .put("password", credentials.getPassword())
+                .put("username", credentials.getUsername());
+        ResponseEntity<String> response = webclient
+                .post()
+                .uri("/auth/register")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(BodyInserters.fromValue(json.toString()))
+                .retrieve()
+                .onStatus(
+                        status -> status.value() == 403,
+                        clientResponse -> Mono.empty()
+                )
+                .toEntity(String.class)
+                .block();
+
+        JSONObject responseBodyJSON = new JSONObject(response.getBody());
+        System.out.println(responseBodyJSON);
+        return response.getStatusCodeValue() == 200;
+    }
+
     public boolean checkCredentials(UserCredentials credentials) {
-        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = webclient.post();
-        WebClient.RequestBodySpec bodySpec = uriSpec.uri("/auth/login");
-        StringBuilder body = new StringBuilder();
+        JSONObject json = new JSONObject()
+                .put("password", credentials.getPassword())
+                .put("username", credentials.getUsername());
 
+        ResponseEntity<String> response = webclient
+                .post()
+                .uri("/auth/login")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(BodyInserters.fromValue(json.toString()))
+                .retrieve()
+                .onStatus(
+                        status -> status.value() == 403,
+                        clientResponse -> Mono.empty()
+                )
+                .toEntity(String.class)
+                .block();
 
-        return false; // TODO: check credentials
+        JSONObject responseBodyJSON = new JSONObject(response.getBody());
+        System.out.println(responseBodyJSON);
+        return response.getStatusCodeValue() == 200;
     }
 
 
