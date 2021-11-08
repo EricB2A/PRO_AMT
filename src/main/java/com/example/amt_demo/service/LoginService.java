@@ -1,5 +1,6 @@
 package com.example.amt_demo.service;
 
+import com.example.amt_demo.model.UserCredentials;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class LoginService {
@@ -9,9 +10,11 @@ public class LoginService {
         webclient = WebClient.create(url);
     }
 
-    public boolean checkCredentials(String something) {
+    public boolean checkCredentials(UserCredentials credentials) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = webclient.post();
         WebClient.RequestBodySpec bodySpec = uriSpec.uri("/auth/login");
+        StringBuilder body = new StringBuilder();
+
 
         return false; // TODO: check credentials
     }
