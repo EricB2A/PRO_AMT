@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class CookieUtils {
     public static final String COOKIE_NAME = "UserCart";
@@ -19,7 +21,6 @@ public class CookieUtils {
 
         List<String> articlesAsString = getArticlesFromCartCookie(request);
 
-        //TODO: Je suis fatigé, j'expliquerai demain ce que je fais ici.
         int f = -1;
         for (int i = 0; i < articlesAsString.size(); i++) {
 
@@ -44,14 +45,32 @@ public class CookieUtils {
 
         articlesAsString.add(productID+"#"+quantity);
 
-        // https://datatracker.ietf.org/doc/html/rfc7230#section-3.2.6 :(
-        String n = articlesAsString.toString().replaceAll("[\\[\\](){} ]","").replace(",", ARTICLE_SEPARATOR);
+        // String n = articlesAsString.toString().replaceAll("[\\[\\](){} ]","").replace(",", ARTICLE_SEPARATOR);
 
-
-        Cookie cookieUpdated = new Cookie(COOKIE_NAME, n);
+        Cookie cookieUpdated = new Cookie(COOKIE_NAME, serialize(articlesAsString));
         //TODO: pramètres setDomain, setSecure, svp aled
 
         response.addCookie(cookieUpdated);
+    }
+
+    private static String serialize(List<String> list) {
+        // https://datatracker.ietf.org/doc/html/rfc7230#section-3.2.6 :(
+        return list.toString().replaceAll("[\\[\\](){} ]","").replace(",", ARTICLE_SEPARATOR);
+
+    }
+    public static void removeArticleFromCartCookie(HttpServletRequest request, HttpServletResponse response, String productIDToRemove) {
+        List<String> articlesAsString = getArticlesFromCartCookie(request);
+
+        List<String> articlesAsStringUpdated =  articlesAsString.stream()
+                .filter((el) -> {
+                    String pro = el.split(SPLIT_CHAR)[0];
+                    return !(pro.equals(productIDToRemove));
+                })
+                .collect(Collectors.toList());
+
+        Cookie cookieUpdated = new Cookie(COOKIE_NAME, serialize(articlesAsStringUpdated));
+        response.addCookie(cookieUpdated);
+
     }
 
     public static List<String> getArticlesFromCartCookie(HttpServletRequest request) {
@@ -68,9 +87,7 @@ public class CookieUtils {
             return new ArrayList<>();
         }
 
-        List<String> articlesAsString = new ArrayList<>(Arrays.asList(cookieValue.split(ARTICLE_SEPARATOR)));
-
-        return articlesAsString;
+        return new ArrayList<>(Arrays.asList(cookieValue.split(ARTICLE_SEPARATOR)));
     }
 
     public static void destroyCookie(HttpServletResponse response){
