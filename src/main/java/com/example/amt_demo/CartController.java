@@ -14,14 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @RequestMapping(path = "/cart")
@@ -35,11 +32,7 @@ public class CartController {
     public String getCart(HttpServletRequest request, HttpServletResponse response, ModelMap mp) {
 
         List<String> cart = CookieUtils.getArticlesFromCartCookie(request, response);
-
-        System.out.println(cart);
-
         List<CartInfo> articles = new ArrayList<>();
-
 
        for(String articleAsString: cart) {
             String articleID = articleAsString.split(CookieUtils.SPLIT_CHAR)[0];
@@ -54,7 +47,7 @@ public class CartController {
             Optional<Carpet> carpet = carpetRepository.findById(Integer.valueOf(articleID));
            carpet.ifPresent(value -> articles.add(new CartInfo(value, quantity)));
 
-        }
+       }
 
         mp.addAttribute("articles", articles);
         return "cart";
@@ -70,7 +63,7 @@ public class CartController {
         }
     }
 
-    @DeleteMapping(path="{/id}")
+    @DeleteMapping(path="/{id}")
     public void removeProductFromCart(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) {
         CookieUtils.removeArticleFromCartCookie(request, response, id);
     }

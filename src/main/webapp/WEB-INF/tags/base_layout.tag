@@ -146,7 +146,7 @@
         }
     }
 
-    function addArticleToBasket(articleID, quantity,  tokenName, csrfToken) {
+    function addArticleToBasket(articleID, quantity,  tokenName, csrfToken, redirect) {
         const headers = new Headers({
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': csrfToken
@@ -158,15 +158,34 @@
             return;
         }
 
+        if(redirect === ""){
+            redirect = window.location.origin
+        }
+
         fetch(window.location.origin+"/cart/" + articleID, { method: 'POST', headers, body: JSON.stringify({quantity: quantity}) })
             .then((res)=>{
                 if(res.ok){
-                    window.location.href = window.location.origin + "/carpets/" + articleID
+                    window.location.href = redirect
                 }else{
                     //TODO: Rediriger je ne sais pas où.
                 }
             });
+    }
 
+    function removeArticleFromBasket(articleID, tokenName, csrfToken, redirect){
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        });
+
+        fetch(window.location.origin+"/cart/" + articleID, { method: 'DELETE', headers })
+            .then((res)=>{
+                if(res.ok){
+                    window.location.href = redirect
+                }else{
+                    //TODO: Rediriger je ne sais pas où.
+                }
+            });
 
     }
 

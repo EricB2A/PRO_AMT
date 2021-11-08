@@ -18,12 +18,14 @@ public class CookieUtils {
     public static final String SPLIT_CHAR = "#";
     public static final String ARTICLE_SEPARATOR = ":";
 
+    private static final int COOKIE_AGE = 7 * 24 * 60 * 60; // 7 jours
+
     private static final Logger logger = LoggerFactory.getLogger(CookieUtils.class);
 
     public static void storeArticleToCartCookie(HttpServletRequest request, HttpServletResponse response, String productID, int quantity) {
         /*
           Si l'utilisateur s'amuse à modifier ses cookies, on aura à coup sûr des problèmes au parsing.
-          Donc si le cookie est illisible -> on catch l'erreur -> suppression du cookie -> plus de panier, mais pas de bug !
+          Donc si le cookie est illisible -> on catch l'erreur -> suppression du cookie -> plus de panier, mais pas d'erreur !
          */
         try {
 
@@ -57,6 +59,7 @@ public class CookieUtils {
 
             Cookie cookieUpdated = new Cookie(COOKIE_NAME, serialize(articlesAsString));
             //TODO: pramètres setDomain, setSecure, svp aled
+            cookieUpdated.setMaxAge(COOKIE_AGE);
 
             response.addCookie(cookieUpdated);
 
@@ -68,7 +71,7 @@ public class CookieUtils {
     }
 
     private static String serialize(List<String> list) {
-        // https://datatracker.ietf.org/doc/html/rfc7230#section-3.2.6 :(
+        // https://curl.se/rfc/cookie_spec.html
         return list.toString().replaceAll("[\\[\\](){} ]","").replace(",", ARTICLE_SEPARATOR);
 
     }
@@ -84,14 +87,14 @@ public class CookieUtils {
                 .collect(Collectors.toList());
 
         Cookie cookieUpdated = new Cookie(COOKIE_NAME, serialize(articlesAsStringUpdated));
+        cookieUpdated.setMaxAge(COOKIE_AGE);
         response.addCookie(cookieUpdated);
 
     }
 
     public static List<String> getArticlesFromCartCookie(HttpServletRequest request, HttpServletResponse response) {
          /*
-          Si l'utilisateur s'amuse à modifier ses cookies, on aura à coup sûr des problèmes au parsing.
-          Donc si le cookie est illisible -> on catch l'erreur -> suppression du cookie -> plus de panier, mais pas de bug !
+            cf. storeArticleToCartCookie
          */
         try {
 
@@ -117,6 +120,7 @@ public class CookieUtils {
 
             for(String el : cookieValueAsString){
                 String articleID = el.split(SPLIT_CHAR)[0];
+    
                 if(el.split(CookieUtils.SPLIT_CHAR).length != 2 || articleID == null || articleID.isEmpty()){
                     logger.error("Wrong cookie format");
                     destroyCookie(response);
@@ -125,7 +129,7 @@ public class CookieUtils {
 
             }
 
-            //return new ArrayList<>(Arrays.asList(cookieValue.split(ARTICLE_SEPARATOR)));
+            return new ArrayList<>(Arrays.asList(cookieValue.split(ARTICLE_SEPARATOR)));
 
         }catch(Exception exception){
             logger.error(exception.getMessage());
@@ -139,6 +143,8 @@ public class CookieUtils {
     public static void destroyCookie(HttpServletResponse response){
         Cookie cookie = new Cookie(COOKIE_NAME, "");
         cookie.setMaxAge(0);
+        // Le cookie à détruire doit être identique.
+        cookie.setPath("/cart");
         response.addCookie(cookie);
     }
 

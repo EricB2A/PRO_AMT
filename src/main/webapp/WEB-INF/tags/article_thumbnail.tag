@@ -13,6 +13,7 @@
         <div class="card-body">
             <h5 class="card-title">${article_name}</h5>
             <div class="card-text text-black-50">${article_price} CHF</div>
+            <button class="btn btn-primary" onclick="addArticleToBasket('${article_id}', '1', '${_csrf.parameterName}', '${_csrf.token}', '')">Ajout au panier</button>
         </div>
     </div>
 </a>
