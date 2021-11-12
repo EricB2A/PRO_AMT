@@ -57,7 +57,7 @@ public class CategoryController {
         }
 
         mp.addAttribute("categories", categoryRepository.findAll());
-       mp.addAttribute("carpets", carpetRepository.findAll());
+        mp.addAttribute("carpets", carpetRepository.findAll());
         return "admin/admin";
     }
 

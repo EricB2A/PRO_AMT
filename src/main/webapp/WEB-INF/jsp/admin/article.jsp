@@ -36,7 +36,7 @@
 
                                 </div>
                                 <div>
-                                    <button type="submit">S'abonner</button>
+                                    <button type="submit">Ajouter</button>
                                 </div>
                             </form>
                         </div>

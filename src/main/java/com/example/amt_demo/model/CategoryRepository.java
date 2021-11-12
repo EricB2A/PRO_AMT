@@ -3,6 +3,7 @@ package com.example.amt_demo.model;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -28,6 +29,7 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
     Set<Category> findCategoryNotBelongingToCarpet(int id);
 
     @Modifying
+    @Transactional
     @Query(value = "Insert into carpet_categories(carpets_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)
     void addCategoryToCarpet(int carpet_id, int category_id);
 }
