@@ -9,6 +9,9 @@ public interface CarpetRepository extends CrudRepository<Carpet, Integer> {
     @Query("select c from Carpet c where c.name = ?1")
     Carpet findByName(String name);
 
+    @Query("select c from Carpet c where c.id = ?1")
+    Carpet findId(int id);
+
     @Query("select c from Carpet c join c.categories cat where cat.name = ?1")
     Set<Carpet> findByFilter(String name);
 

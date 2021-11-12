@@ -19,7 +19,7 @@
                 </c:if>
 
                 <div class="tab">
-                    <button class="tablinks" onclick="openTab(event, 'Categories')"><b>Catégories</b></button>
+                    <button id="category" class="tablinks active" onclick="openTab(event, 'Categories')"><b>Catégories</b></button>
                     <button class="tablinks" onclick="openTab(event, 'Articles')"><b>Articles</b></button>
                 </div>
 
@@ -45,10 +45,10 @@
                                         <div class="table-data">${categories.name}</div>
                                         <div class="table-data">
                                             <a href="/admin/category/edit/${categories.id}">
-                                                <img alt="Edit" src="../../../../resources/static/images/outline_edit_black_24dp.png">
+                                                <img alt="Edit" src="/images/outline_edit_black_24dp.png">
                                             </a>
                                             <a href="/admin/category/delete/${categories.id}">
-                                                <img alt="Delete" src="../../../../resources/static/images/outline_delete_black_24dp.png">
+                                                <img alt="Delete" src="/images/outline_delete_black_24dp.png">
                                             </a>
 
                                         </div>
@@ -87,7 +87,14 @@
                                         <div class="table-data">${carpets.name}</div>
                                         <div class="table-data">${carpets.description}</div>
                                         <div class="table-data">${carpets.price}</div>
-                                        <div class="table-data"></div>
+                                        <div class="table-data">
+                                            <a href="/admin/carpet/edit/${carpets.id}">
+                                                <img alt="Edit" src="/images/outline_edit_black_24dp.png">
+                                            </a>
+                                            <a href="/admin/carpet/delete/${carpets.id}">
+                                                <img alt="Delete" src="/images/outline_delete_black_24dp.png">
+                                            </a>
+                                        </div>
                                     </div>
                                 </c:forEach>
                             </div>

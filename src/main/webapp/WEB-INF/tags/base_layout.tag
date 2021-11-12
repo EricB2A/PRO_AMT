@@ -102,6 +102,7 @@
 
     });
 
+    document.getElementById("category").click();
 
     function openTab(evt, tabName) {
         // Declare all variables
