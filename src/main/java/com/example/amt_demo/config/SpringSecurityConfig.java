@@ -60,8 +60,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/carpets/new", "/admin/**").hasRole("admin")
-                .antMatchers("/", "accueil", "/login*", "/images/**", "/css/**", "/js/**", "/carpets/*").permitAll()
+                .antMatchers("/carpets/new").hasRole("admin")
+                .antMatchers("/", "accueil", "/admin/**", "/login*", "/images/**", "/css/**", "/js/**", "/carpets/*").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login").usernameParameter("email")

@@ -23,10 +23,13 @@
                     <div class="container">
                         <div class="container bg-white">
                             <form name="addCategoryForm" action="/admin/addCategory/${article.get().id}" enctype="multipart/form-data"  method="POST" class="m-2">
+                                <input type="hidden"
+                                       name="${_csrf.parameterName}"
+                                       value="${_csrf.token}"/>
                                 <div>
                                     <c:forEach varStatus="idx" items="${categories}" var="categories">
                                         <div>
-                                            <input type="checkbox" id="scales" name="${categories.name}" >
+                                            <input type="checkbox" id="scales" name="categories" value="${categories.id}" >
                                             <label for="${categories.name}">${categories.name}</label>
                                         </div>
                                     </c:forEach>

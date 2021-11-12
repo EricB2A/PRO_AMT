@@ -50,14 +50,14 @@ public class CategoryController {
     }
 
     @PostMapping(path="/addCategory/{id}")
-    public String addCategoriesToCarpet(Set<Category> set, @PathVariable String id, ModelMap mp) {
+    public String addCategoriesToCarpet(@PathVariable String id, @RequestParam String categories, ModelMap mp) {
 
-        for(Category c : set) {
-            categoryRepository.addCategoryToCarpet(Integer.valueOf(id), c.getId());
+        for(String c : categories.split(",")) {
+            categoryRepository.addCategoryToCarpet(Integer.valueOf(id), Integer.valueOf(c));
         }
 
         mp.addAttribute("categories", categoryRepository.findAll());
-        mp.addAttribute("carpets", carpetRepository.findAll());
+       mp.addAttribute("carpets", carpetRepository.findAll());
         return "admin/admin";
     }
 
