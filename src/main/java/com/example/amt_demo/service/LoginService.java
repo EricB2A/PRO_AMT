@@ -2,6 +2,7 @@ package com.example.amt_demo.service;
 
 import com.example.amt_demo.utils.login.LoginAPIResponse;
 import com.example.amt_demo.utils.login.UserCredentials;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,7 +19,7 @@ public class LoginService {
     }
 
 
-    public LoginAPIResponse registerUser(UserCredentials credentials) {
+    public LoginAPIResponse registerUser(UserCredentials credentials) throws JSONException {
         JSONObject json = new JSONObject()
                 .put("password", credentials.getPassword())
                 .put("username", credentials.getUsername());
@@ -40,7 +41,7 @@ public class LoginService {
         return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue(), LoginAPIResponse.RequestType.REGISTER);
     }
 
-    public LoginAPIResponse login(UserCredentials credentials) {
+    public LoginAPIResponse login(UserCredentials credentials) throws JSONException {
         JSONObject json = new JSONObject()
                 .put("password", credentials.getPassword())
                 .put("username", credentials.getUsername());
