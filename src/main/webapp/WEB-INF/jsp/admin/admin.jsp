@@ -27,12 +27,6 @@
                 </div>
                 </c:if>
 
-                <c:if test="${not empty msg_article_edited && msg_article_edited}">
-                <div class="alert alert-success">
-                    L'article a bien été modifié
-                </div>
-                </c:if>
-
                 <c:if test="${not empty msg_article_added && msg_article_added}">
                 <div class="alert alert-success">
                     L'article a bien été ajouté

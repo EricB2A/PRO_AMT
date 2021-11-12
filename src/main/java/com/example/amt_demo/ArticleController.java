@@ -1,9 +1,6 @@
 package com.example.amt_demo;
 
-import com.example.amt_demo.model.Carpet;
-import com.example.amt_demo.model.CarpetPhoto;
-import com.example.amt_demo.model.CarpetRepository;
-import com.example.amt_demo.model.CategoryRepository;
+import com.example.amt_demo.model.*;
 import com.example.amt_demo.service.PhotoUploadService;
 import com.example.amt_demo.utils.FileUploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -35,6 +33,10 @@ public class ArticleController {
 
     @Autowired
     private CarpetRepository carpetRepository;
+
+    @Autowired
+    private CarpetPhotoRepository carpetPhotoRepository;
+
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -74,9 +76,31 @@ public class ArticleController {
                 String location = "/carpet"+carpet.getId()+"/";
                 String name = "carpet"+ i.getAndIncrement() +"."+ext;
                 photoStorageService.save(image, location, name);
-                carpet.getPhotos().add(new CarpetPhoto("/" + photoStorageService.getRoot() + location + name));
+                carpet.getPhotos().add(new CarpetPhoto(photoStorageService.getRoot() + location + name));
             }
         });
+    }
+
+    @GetMapping("{carpet_id}/photo/delete/{id}")
+    public RedirectView deleteCarpetPhoto(ModelMap mp, @PathVariable String carpet_id, @PathVariable String id, RedirectAttributes redir) {
+        Optional<Carpet> carpet = carpetRepository.findById(Integer.parseInt(carpet_id));
+        if(carpet.isPresent()) {
+            Carpet c = carpet.get();
+            String path = "";
+            for(CarpetPhoto cp : c.getPhotos()){
+                if(cp.getId() == Integer.parseInt(id)){
+                    path = cp.getPath();
+                    c.getPhotos().remove(cp);
+                    photoStorageService.delete(path);
+                    break;
+                }
+            }
+            carpetRepository.save(c);
+
+        }
+        RedirectView redirectView = new RedirectView("/admin/carpets/edit/"+carpet_id,true);
+        redir.addFlashAttribute("msg_photo_deleted",true);
+        return redirectView;
     }
 
     @PostMapping("/add/post")
@@ -105,7 +129,7 @@ public class ArticleController {
         carpetRepository.save(updated);
         this.uploadImages(updated, images);
         carpetRepository.save(updated);
-        RedirectView redirectView = new RedirectView("/admin/all",true);
+        RedirectView redirectView = new RedirectView("/admin/carpets/edit/"+updated.getId(),true);
         redir.addFlashAttribute("msg_article_edited",true);
         return redirectView;
     }

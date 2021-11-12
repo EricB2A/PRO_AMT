@@ -21,7 +21,7 @@ public class Carpet {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarpetPhoto> photos = new LinkedList<>();
 
     public Carpet() {

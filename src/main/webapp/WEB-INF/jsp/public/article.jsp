@@ -25,7 +25,7 @@
                                                     <div class="carousel-inner">
                                                         <c:forEach varStatus="idx" items="${carpet.get().getPhotos()}" var="photo">
                                                             <div class="carousel-item ${idx.first ? 'active' : ''}">
-                                                                <img class="d-block w-100" src="${photo.path}">
+                                                                <img class="d-block w-100" src="/${photo.path}">
                                                             </div>
                                                         </c:forEach>
                                                     </div>
