@@ -1,6 +1,7 @@
 package com.example.amt_demo.service;
 
-import com.example.amt_demo.model.UserCredentials;
+import com.example.amt_demo.utils.login.LoginAPIResponse;
+import com.example.amt_demo.utils.login.UserCredentials;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,7 +17,8 @@ public class LoginService {
         webclient = WebClient.create(url);
     }
 
-    public boolean registerUser(UserCredentials credentials) {
+
+    public LoginAPIResponse registerUser(UserCredentials credentials) {
         JSONObject json = new JSONObject()
                 .put("password", credentials.getPassword())
                 .put("username", credentials.getUsername());
@@ -26,6 +28,7 @@ public class LoginService {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(BodyInserters.fromValue(json.toString()))
                 .retrieve()
+                //Prevents error throwing
                 .onStatus(
                         status -> status.value() == 409 || status.value() == 422,
                         clientResponse -> Mono.empty()
@@ -34,11 +37,10 @@ public class LoginService {
                 .block();
 
         JSONObject responseBodyJSON = new JSONObject(response.getBody());
-        System.out.println(responseBodyJSON);
-        return response.getStatusCodeValue() == 201;
+        return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue());
     }
 
-    public boolean checkCredentials(UserCredentials credentials) {
+    public LoginAPIResponse login(UserCredentials credentials) {
         JSONObject json = new JSONObject()
                 .put("password", credentials.getPassword())
                 .put("username", credentials.getUsername());
@@ -58,7 +60,7 @@ public class LoginService {
 
         JSONObject responseBodyJSON = new JSONObject(response.getBody());
         System.out.println(responseBodyJSON);
-        return response.getStatusCodeValue() == 200;
+        return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue());
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.amt_demo.model;
+package com.example.amt_demo.utils.login;
 
 public class UserCredentials {
     private String username;

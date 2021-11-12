@@ -1,6 +1,6 @@
 package com.example.amt_demo;
 
-import com.example.amt_demo.model.UserCredentials;
+import com.example.amt_demo.utils.login.UserCredentials;
 import com.example.amt_demo.service.LoginService;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -35,7 +35,7 @@ public class LoginServiceTests {
                         .put("role", "admin"));
         mockLogin.enqueue(new MockResponse()
                 .setBody(json.toString()));
-        Assertions.assertTrue(loginService.checkCredentials(credentials));
+        Assertions.assertEquals(loginService.login(credentials).getStatusCode(), 200);
         RecordedRequest recordedRequest = mockLogin.takeRequest();
         Assertions.assertEquals("POST", recordedRequest.getMethod());
         Assertions.assertEquals("/auth/login", recordedRequest.getPath());
@@ -49,7 +49,7 @@ public class LoginServiceTests {
         mockLogin.enqueue(new MockResponse()
                 .setResponseCode(403)
                 .setBody(error.toString()));
-        Assertions.assertFalse(loginService.checkCredentials(credentials));
+        Assertions.assertEquals(loginService.login(credentials).getStatusCode(), 403);
         RecordedRequest recordedRequest = mockLogin.takeRequest();
         Assertions.assertEquals("POST", recordedRequest.getMethod());
         Assertions.assertEquals("/auth/login", recordedRequest.getPath());
@@ -64,7 +64,7 @@ public class LoginServiceTests {
         mockLogin.enqueue(new MockResponse()
                 .setResponseCode(201)
                 .setBody(credentialsJson.toString()));
-        Assertions.assertTrue(loginService.registerUser(credentials));
+        Assertions.assertEquals(loginService.registerUser(credentials).getStatusCode(), 201);
         RecordedRequest recordedRequest = mockLogin.takeRequest();
         Assertions.assertEquals("POST", recordedRequest.getMethod());
         Assertions.assertEquals("/accounts/register", recordedRequest.getPath());
@@ -78,7 +78,7 @@ public class LoginServiceTests {
         mockLogin.enqueue(new MockResponse()
                 .setResponseCode(409)
                 .setBody(credentialsJson.toString()));
-        Assertions.assertFalse(loginService.registerUser(credentials));
+        Assertions.assertEquals(loginService.registerUser(credentials).getStatusCode(), 409);
         RecordedRequest recordedRequest = mockLogin.takeRequest();
         Assertions.assertEquals("POST", recordedRequest.getMethod());
         Assertions.assertEquals("/accounts/register", recordedRequest.getPath());
@@ -92,7 +92,7 @@ public class LoginServiceTests {
         mockLogin.enqueue(new MockResponse()
                 .setResponseCode(422)
                 .setBody(credentialsJson.toString()));
-        Assertions.assertFalse(loginService.registerUser(credentials));
+        Assertions.assertEquals(loginService.registerUser(credentials).getStatusCode(), 422);
         RecordedRequest recordedRequest = mockLogin.takeRequest();
         Assertions.assertEquals("POST", recordedRequest.getMethod());
         Assertions.assertEquals("/accounts/register", recordedRequest.getPath());
