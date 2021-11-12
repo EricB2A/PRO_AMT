@@ -56,7 +56,7 @@ public class CarpetControllerAPI {
                     carpet.setName(newCarpet.getName());
                     carpet.setDescription(newCarpet.getDescription());
                     carpet.setPrice(newCarpet.getPrice());
-                    carpet.setImagePath(newCarpet.getImagePath());
+                  //  carpet.setImagePath(newCarpet.getImagePath());
                     carpetRepository.save(carpet);
                     return new ResponseEntity<>(carpet, HttpStatus.OK);
                 })

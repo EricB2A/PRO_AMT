@@ -9,30 +9,45 @@
     <jsp:attribute name="withbanner">
         false
     </jsp:attribute>
+
     <jsp:body>
+        <c:if test="${not empty article}">
+            <c:set var="carpet" value="${article.get()}" />
+        </c:if>
         <div class="vh-100">
             <div class="gallery_section">
                 <div class="container">
-                    <div class="collection_text">Nouveau "tapis" 😉 </div>
-                    <div class="about_main layout_padding">
+                    <div class="collection_text">
+                        <c:if test="${not empty adding && adding}">
+                            Ajouter un nouveau tapis
+                        </c:if>
+                        <c:if test="${not empty editing && editing}">
+                            Modifier le tapis
+                        </c:if>
+                    </div>
+                    <div class="about_main">
                             <div class="container">
+                                <a class="text-white" style="font-size: 18px;" href="/admin/all">< Revenir</a>
                                 <div class="racing_shoes ">
-                                    
-                                    <form name="newCarpetForm" action="/carpets" enctype="multipart/form-data"  method="POST" class="m-2"> <!-- TODO: changer lien hardcodé, mais trop fatigué pour le faire -->
+                                    <c:if test="${not empty msg_article_edited && msg_article_edited}">
+                                        Le tapis a bien été modifié
+                                    </c:if>
+
+                                    <form name="newCarpetForm" action="${post_url}" enctype="multipart/form-data"  method="POST" class="m-2"> <!-- TODO: changer lien hardcodé, mais trop fatigué pour le faire -->
                                         <input type="hidden"
                                                name="${_csrf.parameterName}"
                                                value="${_csrf.token}"/>
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Nom</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" name="name" />
+                                                <input class="form-control" type="text" name="name" value="<c:if test="${not empty carpet}">${carpet.name}</c:if>" />
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Description</label>
                                             <div class="col-sm-10">
-                                                <textarea class="form-control" name="description"></textarea>
+                                                <textarea class="form-control" name="description"><c:if test="${not empty carpet}">${carpet.description}</c:if></textarea>
                                                 <small class="form-text text-muted">Décrivez en quelques phrases votre produit.</small>
                                             </div>
                                         </div>
@@ -40,14 +55,14 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Prix</label>
                                             <div class="col-sm-10">
-                                                <input type="number" name="price" />
+                                                <input type="number" name="price" value="<c:if test="${not empty carpet}">${carpet.price}</c:if>" />
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">Prix</label>
+                                            <label class="col-sm-2 col-form-label">Photos</label>
                                             <div class="col-sm-10">
-                                                <input type="file" name="image" accept="image/png, image/jpeg" />
+                                                <input type="file" name="images" accept="image/png, image/jpeg" multiple />
                                             </div>
                                         </div>
 

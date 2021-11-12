@@ -15,7 +15,7 @@
 
             <div class="container">
                 <sec:authorize access="hasRole('admin')">
-                    <a class="btn add_bt" href="/carpets/new">Nouvel article</a>
+                    <a class="btn add_bt" href="/admin/carpets/add">Nouvel article</a>
                 </sec:authorize>
                 <h2>
                     Boutique

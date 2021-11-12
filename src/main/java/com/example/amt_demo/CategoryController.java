@@ -1,6 +1,5 @@
 package com.example.amt_demo;
 
-import com.example.amt_demo.model.Carpet;
 import com.example.amt_demo.model.CarpetRepository;
 import com.example.amt_demo.model.Category;
 import com.example.amt_demo.model.CategoryRepository;
@@ -10,7 +9,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RequestMapping(path = "/admin")
 @Controller
@@ -25,7 +23,7 @@ public class CategoryController {
     @GetMapping(path="/all", produces = {"application/xml"})
     public String getAllCategories(ModelMap mp) {
         mp.addAttribute("categories", categoryRepository.findAll());
-        mp.addAttribute("carpets", carpetRepository.findAll());
+        mp.addAttribute("articles", carpetRepository.findAll());
         return "admin/admin";
     }
 
@@ -45,7 +43,7 @@ public class CategoryController {
         }
 
         mp.addAttribute("categories", categoryRepository.findAll());
-        mp.addAttribute("carpets", carpetRepository.findAll());
+        mp.addAttribute("articles", carpetRepository.findAll());
         return "admin/admin";
     }
 
@@ -57,7 +55,7 @@ public class CategoryController {
         }
 
         mp.addAttribute("categories", categoryRepository.findAll());
-        mp.addAttribute("carpets", carpetRepository.findAll());
+        mp.addAttribute("articles", carpetRepository.findAll());
         return "admin/admin";
     }
 
@@ -67,12 +65,6 @@ public class CategoryController {
         return "admin/category";
     }
 
-    @GetMapping("/carpet/edit/{id}")
-    public String editArticle(ModelMap mp, @PathVariable String id) {
-        mp.addAttribute("article", carpetRepository.findById(Integer.valueOf(id)));
-        mp.addAttribute("categories", categoryRepository.findCategoryNotBelongingToCarpet(Integer.valueOf(id)));
-        return "admin/article";
-    }
 
     @GetMapping("/category/delete/{id}")
     public String deleteCategory(ModelMap mp, @PathVariable String id) {
@@ -87,21 +79,11 @@ public class CategoryController {
         }
 
         mp.addAttribute("categories", categoryRepository.findAll());
-        mp.addAttribute("carpets", carpetRepository.findAll());
+        mp.addAttribute("articles", carpetRepository.findAll());
 
         return "admin/admin";
     }
 
 
-    @GetMapping("/carpet/delete/{id}")
-    public String deleteCarpet(ModelMap mp, @PathVariable String id) {
-        Carpet carpet = carpetRepository.findId(Integer.valueOf(id));
 
-        carpetRepository.delete(carpet);
-
-        mp.addAttribute("categories", categoryRepository.findAll());
-        mp.addAttribute("carpets", carpetRepository.findAll());
-
-        return "admin/admin";
-    }
 }
