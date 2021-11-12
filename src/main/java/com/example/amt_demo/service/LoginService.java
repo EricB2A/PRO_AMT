@@ -37,7 +37,7 @@ public class LoginService {
                 .block();
 
         JSONObject responseBodyJSON = new JSONObject(response.getBody());
-        return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue());
+        return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue(), LoginAPIResponse.RequestType.REGISTER);
     }
 
     public LoginAPIResponse login(UserCredentials credentials) {
@@ -60,7 +60,7 @@ public class LoginService {
 
         JSONObject responseBodyJSON = new JSONObject(response.getBody());
         System.out.println(responseBodyJSON);
-        return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue());
+        return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue(), LoginAPIResponse.RequestType.LOGIN);
     }
 
 
