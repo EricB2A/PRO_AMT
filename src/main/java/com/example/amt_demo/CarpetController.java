@@ -67,6 +67,7 @@ public class CarpetController {
         return "articleForm";
     }
 
+    //TODO: supprime-moi si tu oses.
     /*
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable int id, @RequestBody Carpet newCarpet) {
