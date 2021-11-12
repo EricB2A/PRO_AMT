@@ -17,6 +17,9 @@ public class Carpet {
     private Double price;
     private String imagePath;
 
+    @OneToMany(mappedBy = "carpet")
+    Set<CartInfo> cartInfos;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories = new HashSet<>();
 

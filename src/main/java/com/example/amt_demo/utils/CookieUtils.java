@@ -30,6 +30,9 @@ public class CookieUtils {
 
             List<String> articlesAsString = getArticlesFromCartCookie(request, response);
 
+            /*
+            //TODO: explication
+             */
             int f = -1;
             for (int i = 0; i < articlesAsString.size(); i++) {
 
