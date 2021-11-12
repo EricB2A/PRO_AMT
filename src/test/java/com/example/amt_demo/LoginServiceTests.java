@@ -5,6 +5,7 @@ import com.example.amt_demo.service.LoginService;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 
@@ -25,7 +26,7 @@ public class LoginServiceTests {
     }
 
     @Test
-    void correctCredentials() throws InterruptedException {
+    void correctCredentials() throws InterruptedException, JSONException {
         UserCredentials credentials = new UserCredentials("username", "password");
         JSONObject json = new JSONObject();
         json.put("token", "00000000")
@@ -42,7 +43,7 @@ public class LoginServiceTests {
     }
 
     @Test
-    void wrongCredentials() throws InterruptedException {
+    void wrongCredentials() throws InterruptedException, JSONException {
         UserCredentials credentials = new UserCredentials("username", "password");
         JSONObject error = new JSONObject()
                 .put("error", "testError");
@@ -56,7 +57,7 @@ public class LoginServiceTests {
     }
 
     @Test
-    public void validRegister() throws InterruptedException {
+    public void validRegister() throws InterruptedException, JSONException {
         UserCredentials credentials = new UserCredentials("username","password");
         JSONObject credentialsJson = new JSONObject()
                 .put("username", "username")
@@ -71,7 +72,7 @@ public class LoginServiceTests {
     }
 
     @Test
-    public void invalidRegister409() throws InterruptedException {
+    public void invalidRegister409() throws InterruptedException, JSONException {
         UserCredentials credentials = new UserCredentials("username","password");
         JSONObject credentialsJson = new JSONObject()
                 .put("error", "testError");
@@ -85,7 +86,7 @@ public class LoginServiceTests {
     }
 
     @Test
-    public void invalidRegister422() throws InterruptedException {
+    public void invalidRegister422() throws InterruptedException, JSONException {
         UserCredentials credentials = new UserCredentials("username","password");
         JSONObject credentialsJson = new JSONObject()
                 .put("error", "testError");
