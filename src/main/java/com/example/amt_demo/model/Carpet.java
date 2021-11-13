@@ -17,6 +17,9 @@ public class Carpet {
     private Double price;
     private String imagePath;
 
+    @OneToMany(mappedBy = "carpet")
+    Set<CartInfo> cartInfos;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories = new HashSet<>();
 
@@ -95,7 +98,13 @@ public class Carpet {
     }
 
     public String getFirstPhotoPath(){
-        return photos.stream().findFirst().get().getPath();
+
+        if(photos.isEmpty()){
+            //TODO: ajouter constante
+            return "/images/placeholder-image.png";
+        }else {
+             return photos.stream().findFirst().get().getPath();
+        }
     }
 
 

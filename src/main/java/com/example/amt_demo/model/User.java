@@ -19,10 +19,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     @Column(nullable = false, unique = true)
     private String email;
+
     @Column(nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    Set<CartInfo> cartInfos;
 
     public String getUsername() {
         return username;
