@@ -1,4 +1,4 @@
-# Silky Road 🐪
+# Silky Road 🐪 🔥
 ## Silky Road 
 Dans le cadre de notre cours d'AMT, nous réalisons un **site d'e-commerce** de vente de tapis (😉).
 Avant de contribuer, nous vous recommandons de commencer par lire le [**Wiki (si vous êtes assistant, cliquez ici)**](../../wiki) qui vous donnera une bonne vision du produit, de comment contribuer ainsi que des détails technologiques et techniques utiles à une bonne collaboration 🔥
