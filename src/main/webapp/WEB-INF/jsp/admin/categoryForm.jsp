@@ -18,7 +18,7 @@
             <div class="container">
               <div class="racing_shoes ">
 
-                <form name="newCategoryForm" action="/admin/add" enctype="multipart/form-data"  method="POST" class="m-2"> <!-- TODO: changer lien hardcodé, mais trop fatigué pour le faire -->
+                <form name="newCategoryForm" action="/admin/add/post" enctype="multipart/form-data"  method="POST" class="m-2"> <!-- TODO: changer lien hardcodé, mais trop fatigué pour le faire -->
                   <input type="hidden"
                          name="${_csrf.parameterName}"
                          value="${_csrf.token}"/>

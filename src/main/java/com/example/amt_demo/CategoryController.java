@@ -20,19 +20,19 @@ public class CategoryController {
     @Autowired
     private CarpetRepository carpetRepository;
 
-    @GetMapping(path="/all", produces = {"application/xml"})
+    @GetMapping(path="", produces = {"application/xml"})
     public String getAllCategories(ModelMap mp) {
         mp.addAttribute("categories", categoryRepository.findAll());
         mp.addAttribute("articles", carpetRepository.findAll());
         return "admin/admin";
     }
 
-    @GetMapping("/category/new")
+    @GetMapping("/category/add")
     public String getCategoryForm(ModelMap mp) {
         return "admin/categoryForm";
     }
 
-    @PostMapping(path="/add")
+    @PostMapping(path="/category/add/post")
     public String addCategory(Category newCategory, ModelMap mp) {
         Category category = categoryRepository.findByName(newCategory.getName());
 
@@ -47,7 +47,7 @@ public class CategoryController {
         return "admin/admin";
     }
 
-    @PostMapping(path="/addCategory/{id}")
+    @PostMapping(path="/category/add/{id}")
     public String addCategoriesToCarpet(@PathVariable String id, @RequestParam String categories, ModelMap mp) {
 
         for(String c : categories.split(",")) {

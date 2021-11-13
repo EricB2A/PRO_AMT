@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface CategoryRepository extends CrudRepository<Category, Integer> {
@@ -27,6 +28,13 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
             "INNER JOIN category on carpet_categories.categories_id = category.id\n" +
             "WHERE carpet.id = ?1)", nativeQuery = true)
     Set<Category> findCategoryNotBelongingToCarpet(int id);
+
+    @Query(value = "SELECT category.id, category.name, true as checked FROM category LEFT OUTER JOIN carpet_categories ON category.id = carpet_categories.categories_id\n" +
+            "WHERE carpet_categories.carpets_id = ?1\n" +
+            "UNION \n" +
+            "SELECT category.id, category.name, false as checked FROM category LEFT OUTER JOIN carpet_categories ON category.id = carpet_categories.categories_id\n" +
+            "WHERE carpet_categories.carpets_id != ?1 OR carpet_categories.carpets_id IS NULL", nativeQuery = true)
+    Set<Category> getCategoriesByCarpet(int id);
 
     @Modifying
     @Transactional

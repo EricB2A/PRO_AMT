@@ -43,7 +43,7 @@
                     <h3>Catégories</h3>
                     <div style="display: table-row">
                         <div style="width: 600px; display: table-cell;">Vous pouvez ajouter, éditer ou supprimer des catégories</div>
-                        <div style="display: table-cell;"> <a href="/admin/category/new">+ Ajouter une catégorie</a> </div>
+                        <div style="display: table-cell;"> <a href="/admin/category/add">+ Ajouter une catégorie</a> </div>
                     </div>
 
                     <c:if test="${not empty categories}">

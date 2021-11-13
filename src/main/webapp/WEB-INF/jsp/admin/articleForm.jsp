@@ -11,12 +11,37 @@
     </jsp:attribute>
 
     <jsp:body>
+        <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", function(event) {
+                let categories = document.querySelectorAll(".category-cb");
+                for(let category of categories){
+                    category.addEventListener("click", (event) => {
+
+                        let checked = event.target.classList.contains('bg-primary');
+                        let id = event.target.getAttribute('id');
+                        let checkbox = document.querySelector("input[type='checkbox']#"+id);
+
+                        if(checked){
+                            checkbox.removeAttribute('checked');
+                            event.target.classList.remove('bg-primary');
+                            event.target.classList.add('bg-secondary');
+                        }else{
+                            checkbox.setAttribute('checked', 'checked');
+                            event.target.classList.add('bg-primary');
+                            event.target.classList.remove('bg-secondary');
+                        }
+                    });
+                }
+            });
+
+        </script>
         <c:if test="${not empty article}">
             <c:set var="carpet" value="${article.get()}" />
         </c:if>
         <div class="vh-100">
             <div class="gallery_section">
                 <div class="container">
+
                     <div class="collection_text">
                         <c:if test="${not empty adding && adding}">
                             Ajouter un nouveau tapis
@@ -27,7 +52,7 @@
                     </div>
                     <div class="about_main">
                             <div class="container">
-                                <a class="text-white" style="font-size: 18px;" href="/admin/all">< Revenir</a>
+                                <a class="text-white" style="font-size: 18px;" href="/admin">< Revenir</a>
                                 <div class="card p-4">
                                     <c:if test="${not empty msg_photo_deleted && msg_photo_deleted}">
                                         <div class="alert alert-success">
@@ -45,6 +70,18 @@
                                         <input type="hidden"
                                                name="${_csrf.parameterName}"
                                                value="${_csrf.token}"/>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Catégories</label>
+                                            <div class="col-sm-10">
+                                                <c:forEach varStatus="idx" items="${categories}" var="category">
+                                                    <div class="d-inline-flex">
+                                                        <span class="category-cb badge p-2 rounded-pill ${ category.checked == "false" ? 'bg-secondary' : 'bg-primary' } text-white" id="category_${category.id}">${category.name}</span>
+                                                        <input class="invisible" type="checkbox" id="category_${category.id}" name="categories" value="${category.id}" <c:if test="${category.checked != false}">checked</c:if> />
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Nom</label>
                                             <div class="col-sm-10">
@@ -66,6 +103,8 @@
                                                 <input type="number" name="price" value="<c:if test="${not empty carpet}">${carpet.price}</c:if>" />
                                             </div>
                                         </div>
+
+
                                         <c:if test="${not empty carpet.photos}">
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Photos</label>

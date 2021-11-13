@@ -19,10 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -33,10 +30,6 @@ public class ArticleController {
 
     @Autowired
     private CarpetRepository carpetRepository;
-
-    @Autowired
-    private CarpetPhotoRepository carpetPhotoRepository;
-
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -62,23 +55,10 @@ public class ArticleController {
 
     @GetMapping("/add")
     public String addCarpetForm(ModelMap mp) {
+
         mp.addAttribute("adding", true);
         mp.addAttribute("post_url", "/admin/carpets/add/post");
         return "admin/articleForm";
-    }
-
-    private void uploadImages(Carpet carpet, MultipartFile[] images){
-        AtomicInteger i = new AtomicInteger(1);
-        Arrays.asList(images).stream().forEach(image -> {
-            String filename = image.getOriginalFilename();
-            if(filename.length() > 4){
-                String ext = filename.substring(filename.lastIndexOf(".") + 1);
-                String location = "/carpet"+carpet.getId()+"/";
-                String name = "carpet"+ i.getAndIncrement() +"."+ext;
-                photoStorageService.save(image, location, name);
-                carpet.getPhotos().add(new CarpetPhoto(photoStorageService.getRoot() + location + name));
-            }
-        });
     }
 
     @GetMapping("{carpet_id}/photo/delete/{id}")
@@ -120,15 +100,20 @@ public class ArticleController {
         mp.addAttribute("editing", true);
         mp.addAttribute("post_url", "/admin/carpets/edit/post");
         mp.addAttribute("article", carpetRepository.findById(Integer.valueOf(id)));
-        mp.addAttribute("categories", categoryRepository.findCategoryNotBelongingToCarpet(Integer.valueOf(id)));
+        mp.addAttribute("categories", categoryRepository.getCategoriesByCarpet(Integer.valueOf(id)));
         return "admin/articleForm";
     }
 
     @PostMapping("/edit/post")
-    public RedirectView editArticle(Carpet updated, @RequestParam("images") MultipartFile[] images, RedirectAttributes redir) {
+    public RedirectView editArticle(Carpet updated, @RequestParam(name = "categories", required = false) String categories, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
         carpetRepository.save(updated);
         this.uploadImages(updated, images);
         carpetRepository.save(updated);
+        if(categories != null) {
+            for (String c : categories.split(",")) {
+                categoryRepository.addCategoryToCarpet(Integer.valueOf(updated.getId()), Integer.valueOf(c));
+            }
+        }
         RedirectView redirectView = new RedirectView("/admin/carpets/edit/"+updated.getId(),true);
         redir.addFlashAttribute("msg_article_edited",true);
         return redirectView;
@@ -145,5 +130,20 @@ public class ArticleController {
         mp.addAttribute("msg_article_deleted", true);
         return "admin/admin";
     }
+
+    private void uploadImages(Carpet carpet, MultipartFile[] images){
+        AtomicInteger i = new AtomicInteger(1);
+        Arrays.asList(images).stream().forEach(image -> {
+            String filename = image.getOriginalFilename();
+            if(filename.length() > 4){
+                String ext = filename.substring(filename.lastIndexOf(".") + 1);
+                String location = "/carpet"+carpet.getId()+"/";
+                String name = "carpet"+ i.getAndIncrement() +"."+ext;
+                photoStorageService.save(image, location, name);
+                carpet.getPhotos().add(new CarpetPhoto(photoStorageService.getRoot() + location + name));
+            }
+        });
+    }
+
 
 }
