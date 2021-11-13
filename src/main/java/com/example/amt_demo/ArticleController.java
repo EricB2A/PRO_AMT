@@ -55,7 +55,7 @@ public class ArticleController {
 
     @GetMapping("/add")
     public String addCarpetForm(ModelMap mp) {
-
+        mp.addAttribute("categories", categoryRepository.getCategoriesByCarpet(-1));
         mp.addAttribute("adding", true);
         mp.addAttribute("post_url", "/admin/carpets/add/post");
         return "admin/articleForm";
@@ -84,13 +84,17 @@ public class ArticleController {
     }
 
     @PostMapping("/add/post")
-    public RedirectView addCarpet(Carpet newCarpet, @RequestParam("images") MultipartFile[] images, RedirectAttributes redir) {
+    public RedirectView addCarpet(Carpet newCarpet, @RequestParam(name = "categories", required = false) String categories, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
         // TODO : Image upload
         carpetRepository.save(newCarpet);
         this.uploadImages(newCarpet, images);
         carpetRepository.save(newCarpet);
-
-        RedirectView redirectView = new RedirectView("/admin/all",true);
+        if(categories != null) {
+            for (String c : categories.split(",")) {
+                categoryRepository.addCategoryToCarpet(Integer.valueOf(newCarpet.getId()), Integer.valueOf(c));
+            }
+        }
+        RedirectView redirectView = new RedirectView("/admin",true);
         redir.addFlashAttribute("msg_article_added",true);
         return redirectView;
     }
