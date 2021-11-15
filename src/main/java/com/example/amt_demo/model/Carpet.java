@@ -3,6 +3,8 @@ package com.example.amt_demo.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -15,7 +17,6 @@ public class Carpet {
     private String name;
     private String description;
     private Double price;
-    private String imagePath;
 
     @OneToMany(mappedBy = "carpet")
     Set<CartInfo> cartInfos;
@@ -23,21 +24,16 @@ public class Carpet {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<CarpetPhoto> photos = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CarpetPhoto> photos = new LinkedList<>();
 
     public Carpet() {
     }
 
     public Carpet(String name, String description, Double price) {
-       this(name, description, price, "");
-    }
-
-    public Carpet(String name, String description, Double price, String imagePath) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.imagePath = imagePath;
     }
 
     public Double getPrice() {
@@ -72,24 +68,8 @@ public class Carpet {
         this.description = description;
     }
 
-    @Transient
-    public String getPhotosImagePath() {
-        if (imagePath == null || id == null){
-            return null;
-        }
 
-        return "/carpet-photos/" + id + "/" + imagePath;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imageName) {
-        this.imagePath = imageName;
-    }
-
-    public Set<CarpetPhoto> getPhotos() {
+    public List<CarpetPhoto> getPhotos() {
         return photos;
     }
 
@@ -99,13 +79,11 @@ public class Carpet {
 
     public String getFirstPhotoPath(){
 
-        if(photos.isEmpty()){
-            //TODO: ajouter constante
-            return "/images/placeholder-image.png";
-        }else {
-             return photos.stream().findFirst().get().getPath();
+        String path = "/carpet-photos/placeholder-image.png";
+        if(!photos.isEmpty()){
+            path = photos.get(0).getPath();
         }
+        return path;
     }
-
 
 }

@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class CarpetPhoto {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    private Integer id;
     private String path;
 
     public CarpetPhoto() {
@@ -17,7 +17,7 @@ public class CarpetPhoto {
         this.path = path;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -25,7 +25,7 @@ public class CarpetPhoto {
         return path;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

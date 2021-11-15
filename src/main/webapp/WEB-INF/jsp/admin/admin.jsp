@@ -12,9 +12,29 @@
     <jsp:body>
 
         <div class="layout_padding gallery_section">
+
             <div class="container bg-white">
+
+                <c:if test="${not empty error}">
+                    <div class="alert alert-danger">
+                    ${error}
+                    </div>
+                </c:if>
+
+                <c:if test="${not empty msg_article_deleted}">
+                <div class="alert alert-success">
+                    L'article a bien été supprimé
+                </div>
+                </c:if>
+
+                <c:if test="${not empty msg_article_added && msg_article_added}">
+                <div class="alert alert-success">
+                    L'article a bien été ajouté
+                </div>
+                </c:if>
+
                 <div class="tab">
-                    <button class="tablinks" onclick="openTab(event, 'Categories')"><b>Catégories</b></button>
+                    <button id="category" class="tablinks active" onclick="openTab(event, 'Categories')"><b>Catégories</b></button>
                     <button class="tablinks" onclick="openTab(event, 'Articles')"><b>Articles</b></button>
                 </div>
 
@@ -23,9 +43,8 @@
                     <h3>Catégories</h3>
                     <div style="display: table-row">
                         <div style="width: 600px; display: table-cell;">Vous pouvez ajouter, éditer ou supprimer des catégories</div>
-                        <div style="display: table-cell;"> <a href="/admin/new">+ Ajouter une catégorie</a> </div>
+                        <div style="display: table-cell;"> <a href="/admin/category/add">+ Ajouter une catégorie</a> </div>
                     </div>
-
 
                     <c:if test="${not empty categories}">
 
@@ -39,7 +58,15 @@
                                 <c:forEach varStatus="idx" items="${categories}" var="categories">
                                     <div class="table-row">
                                         <div class="table-data">${categories.name}</div>
-                                        <div class="table-data"></div>
+                                        <div class="table-data">
+                                            <a href="/admin/category/edit/${categories.id}">
+                                                <img alt="Edit" src="/images/outline_edit_black_24dp.png">
+                                            </a>
+                                            <a href="/admin/category/delete/${categories.id}">
+                                                <img alt="Delete" src="/images/outline_delete_black_24dp.png">
+                                            </a>
+
+                                        </div>
                                     </div>
                                 </c:forEach>
                             </div>
@@ -54,13 +81,13 @@
                 <div id="Articles" class="tabcontent">
                     <h3>Articles</h3>
                     <div style="width: 600px; display: table-cell;">Vous pouvez ajouter, éditer ou supprimer des articles</div>
-                    <div style="display: table-cell;"> <a href="/carpets/new">+ Ajouter un article</a> </div>
+                    <div style="display: table-cell;"> <a href="${pageContext.request.contextPath}/admin/carpets/add">+ Ajouter un article</a> </div>
 
-                    <c:if test="${empty carpets}">
+                    <c:if test="${empty articles}">
                         <p>Aucun article disponible</p>
                     </c:if>
 
-                    <c:if test="${not empty carpets}">
+                    <c:if test="${not empty articles}">
                         <div class="table">
                             <div class="table-header">
                                 <div class="header__item"><a id="name" class="filter__link">Nom de l'article</a></div>
@@ -70,12 +97,19 @@
                             </div>
                             <div class="table-content">
 
-                                <c:forEach varStatus="idx" items="${carpets}" var="carpets">
+                                <c:forEach varStatus="idx" items="${articles}" var="carpets">
                                     <div class="table-row">
                                         <div class="table-data">${carpets.name}</div>
                                         <div class="table-data">${carpets.description}</div>
                                         <div class="table-data">${carpets.price}</div>
-                                        <div class="table-data"></div>
+                                        <div class="table-data">
+                                            <a href="/admin/carpets/edit/${carpets.id}">
+                                                <img alt="Edit" src="/images/outline_edit_black_24dp.png">
+                                            </a>
+                                            <a href="/admin/carpets/delete/${carpets.id}">
+                                                <img alt="Delete" src="/images/outline_delete_black_24dp.png">
+                                            </a>
+                                        </div>
                                     </div>
                                 </c:forEach>
                             </div>
