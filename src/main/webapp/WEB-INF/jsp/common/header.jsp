@@ -17,15 +17,14 @@
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <a class="nav-item nav-link" href="/accueil">Accueil</a>
-                            <a class="nav-item nav-link" href="collection.html">Epices</a>
-                            <a class="nav-item nav-link" href="shoes.html">Tapis</a>
+                            <a class="nav-item nav-link" href="/catalog">Tous les Articles</a>
 
 
                             <sec:authorize access="isAuthenticated()">
                                 <form action="/logout" method=post id="logout-form">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                      <%--Afin de ne pas s'embeter avec le css, utilisation d'un lien pour valider le formulaire...
-                                     Formulaire nécessaire car CSRF pas/mal géré par l'implémenation de base fourni par spring security (pour le logout).
+                                     Formulaire nécessaire car CSRF pas/mal     géré par l'implémenation de base fourni par spring security (pour le logout).
                                      Il faut donc envoyer le formulaire soit même avec le token CRSF--%>
                                     <a class="nav-item nav-link clickable" onclick="document.getElementById('logout-form').submit()" >Déconnexion de <sec:authentication property="principal.username" /></a>
                                 </form>
@@ -36,7 +35,7 @@
                             </sec:authorize>
 
                             <a class="nav-item nav-link last" href="#"><img src="/images/search_icon.png"></a>
-                            <a class="nav-item nav-link last" href="contact.html"><img src="/images/shop_icon.png"></a>
+                            <a class="nav-item nav-link last" href="/cart"><img src="/images/shop_icon.png"></a>
                         </div>
                     </div>
                 </nav>

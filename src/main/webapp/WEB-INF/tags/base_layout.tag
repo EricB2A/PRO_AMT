@@ -47,15 +47,15 @@
 <body class="main-layout">
 <!-- header section start -->
 
-<jsp:include page="../jsp/common/header.jsp"  />
+<jsp:include page="/WEB-INF/jsp/common/header.jsp"  />
 
 <c:if test="${withbanner.equals(\"true\")}" >
-    <jsp:include page="../jsp/common/banner.jsp" />
+    <jsp:include page="/WEB-INF/jsp/common/banner.jsp" />
 </c:if>
 
 <jsp:doBody/>
 
-<jsp:include page="../jsp/common/footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/common/footer.jsp" />
 
 <!-- Javascript files-->
 <script src="/js/jquery.min.js"></script>
@@ -102,8 +102,32 @@
 
     });
 
+
+    function openTab(evt, tabName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+
+
     // Non à jQuery.
-    function deleteArticle(tokenName, csrfToken){
+    function deleteArticle(tokenName, csrfToken) {
         if (confirm("Supprimer ?")){
 
             const headers = new Headers({
@@ -121,6 +145,31 @@
                 });
         }
     }
+
+    function addArticleToBasket(articleID, quantity,  tokenName, csrfToken) {
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        });
+
+     
+        if(quantity <= 0){
+            alert("Quantité invalide");
+            return;
+        }
+
+        fetch(window.location.origin+"/cart/" + articleID, { method: 'POST', headers, body: JSON.stringify({quantity: quantity}) })
+            .then((res)=>{
+                if(res.ok){
+                    window.location.href = window.location.origin + "/carpets/" + articleID
+                }else{
+                    //TODO: Rediriger je ne sais pas où.
+                }
+            });
+
+
+    }
+
 </script>
 </body>
 </html>

@@ -30,7 +30,9 @@
                                 <div class="col-md-4">
                                     <div class="number_text"><strong>CHF <span style="color: #0a0506">${article.get().price}</span></strong>
                                     </div>
-                                    <button class="seemore">Ajout au panier</button>
+
+                                    <input id="cartQuantity" type="number" value="1">
+                                    <button class="seemore" onclick="addArticleToBasket('${article.get().id}', document.getElementById('cartQuantity').value, '${_csrf.parameterName}', '${_csrf.token}')">Ajout au panier</button>
                                   
                                         <button class="seemore_bt" onclick="deleteArticle('${_csrf.parameterName}', '${_csrf.token}')">Supprimer</button>
                                 </div>

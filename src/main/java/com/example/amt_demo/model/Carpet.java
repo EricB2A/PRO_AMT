@@ -1,11 +1,9 @@
 package com.example.amt_demo.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -18,6 +16,12 @@ public class Carpet {
     private String description;
     private Double price;
     private String imagePath;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Category> categories = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<CarpetPhoto> photos = new HashSet<>();
 
     public Carpet() {
     }
@@ -81,5 +85,18 @@ public class Carpet {
     public void setImagePath(String imageName) {
         this.imagePath = imageName;
     }
+
+    public Set<CarpetPhoto> getPhotos() {
+        return photos;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public String getFirstPhotoPath(){
+        return photos.stream().findFirst().get().getPath();
+    }
+
 
 }
