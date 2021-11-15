@@ -75,7 +75,7 @@ public class Carpet {
     }
 
     public String getFirstPhotoPath(){
-        String path = "/carpet-photos/placeholder-image.png";
+        String path = "carpet-photos/placeholder-image.png";
         if(!photos.isEmpty()){
             path = photos.get(0).getPath();
         }

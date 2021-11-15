@@ -41,9 +41,9 @@
                 <!-- Tab content -->
                 <div id="Categories" class="tabcontent">
                     <h3>Catégories</h3>
-                    <div style="display: table-row">
-                        <div style="width: 600px; display: table-cell;">Vous pouvez ajouter, éditer ou supprimer des catégories</div>
-                        <div style="display: table-cell;"> <a href="/admin/category/add">+ Ajouter une catégorie</a> </div>
+                    <div class="d-flex justify-content-between">
+                        <div>Vous pouvez ajouter, éditer ou supprimer des catégories</div>
+                        <button type="button" class="btn btn-danger"><a class="text-white" href="/admin/category/add">Ajouter une catégorie</a></button>
                     </div>
 
                     <c:if test="${not empty categories}">
@@ -80,8 +80,11 @@
 
                 <div id="Articles" class="tabcontent">
                     <h3>Articles</h3>
-                    <div style="width: 600px; display: table-cell;">Vous pouvez ajouter, éditer ou supprimer des articles</div>
-                    <div style="display: table-cell;"> <a href="${pageContext.request.contextPath}/admin/carpets/add">+ Ajouter un article</a> </div>
+
+                    <div class="d-flex justify-content-between">
+                        <div>Vous pouvez ajouter, éditer ou supprimer des articles</div>
+                        <button type="button" class="btn btn-danger"><a class="text-white" href="/admin/carpets/add">Ajouter un article</a></button>
+                    </div>
 
                     <c:if test="${empty articles}">
                         <p>Aucun article disponible</p>

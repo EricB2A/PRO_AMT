@@ -110,7 +110,6 @@ public class ArticleController {
 
     @PostMapping("/edit/post")
     public RedirectView editArticle(Carpet updated, @RequestParam(name = "categories", required = false) String categories, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
-        carpetRepository.save(updated);
         this.uploadImages(updated, images);
         carpetRepository.save(updated);
         if(categories != null) {
