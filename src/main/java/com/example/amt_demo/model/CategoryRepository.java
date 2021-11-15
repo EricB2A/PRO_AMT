@@ -40,4 +40,7 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
     @Transactional
     @Query(value = "Insert into carpet_categories(carpets_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)
     void addCategoryToCarpet(int carpet_id, int category_id);
+
+    @Query (value = "SELECT carpet.* FROM carpet INNER JOIN carpet_categories ON carpet.id = carpet_categories.carpets_id WHERE carpet_categories.categories_id = ?1", nativeQuery = true)
+    List<Carpet> findErrorDeletion(int category_id);
 }

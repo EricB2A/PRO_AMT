@@ -76,6 +76,7 @@ public class CategoryController {
             categoryRepository.delete(category);
         } else {
             mp.addAttribute("error", "Vous ne pouvez pas supprimer des catégories qui contiennent des articles");
+            mp.addAttribute("error_article", categoryRepository.findErrorDeletion(Integer.valueOf(id)));
         }
 
         mp.addAttribute("categories", categoryRepository.findAll());

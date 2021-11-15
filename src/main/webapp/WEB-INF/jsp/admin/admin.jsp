@@ -21,6 +21,14 @@
                     </div>
                 </c:if>
 
+                <c:if test="${empty error_article}">
+                    <c:forEach varStatus="idx" items="${error_article}" var="categories">
+                        <div class="table-row">
+                            <div class="table-data">${error_article.name}</div>
+                        </div>
+                    </c:forEach>
+                </c:if>
+
                 <c:if test="${not empty msg_article_deleted}">
                 <div class="alert alert-success">
                     L'article a bien été supprimé
