@@ -39,11 +39,11 @@ public class CartController {
     private final UserRepository userRepository;
 
     public CartController(CartInfoRepository cartInfoRepository, CarpetRepository carpetRepository, UserRepository userRepository) {
+        // On écrit un constructeur de 5 lignes pour retirer 3 lignes d'@autowired.. les calculs sont pas bons.
         this.cartInfoRepository = cartInfoRepository;
         this.carpetRepository = carpetRepository;
         this.userRepository = userRepository;
     }
-
 
     private User getLoggedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -52,7 +52,6 @@ public class CartController {
         }
         return null;
     }
-
 
     @GetMapping(path="")
     public String getCart(HttpServletRequest request, HttpServletResponse response, ModelMap mp) {
@@ -68,16 +67,21 @@ public class CartController {
             carpet.ifPresent(value -> cartInfoFromCookies.add(new CartInfo(value, quantity)));
         }
 
-        List<CartInfo> merged = new ArrayList<>();
+        List<CartInfo> merged;
         User user = getLoggedUser();
-        if(user != null){
-            List<CartInfo> cartInfoFromDatabase = cartInfoRepository.findCartInfosByUserId(user.getId());
-            merged = MiscUtils.mergeList(cartInfoFromDatabase, cartInfoFromCookies);
 
-            // On supprime les cookies
+        if(user != null){ // Si l'utilisateur est connecté
+
+            // On récupère ce qui est en DB
+            List<CartInfo> cartInfoFromDatabase = cartInfoRepository.findCartInfosByUserId(user.getId());
+
+            // On merge ce qui est en DB avec ce qui est dans les cookies
+            merged = MiscUtils.mergeList(cartInfoFromCookies, cartInfoFromDatabase);
+
+            // Puis, on supprime les cookies
             CookieUtils.destroyCookie(response);
 
-            // Et on save tout ça en DB
+            // Et pour finir on save tout ça en DB
             for (CartInfo c : merged) {
                 Optional<CartInfo> fromDB = cartInfoRepository.findById(c.getId());
                 if(fromDB.isPresent()){
@@ -90,11 +94,13 @@ public class CartController {
             }
 
         }else{
-            System.out.println("Not logged, cart from cookies.");
             merged = cartInfoFromCookies;
         }
 
+        Double sumPrice = merged.stream().mapToDouble(c -> (c.getCarpet().getPrice() * c.getQuantity())).sum();
+
         mp.addAttribute("articles", merged);
+        mp.addAttribute("cartPrice", sumPrice);
         return "cart";
     }
 
@@ -125,8 +131,6 @@ public class CartController {
                         cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(Integer.parseInt(id), user.getId(), quantity + ci.getQuantity());
                     }
                 }
-
-                //
 
             }else{
                 CookieUtils.storeArticleToCartCookie(request, response, id, quantity);

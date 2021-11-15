@@ -13,10 +13,10 @@
             <div class="container bg-transparent text-white">
 
                 <div id="Catalogue" >
-                    <h2 class="text-white">Articles</h2>
+                    <h2 class="text-white">Articles<c:if test="${not empty articles}">, total : ${cartPrice} CHF</c:if></h2>
 
                     <c:if test="${empty articles}">
-                        <p>Aucun article disponible</p>
+                        <h3>Le panier est vide 🥲</h3>
                     </c:if>
 
                     <c:if test="${not empty articles}">
@@ -31,15 +31,14 @@
                                         <div class="card-text text-black-50">${element.carpet.price} CHF</div>
 
                                         <input type="number" id="productQuantity_${element.carpet.id}" value="${element.quantity}" min="0">
-                                        <button class="btn btn-success" onclick="updateArticleToBasket('${element.carpet.id}', document.getElementById('productQuantity_${element.carpet.id}').value ,'${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Changer quantiter</button>
+                                        <button class="btn btn-success" onclick="updateArticleToBasket('${element.carpet.id}', document.getElementById('productQuantity_${element.carpet.id}').value ,'${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Changer</button>
 
                                         <button class="btn btn-danger" onclick="removeArticleFromBasket('${element.carpet.id}', '${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Retirer</button>
-
-                                        <!--<button class="btn btn-primary" onclick="addArticleToBasket('${element.carpet.id}', '1', '${_csrf.parameterName}', '${_csrf.token}', '')">Ajout au panier</button>-->
 
                                     </div>
                                 </div>
                             </c:forEach>
+
                         </div>
                     </c:if>
                 </div>
