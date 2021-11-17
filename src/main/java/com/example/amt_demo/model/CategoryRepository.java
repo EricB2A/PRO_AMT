@@ -39,8 +39,8 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
     @Query(value = "SELECT c from Category c JOIN c.carpets cr WHERE cr.id = ?1")
     List<Category> getCategoriesOfCarpet(Integer carpetId);
 
-    @Query(value = "SELECT c from Category c LEFT JOIN c.carpets cr WHERE cr.id IS NULL")
-    List<Category> getCategoriesNotOfCarpet(Integer carpetId);
+    @Query(value = "SELECT c from Category c")
+    List<Category> getAllCategories();
 
     @Modifying
     @Transactional

@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -55,7 +56,8 @@ public class ArticleController {
 
     @GetMapping("/add")
     public String addCarpetForm(ModelMap mp) {
-        mp.addAttribute("categories", categoryRepository.getCategoriesNotOfCarpet(-1));
+
+        mp.addAttribute("categories_not_checked", categoryRepository.getAllCategories());
         mp.addAttribute("adding", true);
         mp.addAttribute("post_url", "/admin/carpets/add/post");
         return "admin/articleForm";
@@ -104,8 +106,11 @@ public class ArticleController {
         mp.addAttribute("editing", true);
         mp.addAttribute("post_url", "/admin/carpets/edit/post");
         mp.addAttribute("article", carpetRepository.findById(Integer.valueOf(id)));
-        mp.addAttribute("categories_checked", categoryRepository.getCategoriesOfCarpet(Integer.valueOf(id)));
-        mp.addAttribute("categories_not_checked", categoryRepository.getCategoriesNotOfCarpet(Integer.valueOf(id)));
+        List<Category> checked = categoryRepository.getCategoriesOfCarpet(Integer.valueOf(id));
+        List<Category> notChecked = categoryRepository.getAllCategories();
+        for(Category cat : checked) notChecked.remove(cat);
+        mp.addAttribute("categories_checked", checked);
+        mp.addAttribute("categories_not_checked", notChecked);
         return "admin/articleForm";
     }
 
