@@ -33,7 +33,8 @@ public class Category {
         this.name = name;
     }
 
-    public Category(String name, Boolean checked) {
+    public Category(int id, String name, Boolean checked) {
+        this.id = id;
         this.name = name;
         this.checked = checked;
     }

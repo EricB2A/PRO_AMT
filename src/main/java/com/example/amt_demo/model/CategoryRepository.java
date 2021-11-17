@@ -34,7 +34,13 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
             "UNION \n" +
             "SELECT category.id, category.name, false as checked FROM category LEFT OUTER JOIN carpet_categories ON category.id = carpet_categories.categories_id\n" +
             "WHERE carpet_categories.carpets_id != ?1 OR carpet_categories.carpets_id IS NULL", nativeQuery = true)
-    Set<Category> getCategoriesByCarpet(Integer id);
+    Set<Category> getCategoriesByCarpet2(Integer id);
+
+    @Query(value = "SELECT c from Category c JOIN c.carpets cr WHERE cr.id = ?1")
+    List<Category> getCategoriesOfCarpet(Integer carpetId);
+
+    @Query(value = "SELECT c from Category c LEFT JOIN c.carpets cr WHERE cr.id IS NULL")
+    List<Category> getCategoriesNotOfCarpet(Integer carpetId);
 
     @Modifying
     @Transactional

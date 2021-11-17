@@ -55,7 +55,7 @@ public class ArticleController {
 
     @GetMapping("/add")
     public String addCarpetForm(ModelMap mp) {
-        mp.addAttribute("categories", categoryRepository.getCategoriesByCarpet(-1));
+        mp.addAttribute("categories", categoryRepository.getCategoriesNotOfCarpet(-1));
         mp.addAttribute("adding", true);
         mp.addAttribute("post_url", "/admin/carpets/add/post");
         return "admin/articleForm";
@@ -104,12 +104,14 @@ public class ArticleController {
         mp.addAttribute("editing", true);
         mp.addAttribute("post_url", "/admin/carpets/edit/post");
         mp.addAttribute("article", carpetRepository.findById(Integer.valueOf(id)));
-        mp.addAttribute("categories", categoryRepository.getCategoriesByCarpet(Integer.valueOf(id)));
+        mp.addAttribute("categories_checked", categoryRepository.getCategoriesOfCarpet(Integer.valueOf(id)));
+        mp.addAttribute("categories_not_checked", categoryRepository.getCategoriesNotOfCarpet(Integer.valueOf(id)));
         return "admin/articleForm";
     }
 
     @PostMapping("/edit/post")
     public RedirectView editArticle(Carpet updated, @RequestParam(name = "categories", required = false) String categories, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
+
         this.uploadImages(updated, images);
         carpetRepository.save(updated);
         if(categories != null) {

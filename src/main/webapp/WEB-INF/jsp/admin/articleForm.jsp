@@ -70,14 +70,23 @@
                                         <input type="hidden"
                                                name="${_csrf.parameterName}"
                                                value="${_csrf.token}"/>
+                                                <c:if test="${not empty carpet}">
+                                                    <input type="hidden" name="id" value="${carpet.id}"/>
+                                                </c:if>
 
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Catégories</label>
                                             <div class="col-sm-10">
-                                                <c:forEach varStatus="idx" items="${categories}" var="category">
+                                                <c:forEach varStatus="idx" items="${categories_checked}" var="category">
                                                     <div class="d-inline-flex">
-                                                        <span class="category-cb badge p-2 rounded-pill ${ category.checked == "false" ? 'bg-secondary' : 'bg-primary' } text-white" id="category_${category.id}">${category.name}</span>
-                                                        <input class="invisible" type="checkbox" id="category_${category.id}" name="categories" value="${category.id}" <c:if test="${category.checked != false}">checked</c:if> />
+                                                        <span class="btn category-cb badge p-2 rounded-pill bg-primary text-white" id="category_${category.id}">${category.name}</span>
+                                                        <input class="invisible" type="checkbox" id="category_${category.id}" name="categories" value="${category.id}" checked />
+                                                    </div>
+                                                </c:forEach>
+                                                <c:forEach varStatus="idx" items="${categories_not_checked}" var="category">
+                                                    <div class="d-inline-flex">
+                                                        <span class="btn category-cb badge p-2 rounded-pill bg-secondary text-white" id="category_${category.id}">${category.name}</span>
+                                                        <input class="invisible" type="checkbox" id="category_${category.id}" name="categories" value="${category.id}" />
                                                     </div>
                                                 </c:forEach>
                                             </div>
