@@ -1,9 +1,12 @@
 package com.example.amt_demo.service;
 
+import com.example.amt_demo.config.SpringSecurityConfig;
 import com.example.amt_demo.utils.login.LoginAPIResponse;
 import com.example.amt_demo.utils.login.UserCredentials;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +15,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 public class LoginService {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final WebClient webclient;
 
     public LoginService(String url) {
+        logger.debug(url);
+        logger.info("==================================>"+url);
         webclient = WebClient.create(url);
     }
 
@@ -63,7 +69,6 @@ public class LoginService {
         System.out.println(responseBodyJSON);
         return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue(), LoginAPIResponse.RequestType.LOGIN);
     }
-
 
 
 }

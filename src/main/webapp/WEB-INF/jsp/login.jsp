@@ -19,8 +19,8 @@
                                value="${_csrf.token}"/>
                         <div class="row">
                             <div class="offset-3 col-6">
-                                <label for="login_email" class="form-label">Email</label>
-                                <input id="login_email" type="email"  class="enter_email" placeholder="Entrez votre e-mail" name="email">
+                                <label for="login_username" class="form-label">Nom d'utilisateur</label>
+                                <input id="login_username" type="text"  class="enter_email" placeholder="Entrez votre nom d'utilisateur" name="username">
 
                             </div>
                         </div>

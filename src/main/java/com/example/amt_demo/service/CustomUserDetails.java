@@ -1,6 +1,7 @@
 package com.example.amt_demo.service;
 
 import com.example.amt_demo.model.User;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +10,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
-    private static final String ROLE_PREFIX = "ROLE_";
+    public static final String ROLE_PREFIX = "ROLE_";
     private final User user;
 
     public CustomUserDetails(User user) {
@@ -26,12 +27,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        new ExecutionControl.NotImplementedException("Password aren't stored in the backend");
+        return "";
     }
-
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getUsername();
     }
 
     @Override
