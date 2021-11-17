@@ -1,21 +1,22 @@
 package com.example.amt_demo.config;
 
+import com.example.amt_demo.auth.AuthProvider;
+import com.example.amt_demo.auth.JwtRequestFilter;
 import com.example.amt_demo.service.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
 
 // based on https://github.com/eugenp/tutorials/blob/master/spring-security-modules/spring-security-web-boot-1
 @Configuration()
@@ -23,14 +24,20 @@ import javax.sql.DataSource;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final WebApplicationContext applicationContext;
+    private final Logger logger = LoggerFactory.getLogger(SpringSecurityConfig.class);
+    private final JwtRequestFilter jwtRequestFilter;
+    private  CustomUserDetailsService userDetailsService;
 
-    private Logger logger = LoggerFactory.getLogger(SpringSecurityConfig.class);
-    private final DataSource dataSource;
-    private CustomUserDetailsService userDetailsService;
-
-    public SpringSecurityConfig(DataSource dataSource, WebApplicationContext applicationContext) {
-        this.dataSource = dataSource;
+    public SpringSecurityConfig(WebApplicationContext applicationContext, JwtRequestFilter jwtRequestFilter) {
         this.applicationContext = applicationContext;
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
+
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @PostConstruct
@@ -38,43 +45,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         userDetailsService = applicationContext.getBean(CustomUserDetailsService.class);
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder())
-                .and()
-                .authenticationProvider(authenticationProvider())
-                .jdbcAuthentication()
-                .dataSource(dataSource);
+        auth.authenticationProvider(new AuthProvider(userDetailsService));
     }
-
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/carpets/new", "/admin/**").permitAll()
-                .antMatchers("/", "accueil", "/login*", "/images/**", "/css/**", "/js/**", "/carpets/*").permitAll()
-                .and()
-                .formLogin()
-                .loginPage("/login").usernameParameter("email")
-                .defaultSuccessUrl("/", true)
-                .failureUrl("/login?error")
-                .and()
-                .logout();
+            .authorizeRequests()
+            .antMatchers("/carpets/new", "/admin/**").permitAll()
+            .antMatchers("/", "accueil", "/login*", "/images/**", "/css/**", "/js/**", "/carpets/*").permitAll()
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        final DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
 }

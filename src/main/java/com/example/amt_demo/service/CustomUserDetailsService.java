@@ -1,12 +1,8 @@
 package com.example.amt_demo.service;
 
-import com.example.amt_demo.config.SpringSecurityConfig;
 import com.example.amt_demo.exception.EmailNotFoundException;
 import com.example.amt_demo.model.UserRepository;
 import com.example.amt_demo.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
