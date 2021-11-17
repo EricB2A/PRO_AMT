@@ -16,7 +16,8 @@ public class Carpet {
     private Integer id;
     private String name;
     private String description;
-    private Double price;
+    private Double price = 0.0;
+    private Integer quantity = 0;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories = new HashSet<>();
@@ -26,11 +27,15 @@ public class Carpet {
 
     public Carpet() {
     }
-
+    public Carpet(String name, String description, Double price, Integer quantity) {
+        this(name, description, price);
+        this.quantity = quantity;
+    }
     public Carpet(String name, String description, Double price) {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.quantity = 0;
     }
 
     public Double getPrice() {
@@ -65,6 +70,13 @@ public class Carpet {
         this.description = description;
     }
 
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 
     public List<CarpetPhoto> getPhotos() {
         return photos;

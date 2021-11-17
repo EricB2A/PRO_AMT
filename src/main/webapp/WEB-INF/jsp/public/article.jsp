@@ -45,7 +45,9 @@
                                         <h4 class="h4"><strong>${carpet.get().name}</strong></h4>
                                         <div class="text-white">${carpet.get().description}</div>
                                         <div class="h2 text-white"><strong>CHF <span style="color: #ffffee">${carpet.get().price}</span></strong></div>
-                                        <button class="btn btn-primary">Ajout au panier</button>
+                                            <c:if test="${carpet.get().quantity > 0 && carpet.get().price > 0}">
+                                                <button class="btn btn-primary">Ajout au panier</button>
+                                            </c:if>
                                     </div>
                                 </div>
                         </div>

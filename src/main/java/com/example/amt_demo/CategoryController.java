@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping(path = "/admin")
+@RequestMapping(path = "/admin/categories")
 @Controller
 public class CategoryController {
 
@@ -21,18 +21,17 @@ public class CategoryController {
     private CarpetRepository carpetRepository;
 
     @GetMapping(path="", produces = {"application/xml"})
-    public String getAllCategories(ModelMap mp) {
+    public String getAllCarpets(ModelMap mp) {
         mp.addAttribute("categories", categoryRepository.findAll());
-        mp.addAttribute("articles", carpetRepository.findAll());
-        return "admin/admin";
+        return "admin/categories";
     }
 
-    @GetMapping("/category/add")
+    @GetMapping("/add")
     public String getCategoryForm(ModelMap mp) {
         return "admin/categoryForm";
     }
 
-    @PostMapping(path="/category/add/post")
+    @PostMapping(path="/add/post")
     public String addCategory(Category newCategory, ModelMap mp) {
         Category category = categoryRepository.findByName(newCategory.getName());
 
@@ -41,13 +40,11 @@ public class CategoryController {
         }else {
             mp.addAttribute("error", "Cette catégorie existe déjà");
         }
-
         mp.addAttribute("categories", categoryRepository.findAll());
-        mp.addAttribute("articles", carpetRepository.findAll());
-        return "admin/admin";
+        return "admin/categories";
     }
 
-    @PostMapping(path="/category/add/{id}")
+    @PostMapping(path="/add/{id}")
     public String addCategoriesToCarpet(@PathVariable String id, @RequestParam String categories, ModelMap mp) {
 
         for(String c : categories.split(",")) {
@@ -56,33 +53,32 @@ public class CategoryController {
 
         mp.addAttribute("categories", categoryRepository.findAll());
         mp.addAttribute("articles", carpetRepository.findAll());
-        return "admin/admin";
+        return "admin/categories";
     }
 
-    @GetMapping("/category/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String editCategory(ModelMap mp, @PathVariable String id) {
         mp.addAttribute("category", categoryRepository.findById(Integer.valueOf(id)));
-        return "admin/category";
+        return "admin/categories";
     }
 
 
-    @GetMapping("/category/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteCategory(ModelMap mp, @PathVariable String id) {
         Category category = categoryRepository.findId(Integer.valueOf(id));
+        if(category != null) {
+            List<Category> list = categoryRepository.hasArticlesInCategory(Integer.valueOf(id));
 
-        List<Category> list = categoryRepository.hasArticlesInCategory(Integer.valueOf(id));
-
-        if(list.isEmpty()) {
-            categoryRepository.delete(category);
-        } else {
-            mp.addAttribute("error", "Vous ne pouvez pas supprimer des catégories qui contiennent des articles");
-            mp.addAttribute("error_article", categoryRepository.findErrorDeletion(Integer.valueOf(id)));
+            if (list.isEmpty()) {
+                categoryRepository.delete(category);
+            } else {
+                mp.addAttribute("error", "Vous ne pouvez pas supprimer des catégories qui contiennent des articles");
+                mp.addAttribute("error_article", categoryRepository.findErrorDeletion(Integer.valueOf(id)));
+            }
         }
-
         mp.addAttribute("categories", categoryRepository.findAll());
-        mp.addAttribute("articles", carpetRepository.findAll());
 
-        return "admin/admin";
+        return "admin/categories";
     }
 
 

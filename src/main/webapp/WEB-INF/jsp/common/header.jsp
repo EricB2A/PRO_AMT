@@ -20,7 +20,7 @@
                             <a class="nav-item nav-link" href="/catalog">Tous les Articles</a>
 
                             <sec:authorize access="isAuthenticated() && hasRole('admin')">
-                                <a class="nav-item nav-link" href="/admin">Administration</a>
+                                <a class="nav-item nav-link" href="/admin/articles">Administration</a>
                             </sec:authorize>
                             <sec:authorize access="isAuthenticated()">
                                 <form action="/logout" method=post id="logout-form">

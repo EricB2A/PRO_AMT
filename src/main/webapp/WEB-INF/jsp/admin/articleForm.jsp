@@ -52,7 +52,7 @@
                     </div>
                     <div class="about_main">
                             <div class="container">
-                                <a class="text-white" style="font-size: 18px;" href="/admin">< Revenir</a>
+                                <a class="text-white" style="font-size: 18px;" href="/admin/articles">< Revenir</a>
                                 <div class="card p-4">
                                     <c:if test="${not empty msg_photo_deleted && msg_photo_deleted}">
                                         <div class="alert alert-success">
@@ -65,6 +65,20 @@
                                             L'article a bien été modifié
                                         </div>
                                     </c:if>
+
+                                    <c:if test="${not empty msg_missing_name && msg_missing_name}">
+                                        <div class="alert alert-danger">
+                                            Veillez renseigner le champ "Nom"
+                                        </div>
+                                    </c:if>
+
+                                    <c:if test="${not empty msg_already_existing_article && msg_already_existing_article}">
+                                        <div class="alert alert-danger">
+                                            Un article avec ce nom existe deja!
+                                        </div>
+                                    </c:if>
+
+
 
                                     <form name="newCarpetForm" action="${post_url}" enctype="multipart/form-data"  method="POST" class="m-2"> <!-- TODO: changer lien hardcodé, mais trop fatigué pour le faire -->
                                         <input type="hidden"
@@ -92,7 +106,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">Nom</label>
+                                            <label class="col-sm-2 col-form-label">Nom*</label>
                                             <div class="col-sm-10">
                                                 <input class="form-control" type="text" name="name" value="<c:if test="${not empty carpet}">${carpet.name}</c:if>" />
                                             </div>
@@ -121,7 +135,7 @@
                                                 <c:forEach varStatus="idx" items="${carpet.photos}" var="photo">
                                                     <div class="d-flex align-self-start m-2">
                                                         <img src="/${photo.path}" width="220" class="img-thumbnail" />
-                                                        <a href="/admin/carpets/${carpet.id}/photo/delete/${photo.id}"><button type="button" class="btn btn-danger btn-sm">X</button></a>
+                                                        <a href="/admin/articles/${carpet.id}/photo/delete/${photo.id}"><button type="button" class="btn btn-danger btn-sm">X</button></a>
                                                     </div>
                                                 </c:forEach>
                                             </div>

@@ -46,6 +46,7 @@
                                        <jsp:attribute name="article_id">${carpet.id}</jsp:attribute>
                                        <jsp:attribute name="article_name">${carpet.name}</jsp:attribute>
                                        <jsp:attribute name="article_price">${carpet.price}</jsp:attribute>
+                                       <jsp:attribute name="article_quantity">${carpet.quantity}</jsp:attribute>
                                        <jsp:attribute name="article_img_path">${carpet.getFirstPhotoPath()}</jsp:attribute>
                                        <jsp:attribute name="article_nb_stars">${3}</jsp:attribute>
                                    </t:article_thumbnail>
