@@ -76,21 +76,14 @@ public class CartController {
             List<CartInfo> cartInfoFromDatabase = cartInfoRepository.findCartInfosByUserId(user.getId());
 
             // On merge ce qui est en DB avec ce qui est dans les cookies
-            merged = MiscUtils.mergeList(cartInfoFromCookies, cartInfoFromDatabase);
+            merged = MiscUtils.mergeList(cartInfoFromDatabase, cartInfoFromCookies);
 
             // Puis, on supprime les cookies
             CookieUtils.destroyCookie(response);
 
             // Et pour finir on save tout ça en DB
             for (CartInfo c : merged) {
-                Optional<CartInfo> fromDB = cartInfoRepository.findById(c.getId());
-                if(fromDB.isPresent()){
-                    fromDB.get().setQuantity(c.getQuantity());
-                    cartInfoRepository.save(fromDB.get());
-                }else {
-                    c.setUser(user);
-                    cartInfoRepository.save(c);
-                }
+                cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(c.getCarpet().getId(), user.getId(), c.getQuantity());
             }
 
         }else{

@@ -13,9 +13,9 @@ public class MiscUtils {
         for (CartInfo a : listA) {
             if (listB.contains(a)) {
                 listC.add(new CartInfo(a.getCarpet(), a.getQuantity() + findCartInfoQuantityOrZero(listB, a), a.getUser()));
-                //a.setQuantity(a.getQuantity() + findCartInfoOrZero(listB, a));
                 listB.remove(a);
             }else {
+                System.out.println("wtf doesnt contains");
                 listC.add(a);
             }
 
@@ -27,7 +27,7 @@ public class MiscUtils {
     private static int findCartInfoQuantityOrZero(List<CartInfo> list, CartInfo cartInfo) {
         for (CartInfo c : list) {
             if(cartInfo.equals(c)) {
-                return cartInfo.getQuantity();
+                return c.getQuantity();
             }
 
         }
