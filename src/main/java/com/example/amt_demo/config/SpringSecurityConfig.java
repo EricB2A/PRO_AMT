@@ -55,12 +55,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/carpets/new", "/admin/**").permitAll()
-                .antMatchers("/", "accueil", "/login*", "/images/**", "/css/**", "/js/**", "/carpets/*").permitAll()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .authorizeRequests()
+            .antMatchers("/admin/**").hasRole("admin")
+            .antMatchers("/deconnexion").authenticated()
+            .antMatchers("/login","/inscription").anonymous()
+            .antMatchers("/", "/carpets/new", "/carpets", "/accueil", "/images/**", "/css/**", "/js/**", "/catalog").permitAll()
+            .anyRequest().denyAll(); // Grant access for endpoint to nobody
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

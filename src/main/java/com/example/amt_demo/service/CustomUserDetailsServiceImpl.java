@@ -2,6 +2,8 @@ package com.example.amt_demo.service;
 
 import com.example.amt_demo.model.UserRepository;
 import com.example.amt_demo.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -11,13 +13,11 @@ import java.util.Optional;
 
 @Component
 public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
-    private final WebApplicationContext applicationContext;
     private UserRepository userRepository;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
-    public CustomUserDetailsServiceImpl(WebApplicationContext applicationContext, UserRepository userRepository) {
-        this.applicationContext = applicationContext;
+    public CustomUserDetailsServiceImpl( UserRepository userRepository) {
         this.userRepository = userRepository;
-
     }
 
     @Override

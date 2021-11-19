@@ -1,6 +1,7 @@
 package com.example.amt_demo;
 
-import com.example.amt_demo.utils.login.UserCredentials;
+import com.example.amt_demo.model.UserRepository;
+import com.example.amt_demo.utils.login.UserCredentialsDTO;
 import com.example.amt_demo.service.LoginService;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -16,18 +17,19 @@ public class LoginServiceTests {
 
     public static MockWebServer mockLogin;
     public static LoginService loginService;
+    private static UserRepository userRepository;
 
     @BeforeAll
     static void setup() throws IOException {
         mockLogin = new MockWebServer();
         mockLogin.start();
         String url = String.format("http://localhost:%s", mockLogin.getPort());
-        loginService = new LoginService(url);
+        loginService = new LoginService(url, userRepository);
     }
 
     @Test
     void correctCredentials() throws InterruptedException, JSONException {
-        UserCredentials credentials = new UserCredentials("username", "password");
+        UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
         JSONObject json = new JSONObject();
         json.put("token", "00000000")
                 .put("account", new JSONObject()
@@ -44,7 +46,7 @@ public class LoginServiceTests {
 
     @Test
     void wrongCredentials() throws InterruptedException, JSONException {
-        UserCredentials credentials = new UserCredentials("username", "password");
+        UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
         JSONObject error = new JSONObject()
                 .put("error", "testError");
         mockLogin.enqueue(new MockResponse()
@@ -58,7 +60,7 @@ public class LoginServiceTests {
 
     @Test
     public void validRegister() throws InterruptedException, JSONException {
-        UserCredentials credentials = new UserCredentials("username","password");
+        UserCredentialsDTO credentials = new UserCredentialsDTO("username","password");
         JSONObject credentialsJson = new JSONObject()
                 .put("username", "username")
                 .put("password", "password");
@@ -73,7 +75,7 @@ public class LoginServiceTests {
 
     @Test
     public void invalidRegister409() throws InterruptedException, JSONException {
-        UserCredentials credentials = new UserCredentials("username","password");
+        UserCredentialsDTO credentials = new UserCredentialsDTO("username","password");
         JSONObject credentialsJson = new JSONObject()
                 .put("error", "testError");
         mockLogin.enqueue(new MockResponse()
@@ -87,7 +89,7 @@ public class LoginServiceTests {
 
     @Test
     public void invalidRegister422() throws InterruptedException, JSONException {
-        UserCredentials credentials = new UserCredentials("username","password");
+        UserCredentialsDTO credentials = new UserCredentialsDTO("username","password");
         JSONObject credentialsJson = new JSONObject()
                 .put("error", "testError");
         mockLogin.enqueue(new MockResponse()

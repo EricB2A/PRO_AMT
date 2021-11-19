@@ -69,6 +69,7 @@
 <!-- javascript -->
 <script src="/js/owl.carousel.js"></script>
 <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+<script src="/js/signup.js"></script>
 <script>
     $(document).ready(function () {
         $(".fancybox").fancybox({

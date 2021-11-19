@@ -54,7 +54,6 @@ public class CarpetController {
         mp.addAttribute("articles", carpetRepository.findAll());
 
         String uploadDir = "carpet-photos/" + newCarpet.getId();
-
         FileUploadUtils.saveFile(uploadDir, fileName, multipartFile);
 
         return "home";

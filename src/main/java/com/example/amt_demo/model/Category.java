@@ -11,9 +11,6 @@ public class Category {
     private Integer id;
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
-
     public Category() {
 
     }

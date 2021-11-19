@@ -20,7 +20,6 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-
     private final String secretKey;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

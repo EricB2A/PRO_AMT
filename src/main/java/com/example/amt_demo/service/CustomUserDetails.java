@@ -6,8 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
     public static final String ROLE_PREFIX = "ROLE_";
@@ -20,9 +21,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles()
-                .stream()
-                .map(r -> new SimpleGrantedAuthority(ROLE_PREFIX + r.getName())).collect(Collectors.toList());
+        List<SimpleGrantedAuthority> rolesList =  new ArrayList<>();
+        rolesList.add(new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole())) ;
+        return rolesList;
     }
 
     @Override
