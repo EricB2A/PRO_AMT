@@ -157,4 +157,9 @@ public class ArticleControllerTests {
         }
     }
 
+    @AfterAll
+    static void cleanUp(@Autowired CarpetRepository carpetRepository) {
+        carpetRepository.deleteAll();
+    }
+
 }

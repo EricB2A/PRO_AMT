@@ -46,7 +46,10 @@
                                         <div class="text-white">${carpet.get().description}</div>
                                         <div class="h2 text-white"><strong>CHF <span style="color: #ffffee">${carpet.get().price}</span></strong></div>
                                             <c:if test="${carpet.get().quantity > 0 && carpet.get().price > 0}">
-                                                <button class="btn btn-primary">Ajout au panier</button>
+                                                <div>
+                                                    <input class="form-control" type="number" id="articleQuantityToCart" name="articles to cart" min="100">
+                                                    <button class="btn btn-primary" onclick="addArticleToBasket('${carpet.get().id}', document.getElementById('articleQuantityToCart').value, '${_csrf.parameterName}', '${_csrf.token}', window.location.href)">Ajout au panier</button>
+                                                </div>
                                             </c:if>
                                     </div>
                                 </div>

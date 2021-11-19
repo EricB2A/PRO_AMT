@@ -44,16 +44,6 @@ public class ArticleController {
         return "admin/articles";
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<?> delete(@PathVariable int id) {
-        if(!carpetService.existsById(id)){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        carpetService.deleteById(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
-    }
-
     @GetMapping("/add")
     public String addCarpetForm(ModelMap mp) {
         mp.addAttribute("categories_not_checked", categoryService.getAllCategories());
@@ -171,6 +161,16 @@ public class ArticleController {
         return "admin/articleForm";
     }
 
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> delete(@PathVariable int id) {
+        if(!carpetRepository.existsById(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        carpetRepository.deleteById(id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
     @GetMapping("/delete/{id}")
     public String deleteCarpet(ModelMap mp, @PathVariable String id) {
         Carpet carpet = carpetService.findId(Integer.parseInt(id));
@@ -180,6 +180,7 @@ public class ArticleController {
         mp.addAttribute("categories", categoryService.findAll());
         mp.addAttribute("articles", carpetService.findAll());
         mp.addAttribute("msg_article_deleted", true);
+
         return "admin/articles";
     }
 

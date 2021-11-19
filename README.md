@@ -44,9 +44,10 @@ mysql -uroot -proot
 ```
 
 ## Modèle de domaine 💡
-![model](docs/uml/images/model.png)
+![model](docs/uml/model_images/model.png)
 
 L'ORM [Hibernate](https://hibernate.org/) va faire un mapping 1-1 entre ce(s) classe(s) et ses(leurs) attributs et une table éponyme et ses champs associés en base de données.
+Veuillez noter que les méthodes de types `setter` et `getter` ne sont pas présents sur ce schéma afin de simplifier la lisibilité de ce dernier.
 
 ## Routes 👀
 | Verbe HTTP | Route               | Contrôleur            |
@@ -65,8 +66,13 @@ L'ORM [Hibernate](https://hibernate.org/) va faire un mapping 1-1 entre ce(s) cl
 | GET        | `/login`            | `LoginController`     |
 | POST       | `/login`            | (1)                   |
 | POST       | `/logout`           | (1)                   |
+| GET        | `/cart`             | `CartController`      |
+| PUT        | `/cart/{id}`        | `CartController`      |
+| POST       | `/cart/{id}`        | `CartController`      |
+| DELETE     | `/cart/{id}`        | `CartController`      |
 
-- (1) Routes fourni et gérer par Spring Security 
+
+- (1) Routes fournies et gérées par Spring Security 
 
 
 ## L'équipe 🦍

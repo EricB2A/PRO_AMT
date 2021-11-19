@@ -17,6 +17,9 @@ public class Carpet {
     private Double price = 0.0;
     private Integer quantity = 0;
 
+    @OneToMany(mappedBy = "carpet")
+    Set<CartInfo> cartInfos;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories = new HashSet<>();
 
@@ -118,10 +121,12 @@ public class Carpet {
 
     // Used in View for article_thumbnail to get first photo
     public String getFirstPhotoPath(){
+
         String path = "carpet-photos/placeholder-image.png";
+
         if(!photos.isEmpty()){
             path = photos.get(0).getPath();
         }
         return path;
     }
-}
+

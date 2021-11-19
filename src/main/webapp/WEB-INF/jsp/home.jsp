@@ -5,7 +5,7 @@
 
 <t:base_layout>
     <jsp:attribute name="title">
-        SilkyRoad
+        SilkyRoadASDASDASDASDASD
     </jsp:attribute>
     <jsp:attribute name="withbanner">
         true

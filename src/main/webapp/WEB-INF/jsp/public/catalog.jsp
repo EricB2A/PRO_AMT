@@ -13,6 +13,7 @@
         <script>
             (function() {
 
+                console.log("Je m'appelle Stéfan et j'ouvre des balises pour rien.")
 
             })();
         </script>

@@ -132,7 +132,7 @@
     */
 
     // Non à jQuery.
-    function deleteArticle(tokenName, csrfToken){
+    function deleteArticle(tokenName, csrfToken) {
         if (confirm("Supprimer ?")){
 
             const headers = new Headers({
@@ -149,6 +149,81 @@
                     }
                 });
         }
+    }
+
+    function addArticleToBasket(articleID, quantity,  tokenName, csrfToken, redirect) {
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        });
+
+     
+        if(quantity <= 0){
+            alert("Quantité invalide");
+            return;
+        }
+
+        if(redirect === ""){
+            redirect = window.location.origin
+        }
+
+        fetch(window.location.origin+"/cart/" + articleID, { method: 'POST', headers, body: JSON.stringify({quantity: quantity}) })
+            .then((res)=>{
+                if(res.ok){
+                    window.location.href = redirect
+                }else{
+                    //TODO: Rediriger je ne sais pas où.
+                }
+            });
+    }
+
+    function updateArticleToBasket(articleID, quantity,  tokenName, csrfToken, redirect) {
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        });
+
+        if(quantity < 0){
+            alert("Quantité invalide");
+            return;
+        }else if(quantity == 0){ // L'égalité non-stricte est volontaire ici
+            removeArticleFromBasket(articleID, tokenName, csrfToken, redirect);
+            return;
+        }
+
+        if(redirect === ""){
+            redirect = window.location.origin
+        }
+
+        fetch(window.location.origin+"/cart/" + articleID, { method: 'PUT', headers, body: JSON.stringify({quantity: quantity}) })
+            .then((res)=>{
+                if(res.ok){
+                    window.location.href = redirect
+                }else{
+                    //TODO: Rediriger je ne sais pas où.
+                }
+            });
+    }
+
+    function removeArticleFromBasket(articleID, tokenName, csrfToken, redirect){
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        });
+
+        if(!confirm("Retirer l'article du panier?")){
+            return;
+        }
+
+        fetch(window.location.origin+"/cart/" + articleID, { method: 'DELETE', headers })
+            .then((res)=>{
+                if(res.ok){
+                    window.location.href = redirect
+                }else{
+                    //TODO: Rediriger je ne sais pas où.
+                }
+            });
+
     }
 
 </script>
