@@ -20,4 +20,6 @@ public interface CarpetRepository extends CrudRepository<Carpet, Integer> {
 
     @Query (value = "SELECT * FROM carpet WHERE id IN (SELECT carpet.id FROM carpet INNER JOIN carpet_categories ON carpet.id = carpet_categories.carpets_id WHERE carpet_categories.categories_id = ?1)", nativeQuery = true)
     Iterable<Carpet> findErrorDeletion(int category_id);
+
+    Optional<Carpet> findCarpetById(Integer id);
 }
