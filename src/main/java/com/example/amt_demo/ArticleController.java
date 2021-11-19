@@ -161,15 +161,6 @@ public class ArticleController {
         return "admin/articleForm";
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<?> delete(@PathVariable int id) {
-        if(!carpetRepository.existsById(id)){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        carpetRepository.deleteById(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
-    }
 
     @GetMapping("/delete/{id}")
     public String deleteCarpet(ModelMap mp, @PathVariable String id) {
