@@ -44,7 +44,7 @@ mysql -uroot -proot
 ```
 
 ## Modèle de domaine 💡
-![model](docs/uml/model_images/model.png)
+![model](docs/uml/model_images/model.jpg)
 
 L'ORM [Hibernate](https://hibernate.org/) va faire un mapping 1-1 entre ce(s) classe(s) et ses(leurs) attributs et une table éponyme et ses champs associés en base de données.
 Veuillez noter que les méthodes de types `setter` et `getter` ne sont pas présents sur ce schéma afin de simplifier la lisibilité de ce dernier.
