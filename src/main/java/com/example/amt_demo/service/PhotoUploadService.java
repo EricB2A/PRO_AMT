@@ -23,6 +23,18 @@ public class PhotoUploadService{
         return (new File(filePath)).delete();
     }
 
+    public boolean deleteFolder(String folderPath){
+        File directory = new File(folderPath);
+        File[] allContents = directory.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteFolder(file.getPath());
+            }
+        }
+        return directory.delete();
+    }
+
+
     public String getRoot(){
         return root;
     }
