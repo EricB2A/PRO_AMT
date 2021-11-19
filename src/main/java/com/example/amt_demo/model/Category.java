@@ -11,19 +11,8 @@ public class Category {
     private Integer id;
     private String name;
 
-    public Boolean getChecked() {
-        return checked;
-    }
-
-    public void setChecked(Boolean checked) {
-        this.checked = checked;
-    }
-
-    private Boolean checked;
-
     @ManyToMany(mappedBy = "categories")
-    private Set<Carpet> carpets = new HashSet<>();
-
+    private final Set<Carpet> carpets = new HashSet<>();
 
     public Category() {
 
@@ -33,11 +22,6 @@ public class Category {
         this.name = name;
     }
 
-    public Category(int id, String name, Boolean checked) {
-        this.id = id;
-        this.name = name;
-        this.checked = checked;
-    }
 
     public Integer getId() {
         return id;

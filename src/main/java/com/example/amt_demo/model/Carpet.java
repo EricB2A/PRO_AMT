@@ -27,10 +27,7 @@ public class Carpet {
 
     public Carpet() {
     }
-    public Carpet(String name, String description, Double price, Integer quantity) {
-        this(name, description, price);
-        this.quantity = quantity;
-    }
+
     public Carpet(String name, String description, Double price) {
         this.name = name;
         this.description = description;
@@ -86,6 +83,7 @@ public class Carpet {
         return categories;
     }
 
+    // Used in View for article_thumbnail to get first photo
     public String getFirstPhotoPath(){
         String path = "carpet-photos/placeholder-image.png";
         if(!photos.isEmpty()){
