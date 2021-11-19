@@ -123,7 +123,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Prix</label>
                                             <div class="col-sm-10">
-                                                <input type="number" name="price" value="<c:if test="${not empty carpet}">${carpet.price}</c:if>" />
+                                                <input type="number" name="price" value="${not empty carpet ? carpet.price : 0}" step="0.01" required/>
                                             </div>
                                         </div>
 
