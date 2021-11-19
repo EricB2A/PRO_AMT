@@ -1,12 +1,10 @@
 package com.example.amt_demo.model;
 
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
 
 @Entity
 public class Carpet {
@@ -28,9 +26,20 @@ public class Carpet {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarpetPhoto> photos = new LinkedList<>();
 
+    /**
+     * Default constructor of Carpet
+     */
     public Carpet() {
+
     }
 
+    /**
+     * Constructor of Carpet
+     *
+     * @param name        - the name of the Carpet
+     * @param description - the description of the Carpet
+     * @param price       - the price of the Carpet
+     */
     public Carpet(String name, String description, Double price) {
         this.name = name;
         this.description = description;
@@ -38,12 +47,22 @@ public class Carpet {
         this.quantity = 0;
     }
 
-    public Double getPrice() {
-        return price;
+    /**
+     * Constructor of Carpet
+     *
+     * @param name        - the name of the Carpet
+     * @param description - the description of the Carpet
+     * @param price       - the price of the Carpet
+     * @param quantity    - the quantity of the Carpet
+     */
+    public Carpet(String name, String description, Double price, Integer quantity) {
+        this(name, description, price);
+        this.quantity = quantity;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public Carpet(Integer id, String name, String description, Double price, Integer quantity) {
+        this(name, description, price, quantity);
+        this.id = id;
     }
 
     public Integer getId() {
@@ -62,6 +81,14 @@ public class Carpet {
         this.name = name;
     }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -72,6 +99,14 @@ public class Carpet {
 
     public Integer getQuantity() {
         return quantity;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void setPhotos(List<CarpetPhoto> photos) {
+        this.photos = photos;
     }
 
     public void setQuantity(Integer quantity) {
@@ -87,14 +122,15 @@ public class Carpet {
     }
 
     // Used in View for article_thumbnail to get first photo
-    public String getFirstPhotoPath(){
+    public String getFirstPhotoPath() {
 
         String path = "carpet-photos/placeholder-image.png";
 
-        if(!photos.isEmpty()){
+        if (!photos.isEmpty()) {
             path = photos.get(0).getPath();
         }
         return path;
     }
 
 }
+

@@ -15,16 +15,21 @@
 
             <div class="container bg-white">
 
+                <c:if test="${not empty success}">
+                    <div class="alert alert-success">
+                        ${success}
+                    </div>
+                </c:if>
                 <c:if test="${not empty error}">
                     <div class="alert alert-danger">
                     ${error}
                     </div>
                 </c:if>
 
-                <c:if test="${empty error_article}">
-                    <c:forEach varStatus="idx" items="${error_article}" var="categories">
+                <c:if test="${not empty error_article}">
+                    <c:forEach varStatus="idx" items="${error_article}" var="articles">
                         <div class="table-row">
-                            <div class="table-data">${error_article.name}</div>
+                            <div class="table-data">${articles.name}</div>
                         </div>
                     </c:forEach>
                 </c:if>

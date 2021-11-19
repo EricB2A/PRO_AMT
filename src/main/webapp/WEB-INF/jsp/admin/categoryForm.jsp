@@ -14,8 +14,9 @@
       <div class="gallery_section">
         <div class="container">
           <div class="collection_text">Nouvelle catégorie</div>
-          <div class="about_main layout_padding">
+          <div class="about_main">
             <div class="container">
+              <a class="text-white" style="font-size: 18px;" href="/admin/categories">< Revenir</a>
               <div class="card p-4">
 
                 <form name="newCategoryForm" action="/admin/categories/add/post" enctype="multipart/form-data"  method="POST" class="m-2"> <!-- TODO: changer lien hardcodé, mais trop fatigué pour le faire -->

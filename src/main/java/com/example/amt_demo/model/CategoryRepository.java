@@ -18,7 +18,7 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
 
 
     @Query(value = "select * from category c inner join carpet_categories cc on c.id = cc.categories_id where c.id = ?1", nativeQuery = true)
-    List<Category> hasArticlesInCategory(int id);
+    Set<Category> hasArticlesInCategory(int id);
 
     @Query(value = "select * from category c WHERE c.id IN (select c.id from category c inner join carpet_categories cc on c.id = cc.categories_id)", nativeQuery = true)
     List<Category> notEmptyCategory();
@@ -47,6 +47,4 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
     @Query(value = "Insert into carpet_categories(carpets_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)
     void addCategoryToCarpet(int carpet_id, int category_id);
 
-    @Query (value = "SELECT carpet.* FROM carpet INNER JOIN carpet_categories ON carpet.id = carpet_categories.carpets_id WHERE carpet_categories.categories_id = ?1", nativeQuery = true)
-    List<Carpet> findErrorDeletion(int category_id);
 }
