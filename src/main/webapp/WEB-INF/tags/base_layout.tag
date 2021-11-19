@@ -182,11 +182,8 @@
         if(quantity < 0){
             alert("Quantité invalide");
             return;
-        }else if(quantity == 0){
-            if(confirm("Retirer l'article du panier?")){
-                console.log("ouh oh")
-                removeArticleFromBasket(articleID, tokenName, csrfToken, redirect)
-            }
+        }else if(quantity == 0){ // L'égalité non-stricte est volontaire ici
+            removeArticleFromBasket(articleID, tokenName, csrfToken, redirect);
             return;
         }
 
@@ -209,6 +206,10 @@
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': csrfToken
         });
+
+        if(!confirm("Retirer l'article du panier?")){
+            return;
+        }
 
         fetch(window.location.origin+"/cart/" + articleID, { method: 'DELETE', headers })
             .then((res)=>{

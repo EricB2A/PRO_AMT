@@ -3,10 +3,8 @@ package com.example.amt_demo.model;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface CartInfoRepository extends CrudRepository<CartInfo, Integer> {
