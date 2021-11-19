@@ -127,6 +127,13 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Quantité</label>
+                                            <div class="col-sm-10">
+                                                <input type="number" name="quantity" value="<c:if test="${not empty carpet}">${carpet.quantity}</c:if>" />
+                                            </div>
+                                        </div>
+
 
                                         <c:if test="${not empty carpet.photos}">
                                         <div class="form-group row">

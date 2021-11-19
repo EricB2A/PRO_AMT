@@ -14,6 +14,9 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     private final Set<Carpet> carpets = new HashSet<>();
 
+    private Boolean checked;
+
+
     public Category() {
 
     }
@@ -22,6 +25,10 @@ public class Category {
         this.name = name;
     }
 
+    public Category (Integer id, String name) {
+        this(name);
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -37,5 +44,21 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
+    }
+
+    public Set<Carpet> getCarpets() {
+        return carpets;
+    }
+
+    public void addCarpet(Carpet carpet) {
+        this.carpets.add(carpet);
     }
 }
