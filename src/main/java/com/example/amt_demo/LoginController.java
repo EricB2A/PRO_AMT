@@ -6,8 +6,7 @@ import com.example.amt_demo.auth.UsernameJwtAuthenticationToken;
 import com.example.amt_demo.service.LoginService;
 import com.example.amt_demo.utils.login.LoginAPIResponse;
 import com.example.amt_demo.utils.login.UserCredentialsDTO;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +14,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,8 @@ public class LoginController {
     private final AuthenticationManager authenticationManager;
     private final LoginService loginService;
     private final Gson gson = new GsonBuilder().create();
+    private final JsonParser jsonParser = new JsonParser();
+
 
 
     @Autowired
@@ -48,7 +51,7 @@ public class LoginController {
     }
 
     @PostMapping(path = "/login")
-    public String login(HttpServletResponse response, LoginDTO login) {
+    public String login(HttpServletResponse response, LoginDTO login, ModelMap mp) {
         try {
             logger.info(login.toString());
             UsernameJwtAuthenticationToken token = (UsernameJwtAuthenticationToken)
@@ -58,9 +61,12 @@ public class LoginController {
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
             return "home";
-        } catch (Exception e) {   
-            return "redirect:/login?error=true";
+        } catch (AuthenticationException ignored) {
+            mp.addAttribute("badcredential", true);
+        } catch (Exception e) {
+            mp.addAttribute("error", true);
         }
+        return "login";
     }
 
     @PostMapping(path = "/inscription")
@@ -69,20 +75,17 @@ public class LoginController {
             LoginAPIResponse authResponse = loginService.registerUser(userCredentialsDTO);
             if (authResponse.getStatusCode() == HttpStatus.CREATED.value()) {
                 return "redirect:/login?signup=success";
-            } else if (HttpStatus.UNPROCESSABLE_ENTITY.value() == authResponse.getStatusCode()) {
-                // Ajout des errors dans le modelmap
-                Arrays.stream(gson.fromJson(authResponse.getContent().getJSONArray("errors").toString(), SignupErrorDTO[].class))
-                        .forEach(error -> mp.put(error.getProperty(), error.getMessage()));
-                // Ajout d'un flag pour simplifier l'utilisation dans JSP
-                mp.addAttribute("errorform", true);
-                return "signup";
-            } else if (authResponse.getStatusCode() == HttpStatus.CONFLICT.value()) {
-                mp.addAttribute("userAlreadyExists", true);
-                return "signup";
             }
+        } catch (HttpClientErrorException.Conflict e) {
+            mp.addAttribute("userAlreadyExists", true);
+        } catch (HttpClientErrorException.UnprocessableEntity e) {
+            JsonObject elem = jsonParser.parse(e.getResponseBodyAsString()).getAsJsonObject();
+            Arrays.stream(gson.fromJson( elem.getAsJsonArray(), SignupErrorDTO[].class))
+                    .forEach(error -> mp.put(error.getProperty(), error.getMessage()));
+            mp.addAttribute("errorform", true);
         } catch (Exception ignored) {
+            mp.addAttribute("error", true);
         }
-        mp.addAttribute("error", true);
         return "signup";
     }
 

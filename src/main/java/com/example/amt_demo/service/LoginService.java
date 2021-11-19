@@ -18,9 +18,13 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class LoginService {
@@ -34,8 +38,8 @@ public class LoginService {
         this.userRepository = userRepository;
     }
 
-    public LoginAPIResponse registerUser(UserCredentialsDTO credentials) throws JSONException {
-        logger.info("register user"+ credentials);
+    public LoginAPIResponse registerUser(UserCredentialsDTO credentials) throws JSONException, HttpClientErrorException {
+        logger.info("register user" + credentials);
         JSONObject json = new JSONObject()
                 .put("password", credentials.getPassword())
                 .put("username", credentials.getUsername());
@@ -54,10 +58,11 @@ public class LoginService {
                 .block();
         JSONObject responseBodyJSON = new JSONObject(response.getBody());
 
-        if( response.getStatusCodeValue() == HttpStatus.CREATED.value()){
-            logger.info("Register ok");
+        if (response.getStatusCode() == HttpStatus.CREATED) {
             User user = new User(responseBodyJSON.getInt("id"), responseBodyJSON.getString("role"), credentials);
             userRepository.save(user);
+        } else {
+            throw new HttpClientErrorException(response.getStatusCode(), response.getHeaders().toString(), response.getBody().getBytes(StandardCharsets.UTF_8), Charset.defaultCharset());
         }
         return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue(), LoginAPIResponse.RequestType.REGISTER);
     }
@@ -81,9 +86,11 @@ public class LoginService {
                 .block();
 
         JSONObject responseBodyJSON = new JSONObject(response.getBody());
+
         System.out.println(responseBodyJSON);
         return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue(), LoginAPIResponse.RequestType.LOGIN);
     }
+
     public void logout() {
         SecurityContextHolder.getContext().setAuthentication(
                 new AnonymousAuthenticationToken("ANONYMOUS", "ANONYMOUS", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")))

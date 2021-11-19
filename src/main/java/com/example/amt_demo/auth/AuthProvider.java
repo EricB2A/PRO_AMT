@@ -1,5 +1,6 @@
 package com.example.amt_demo.auth;
 
+import com.example.amt_demo.exception.AutentificationException;
 import com.example.amt_demo.service.CustomUserDetails;
 import com.example.amt_demo.service.CustomUserDetailsService;
 import com.example.amt_demo.service.LoginService;
@@ -39,7 +40,6 @@ public class AuthProvider implements AuthenticationProvider {
         String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
 
-
         try {
             LoginAPIResponse response = loginService.login(new UserCredentialsDTO(username, password));
             if (response.getStatusCode() == 200) {
@@ -47,15 +47,13 @@ public class AuthProvider implements AuthenticationProvider {
                 String token = jsonRes.getString("token");
                 JSONObject account = jsonRes.getJSONObject("account");
                 String role = account.getString("role");
-                logger.info("1");
                 UserDetails userDetails = userService.loadUserByUsername(authentication.getPrincipal().toString());
-                logger.info("10");
                 return new UsernameJwtAuthenticationToken(userDetails, password, token, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + role));
             }
         } catch (JSONException e) {
             // Ignore
         }
-        return null;
+        throw new AutentificationException("Bad credential");
     }
 
     @Override
