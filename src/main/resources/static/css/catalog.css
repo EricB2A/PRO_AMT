@@ -1,0 +1,25 @@
+.outofstock:before {
+    content: "";
+    background: rgba(255,255,255,0.5);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0; top: 0;
+}
+
+.outofstock:after {
+    content: "Indisponible";
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 100%;
+    text-align: right;
+    width: 90px;
+    height: 90px;
+    top: calc(50% - 45px);
+    left: calc(50% - 45px);
+    font-size: 0.8em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

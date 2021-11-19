@@ -34,10 +34,19 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
             "UNION \n" +
             "SELECT category.id, category.name, false as checked FROM category LEFT OUTER JOIN carpet_categories ON category.id = carpet_categories.categories_id\n" +
             "WHERE carpet_categories.carpets_id != ?1 OR carpet_categories.carpets_id IS NULL", nativeQuery = true)
-    Set<Category> getCategoriesByCarpet(Integer id);
+    Set<Category> getCategoriesByCarpet2(Integer id);
+
+    @Query(value = "SELECT c from Category c JOIN c.carpets cr WHERE cr.id = ?1")
+    List<Category> getCategoriesOfCarpet(Integer carpetId);
+
+    @Query(value = "SELECT c from Category c")
+    List<Category> getAllCategories();
 
     @Modifying
     @Transactional
     @Query(value = "Insert into carpet_categories(carpets_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)
     void addCategoryToCarpet(int carpet_id, int category_id);
+
+    @Query (value = "SELECT carpet.* FROM carpet INNER JOIN carpet_categories ON carpet.id = carpet_categories.carpets_id WHERE carpet_categories.categories_id = ?1", nativeQuery = true)
+    List<Carpet> findErrorDeletion(int category_id);
 }

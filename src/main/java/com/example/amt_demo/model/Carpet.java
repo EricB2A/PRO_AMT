@@ -16,7 +16,8 @@ public class Carpet {
     private Integer id;
     private String name;
     private String description;
-    private Double price;
+    private Double price = 0.0;
+    private Integer quantity = 0;
 
     @OneToMany(mappedBy = "carpet")
     Set<CartInfo> cartInfos;
@@ -34,6 +35,7 @@ public class Carpet {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.quantity = 0;
     }
 
     public Double getPrice() {
@@ -68,6 +70,13 @@ public class Carpet {
         this.description = description;
     }
 
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 
     public List<CarpetPhoto> getPhotos() {
         return photos;
@@ -77,9 +86,11 @@ public class Carpet {
         return categories;
     }
 
+    // Used in View for article_thumbnail to get first photo
     public String getFirstPhotoPath(){
 
-        String path = "/carpet-photos/placeholder-image.png";
+        String path = "carpet-photos/placeholder-image.png";
+
         if(!photos.isEmpty()){
             path = photos.get(0).getPath();
         }

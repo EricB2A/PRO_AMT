@@ -2,13 +2,11 @@ package com.example.amt_demo;
 
 import com.example.amt_demo.model.*;
 import com.example.amt_demo.service.PhotoUploadService;
-import com.example.amt_demo.utils.FileUploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,11 +18,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-@RequestMapping(path = "/admin/carpets")
+@RequestMapping(path = "/admin/articles")
 @Controller
 public class ArticleController {
 
@@ -37,10 +36,10 @@ public class ArticleController {
     @Autowired
     PhotoUploadService photoStorageService;
 
-    @GetMapping(path="/{id}", produces = {"application/xml"})
-    public String getAllCarpets(ModelMap mp, @PathVariable String id) {
-        mp.addAttribute("article", carpetRepository.findById(Integer.valueOf(id)));
-        return "article";
+    @GetMapping(path="", produces = {"application/xml"})
+    public String getAllCarpets(ModelMap mp) {
+        mp.addAttribute("articles", carpetRepository.findAll());
+        return "admin/articles";
     }
 
     @DeleteMapping("/{id}")
@@ -55,10 +54,38 @@ public class ArticleController {
 
     @GetMapping("/add")
     public String addCarpetForm(ModelMap mp) {
-        mp.addAttribute("categories", categoryRepository.getCategoriesByCarpet(-1));
+        mp.addAttribute("categories_not_checked", categoryRepository.getAllCategories());
         mp.addAttribute("adding", true);
-        mp.addAttribute("post_url", "/admin/carpets/add/post");
+        mp.addAttribute("post_url", "/admin/articles/add/post");
         return "admin/articleForm";
+    }
+
+    @PostMapping("/add/post")
+    public RedirectView addCarpet(Carpet newCarpet, @RequestParam(name = "categories", required = false) String categories, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir, ModelMap mp) {
+        // TODO : Image upload
+        if(newCarpet.getName().length() == 0){
+            RedirectView redirectView = new RedirectView("/admin/articles/add",true);
+            redir.addFlashAttribute("msg_missing_name",true);
+            return redirectView;
+        }
+
+        Carpet tryFind = carpetRepository.findByName(newCarpet.getName());
+        if(tryFind != null){
+            RedirectView redirectView = new RedirectView("/admin/articles/add",true);
+            redir.addFlashAttribute("msg_already_existing_article",true);
+            return redirectView;
+        }
+        carpetRepository.save(newCarpet);
+        this.uploadImages(newCarpet, images);
+        carpetRepository.save(newCarpet);
+        if(categories != null) {
+            for (String c : categories.split(",")) {
+                categoryRepository.addCategoryToCarpet(Integer.valueOf(newCarpet.getId()), Integer.valueOf(c));
+            }
+        }
+        RedirectView redirectView = new RedirectView("/admin/articles",true);
+        redir.addFlashAttribute("msg_article_added",true);
+        return redirectView;
     }
 
     @GetMapping("{carpet_id}/photo/delete/{id}")
@@ -78,39 +105,43 @@ public class ArticleController {
             carpetRepository.save(c);
 
         }
-        RedirectView redirectView = new RedirectView("/admin/carpets/edit/"+carpet_id,true);
+        RedirectView redirectView = new RedirectView("/admin/articles/edit/"+carpet_id,true);
         redir.addFlashAttribute("msg_photo_deleted",true);
         return redirectView;
     }
 
-    @PostMapping("/add/post")
-    public RedirectView addCarpet(Carpet newCarpet, @RequestParam(name = "categories", required = false) String categories, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
-        // TODO : Image upload
-        carpetRepository.save(newCarpet);
-        this.uploadImages(newCarpet, images);
-        carpetRepository.save(newCarpet);
-        if(categories != null) {
-            for (String c : categories.split(",")) {
-                categoryRepository.addCategoryToCarpet(Integer.valueOf(newCarpet.getId()), Integer.valueOf(c));
-            }
+
+
+    private void handleQuantity(Integer carpetId, Integer toAdd){
+        Carpet carpet = carpetRepository.findId(carpetId);
+        Integer current = carpet.getQuantity();
+        if(current + toAdd >= 0){
+            carpet.setQuantity(carpet.getQuantity()+toAdd);
+            carpetRepository.save(carpet);
         }
-        RedirectView redirectView = new RedirectView("/admin",true);
-        redir.addFlashAttribute("msg_article_added",true);
+    }
+
+    @GetMapping("/quantity/increase/{id}")
+    public RedirectView increaseQuantity(ModelMap mp, @PathVariable String id, RedirectAttributes redir) {
+        this.handleQuantity(Integer.parseInt(id), 1);
+        RedirectView redirectView = new RedirectView("/admin/articles",true);
+        redir.addFlashAttribute("msg_article_quantity_increase",true);
+        redir.addFlashAttribute("articles",carpetRepository.findAll());
         return redirectView;
     }
 
-    @GetMapping("/edit/{id}")
-    public String editArticle(ModelMap mp, @PathVariable String id) {
-        mp.addAttribute("editing", true);
-        mp.addAttribute("post_url", "/admin/carpets/edit/post");
-        mp.addAttribute("article", carpetRepository.findById(Integer.valueOf(id)));
-        mp.addAttribute("categories", categoryRepository.getCategoriesByCarpet(Integer.valueOf(id)));
-        return "admin/articleForm";
+    @GetMapping("/quantity/decrease/{id}")
+    public RedirectView decreaseQuantity(ModelMap mp, @PathVariable String id, RedirectAttributes redir) {
+        this.handleQuantity(Integer.parseInt(id), -1);
+        RedirectView redirectView = new RedirectView("/admin/articles",true);
+        redir.addFlashAttribute("msg_article_quantity_decrease",true);
+        redir.addFlashAttribute("articles",carpetRepository.findAll());
+        return redirectView;
     }
 
     @PostMapping("/edit/post")
     public RedirectView editArticle(Carpet updated, @RequestParam(name = "categories", required = false) String categories, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
-        carpetRepository.save(updated);
+
         this.uploadImages(updated, images);
         carpetRepository.save(updated);
         if(categories != null) {
@@ -118,9 +149,22 @@ public class ArticleController {
                 categoryRepository.addCategoryToCarpet(Integer.valueOf(updated.getId()), Integer.valueOf(c));
             }
         }
-        RedirectView redirectView = new RedirectView("/admin/carpets/edit/"+updated.getId(),true);
+        RedirectView redirectView = new RedirectView("/admin/articles/edit/"+updated.getId(),true);
         redir.addFlashAttribute("msg_article_edited",true);
         return redirectView;
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editArticle(ModelMap mp, @PathVariable String id) {
+        mp.addAttribute("editing", true);
+        mp.addAttribute("post_url", "/admin/articles/edit/post");
+        mp.addAttribute("article", carpetRepository.findById(Integer.valueOf(id)));
+        List<Category> checked = categoryRepository.getCategoriesOfCarpet(Integer.valueOf(id));
+        List<Category> notChecked = categoryRepository.getAllCategories();
+        for(Category cat : checked) notChecked.remove(cat);
+        mp.addAttribute("categories_checked", checked);
+        mp.addAttribute("categories_not_checked", notChecked);
+        return "admin/articleForm";
     }
 
     @GetMapping("/delete/{id}")
@@ -132,7 +176,7 @@ public class ArticleController {
         mp.addAttribute("categories", categoryRepository.findAll());
         mp.addAttribute("articles", carpetRepository.findAll());
         mp.addAttribute("msg_article_deleted", true);
-        return "admin/admin";
+        return "admin/articles";
     }
 
     private void uploadImages(Carpet carpet, MultipartFile[] images){

@@ -23,10 +23,12 @@
 
     <!-- bootstrap css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+
     <!-- style css -->
     <link rel="stylesheet" href="/css/style.css">
     <!-- Responsive-->
     <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/catalog.css">
     <!-- fevicon -->
     <link rel="icon" type="image/png" href="/fav.png"/>
     <!-- Scrollbar Custom CSS -->
@@ -102,6 +104,8 @@
 
     });
 
+    /*
+
     document.getElementById("category").click();
 
     function openTab(evt, tabName) {
@@ -125,7 +129,7 @@
         evt.currentTarget.className += " active";
     }
 
-
+    */
 
     // Non à jQuery.
     function deleteArticle(tokenName, csrfToken) {

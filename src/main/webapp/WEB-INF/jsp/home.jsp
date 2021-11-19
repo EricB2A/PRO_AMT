@@ -33,6 +33,7 @@
                             <jsp:attribute name="article_id">${article.id}</jsp:attribute>
                             <jsp:attribute name="article_name">${article.name}</jsp:attribute>
                             <jsp:attribute name="article_price">${article.price}</jsp:attribute>
+                            <jsp:attribute name="article_quantity">${article.quantity}</jsp:attribute>
                             <jsp:attribute name="article_img_path">${article.getFirstPhotoPath()}</jsp:attribute>
                             <jsp:attribute name="article_nb_stars">${3}</jsp:attribute>
                         </t:article_thumbnail>
