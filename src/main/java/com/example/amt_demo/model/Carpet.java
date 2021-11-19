@@ -35,9 +35,10 @@ public class Carpet {
 
     /**
      * Constructor of Carpet
-     * @param name - the name of the Carpet
+     *
+     * @param name        - the name of the Carpet
      * @param description - the description of the Carpet
-     * @param price - the price of the Carpet
+     * @param price       - the price of the Carpet
      */
     public Carpet(String name, String description, Double price) {
         this.name = name;
@@ -48,10 +49,11 @@ public class Carpet {
 
     /**
      * Constructor of Carpet
-     * @param name - the name of the Carpet
+     *
+     * @param name        - the name of the Carpet
      * @param description - the description of the Carpet
-     * @param price - the price of the Carpet
-     * @param quantity - the quantity of the Carpet
+     * @param price       - the price of the Carpet
+     * @param quantity    - the quantity of the Carpet
      */
     public Carpet(String name, String description, Double price, Integer quantity) {
         this(name, description, price);
@@ -120,13 +122,15 @@ public class Carpet {
     }
 
     // Used in View for article_thumbnail to get first photo
-    public String getFirstPhotoPath(){
+    public String getFirstPhotoPath() {
 
         String path = "carpet-photos/placeholder-image.png";
 
-        if(!photos.isEmpty()){
+        if (!photos.isEmpty()) {
             path = photos.get(0).getPath();
         }
         return path;
     }
+
+}
 
