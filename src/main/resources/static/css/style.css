@@ -308,6 +308,7 @@ button {
     color: #ffffff;
     font-size: 16pt;
 }
+
 .add_bt {
     width: 32%;
     height: 50px;
@@ -923,11 +924,13 @@ a:hover {
     position: relative;
     z-index: 100;
 }
-.form-label{
+
+.form-label {
     font-size: 1.5rem;
     color: white;
 }
-.clickable{
+
+.clickable {
     cursor: pointer;
 }
 
@@ -968,19 +971,19 @@ a:hover {
 
 .bg-white {
     background: #ffffff;
-    padding : 0px
+    padding: 0px
 }
 
 
 .table {
-    width:100%;
-    border:1px solid #EEEEEE;
+    width: 100%;
+    border: 1px solid #EEEEEE;
 }
 
 .table-header {
-    display:flex;
-    width:100%;
-    background:#000;
+    display: flex;
+    width: 100%;
+    background: #000;
     padding: calc(12px * 1.5) 0;
 }
 
@@ -991,17 +994,17 @@ a:hover {
 }
 
 table-row:nth-of-type(odd) {
-     background:#EEEEEE;
- }
+    background: #EEEEEE;
+}
 
 .table-data, .header__item {
     flex: 1 1 20%;
-    text-align:center;
+    text-align: center;
 }
 
 
 .header__item {
-    text-transform:uppercase;
+    text-transform: uppercase;
     color: white;
 }
 
@@ -1015,20 +1018,26 @@ table-row:nth-of-type(odd) {
 }
 
 filter__link::after {
-     content:'';
-     position:absolute;
-     right: calc(12px * 1.5);
-     color:white;
-     font-size: 12px;
-     top: 50%;
-     transform: translateY(-50%);
- }
+    content: '';
+    position: absolute;
+    right: calc(12px * 1.5);
+    color: white;
+    font-size: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
 filter__link.desc::after {
-     content: '(desc)';
- }
+    content: '(desc)';
+}
 
 filter__link.asc::after {
-     content: '(asc)';
- }
+    content: '(asc)';
+}
 
+.custom-feedback {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #4c1616
+}

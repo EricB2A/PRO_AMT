@@ -1,33 +1,34 @@
 package com.example.amt_demo.model;
 
-import javax.management.relation.RoleInfo;
+import com.example.amt_demo.utils.login.UserCredentialsDTO;
+
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class User {
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(nullable = false, unique = true)
-    private String email;
+    private String username;
+    private String role;
+    public User() {
 
-    @Column(nullable = false)
-    private String password;
+    }
 
-    @OneToMany(mappedBy = "user")
-    Set<CartInfo> cartInfos;
+    public User(Integer id, String role, UserCredentialsDTO cred) {
+        this.id = id ;
+        this.username = cred.getUsername();
+        this.role= role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getUsername() {
         return username;
@@ -37,50 +38,12 @@ public class User {
         this.username = username;
     }
 
-    private String username;
-    private String firstname;
-    private String lastname;
-
-    @ManyToMany (fetch = FetchType.EAGER)
-    private Set<Role> roles = new HashSet<>();
-
-    public Set<Role> getRoles() {
-        return roles;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-    
-    public String getEmail() {
-        return email;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
 }

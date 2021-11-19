@@ -48,7 +48,7 @@ public class CartController {
     private User getLoggedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(!(auth instanceof AnonymousAuthenticationToken)) {
-            return userRepository.findByEmail(auth.getName());
+            return userRepository.findByUsername(auth.getName());
         }
         return null;
     }

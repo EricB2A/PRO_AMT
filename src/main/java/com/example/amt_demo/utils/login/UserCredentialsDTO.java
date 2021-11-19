@@ -1,9 +1,9 @@
 package com.example.amt_demo.utils.login;
 
-public class UserCredentials {
+public class UserCredentialsDTO {
     private String username;
     private String password;
-    public UserCredentials(String username, String password) {
+    public UserCredentialsDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }

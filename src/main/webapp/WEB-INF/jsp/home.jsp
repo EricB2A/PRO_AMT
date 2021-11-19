@@ -5,7 +5,7 @@
 
 <t:base_layout>
     <jsp:attribute name="title">
-        SilkyRoadASDASDASDASDASD
+        SilkyRoad: le tapis qui vous fera vous envoler
     </jsp:attribute>
     <jsp:attribute name="withbanner">
         true
@@ -14,9 +14,6 @@
         <div class="layout_padding gallery_section">
 
             <div class="container">
-                <sec:authorize access="hasRole('admin')">
-                    <a class="btn add_bt" href="/admin/carpets/add">Nouvel article</a>
-                </sec:authorize>
                 <h2>
                     Boutique
                 </h2>
