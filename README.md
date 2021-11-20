@@ -77,15 +77,15 @@ Veuillez noter que les méthodes de types `setter` et `getter` ne sont pas prés
 | PUT        | `/api/carpets/{id}` | `CarperControllerAPI` |
 | DELETE     | `/api/carpets/{id}` | `CarperControllerAPI` |
 | GET        | `/login`            | `LoginController`     |
-| POST       | `/login`            | (1)                   |
-| POST       | `/logout`           | (1)                   |
+| POST       | `/login`            | `LoginController`     |
+| POST       | `/inscription`      | `LoginController`     |
+| GET        | `/inscription`      | `LoginController`     |
+| POST       | `/deconnexion`      | `LoginController`     |
 | GET        | `/cart`             | `CartController`      |
 | PUT        | `/cart/{id}`        | `CartController`      |
 | POST       | `/cart/{id}`        | `CartController`      |
 | DELETE     | `/cart/{id}`        | `CartController`      |
 
-
-- (1) Routes fournies et gérées par Spring Security 
 
 
 ## L'équipe 🦍
