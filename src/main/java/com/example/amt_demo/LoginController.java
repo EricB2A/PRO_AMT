@@ -36,8 +36,6 @@ public class LoginController {
     private final Gson gson = new GsonBuilder().create();
     private final JsonParser jsonParser = new JsonParser();
 
-
-
     @Autowired
     public LoginController(AuthenticationManager authenticationManager, @Value("${com.example.amt_demo.config.jwt.cookie.name}") String accessTokenName, LoginService loginService) {
         this.authenticationManager = authenticationManager;
