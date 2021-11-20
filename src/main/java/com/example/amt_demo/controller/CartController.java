@@ -3,7 +3,7 @@
  * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
  * @file CartController.java
  *
- * @brief
+ * @brief TODO
  */
 
 package com.example.amt_demo.controller;
@@ -47,7 +47,6 @@ public class CartController {
      * @param userRepository
      */
     public CartController(CartInfoRepository cartInfoRepository, ArticleRepository articleRepository, UserRepository userRepository) {
-        // On écrit un constructeur de 5 lignes pour retirer 3 lignes d'@autowired.. les calculs sont pas bons.
         this.cartInfoRepository = cartInfoRepository;
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
@@ -177,7 +176,5 @@ public class CartController {
                 CookieUtils.storeArticleToCartCookie(request, response, id, quantity, true);
             }
         }
-
     }
-
 }

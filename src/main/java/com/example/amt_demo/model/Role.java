@@ -18,16 +18,16 @@ public class Role {
     private String name;
 
     /**
-     *
-     * @return
+     * Getter of the name of the Role
+     * @return the name of the Role
      */
     public String getName() {
         return name;
     }
 
     /**
-     *
-     * @param name
+     * Setter of the name of the Role
+     * @param name the name of the Role
      */
     public void setName(String name) {
         this.name = name;

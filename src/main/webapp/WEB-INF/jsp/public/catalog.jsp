@@ -4,19 +4,12 @@
 
 <t:base_layout>
     <jsp:attribute name="title">
-        Silky Road: - Catalog
+        Silky Road: - Catalogue
     </jsp:attribute>
     <jsp:attribute name="withbanner">
         false
     </jsp:attribute>
     <jsp:body>
-        <script>
-            (function() {
-
-                console.log("Je m'appelle Stéfan et j'ouvre des balises pour rien.")
-
-            })();
-        </script>
         <div class="layout_padding gallery_section">
             <div class="container bg-transparent text-white">
 

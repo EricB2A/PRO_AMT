@@ -3,7 +3,7 @@
  * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
  * @file UserRepository.java
  *
- * @brief
+ * @brief TODO
  */
 
 package com.example.amt_demo.model;

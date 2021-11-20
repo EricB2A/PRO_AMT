@@ -1,7 +1,7 @@
 /**
  * @team AMT - Silkyroad
  * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
- * @file UserCredentials.java
+ * @file UserCredentialsDTO.java
  *
  * @brief TODO
  */

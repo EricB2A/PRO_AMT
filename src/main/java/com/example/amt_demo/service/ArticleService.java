@@ -1,9 +1,9 @@
 /**
  * @team AMT - Silkyroad
  * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
- * @file CarpetService.java
+ * @file ArticleService.java
  *
- * @brief
+ * @brief Service of Article
  */
 
 package com.example.amt_demo.service;

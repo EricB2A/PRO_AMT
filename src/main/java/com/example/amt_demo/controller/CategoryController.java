@@ -75,8 +75,6 @@ public class CategoryController {
         return "admin/categories";
     }
 
-    //TODO N'est pas demandé dans le cahier des charges d'éditer la catégorie, ça fonctionne mais on jarte ?
-
     /**
      *
      * @param mp
@@ -91,7 +89,6 @@ public class CategoryController {
         return "admin/categoryForm";
     }
 
-    //TODO Idem ici
     /**
      *
      * @param updated
@@ -118,7 +115,6 @@ public class CategoryController {
      * @param id
      * @return
      */
-    //TODO COMMENT QUE CELA MARCHE LE DELETEMAPPING
     @GetMapping("/delete/{id}")
     public String deleteCategory(ModelMap mp, @PathVariable String id) {
         Category category = categoryService.findId(Integer.valueOf(id));
