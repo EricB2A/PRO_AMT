@@ -1,6 +1,13 @@
+/**
+ * @team AMT - Silkyroad
+ * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file Seeder.java
+ *
+ * @brief Class creating basic datas for User
+ */
+
 package com.example.amt_demo.seed;
 
-import com.example.amt_demo.model.RoleRepository;
 import com.example.amt_demo.model.User;
 import com.example.amt_demo.model.UserRepository;
 import org.slf4j.Logger;
@@ -19,6 +26,12 @@ public class Seeder implements CommandLineRunner {
     final private int adminId;
     final private String adminUsername;
 
+    /**
+     *
+     * @param userRepository
+     * @param adminId
+     * @param adminUsername
+     */
     @Autowired
     public Seeder(UserRepository userRepository,
                   @Value("${com.example.amt_demo.config.admin.id}") String adminId,
@@ -29,12 +42,19 @@ public class Seeder implements CommandLineRunner {
         logger = LoggerFactory.getLogger(Seeder.class);
     }
 
+    /**
+     *
+     * @param args
+     * @throws Exception
+     */
     @Override
     public void run(String... args) throws Exception {
-
         createAdmin();
     }
 
+    /**
+     *
+     */
     public void createAdmin() {
         logger.debug("Init data...");
         User user = userRepository.findByUsername("silkyroad");

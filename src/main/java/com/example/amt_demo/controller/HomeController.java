@@ -21,9 +21,9 @@ public class HomeController {
     private ArticleRepository articleRepository;
 
     /**
-     *
-     * @param mp
-     * @return
+     * Method displaying the home page
+     * @param mp the ModelMap
+     * @return the view to the home page
      */
     @GetMapping(value={"/accueil","/"})
     public String index(ModelMap mp) {

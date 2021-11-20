@@ -6,7 +6,6 @@
  * @brief TODO
  */
 
-
 package com.example.amt_demo.auth.DTO;
 
 public class SignupErrorDTO {

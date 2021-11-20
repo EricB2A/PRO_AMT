@@ -1,9 +1,9 @@
 /**
  * @team AMT - Silkyroad
  * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
- * @file PhotoUpload.java
+ * @file PhotoUploadService.java
  *
- * @brief
+ * @brief TODO
  */
 
 package com.example.amt_demo.service;
@@ -42,7 +42,6 @@ public class PhotoUploadService{
         return (new File(filePath)).delete();
     }
 
-    //TODO EST-CE ENCORE UTILE ?
     public boolean deleteFolder(String folderPath){
         File directory = new File(folderPath);
         File[] allContents = directory.listFiles();
