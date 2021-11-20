@@ -39,4 +39,4 @@ carpet-photos/*
 ### DATABASE ###
 docker/docker-mysql/silkyRoad.sql
 
-*/application.properties
+src/main/resources/application.properties
