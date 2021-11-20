@@ -19,7 +19,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
+//ANOTHER USELESS COMMENT
 @Service
 public class AuthProvider implements AuthenticationProvider {
 
