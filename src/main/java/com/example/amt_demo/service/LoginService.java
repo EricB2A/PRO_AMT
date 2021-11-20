@@ -26,9 +26,13 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class LoginService {
@@ -74,10 +78,12 @@ public class LoginService {
                 .block();
         JSONObject responseBodyJSON = new JSONObject(response.getBody());
 
-        if( response.getStatusCodeValue() == HttpStatus.CREATED.value()){
-            logger.info("Register ok");
+        if (response.getStatusCode() == HttpStatus.CREATED) {
             User user = new User(responseBodyJSON.getInt("id"), responseBodyJSON.getString("role"), credentials);
             userRepository.save(user);
+        } else {
+            logger.info("===>");
+            throw HttpClientErrorException.create(response.getStatusCode(), "", response.getHeaders(), response.getBody().getBytes(StandardCharsets.UTF_8), Charset.defaultCharset());
         }
         return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue(), LoginAPIResponse.RequestType.REGISTER);
     }

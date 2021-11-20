@@ -52,7 +52,7 @@
                         </div>
                         <div class="row">
                             <div class="offset-3">
-                                <a href="/inscription">Pas encore de compte ?</a>
+                                <a href="/signup">Pas encore de compte ?</a>
                             </div>
                         </div>
                         <div class="row mt-3">

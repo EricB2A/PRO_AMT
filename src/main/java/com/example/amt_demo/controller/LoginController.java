@@ -97,7 +97,7 @@ public class LoginController {
      * @param mp
      * @return
      */
-    @PostMapping(path = "/inscription")
+    @PostMapping(path = "/signup")
     public String getSignup(UserCredentialsDTO userCredentialsDTO, ModelMap mp) {
         try {
             LoginAPIResponse authResponse = loginService.registerUser(userCredentialsDTO);
@@ -112,7 +112,6 @@ public class LoginController {
                     .forEach(error -> mp.put(error.getProperty(), error.getMessage()));
             mp.addAttribute("errorform", true);
         } catch (Exception ignored) {
-            logger.info(ignored.getClass().getSimpleName());
             mp.addAttribute("error", true);
         }
         return "signup";
@@ -123,7 +122,7 @@ public class LoginController {
      * @param response
      * @return
      */
-    @PostMapping(path = "/deconnexion")
+    @PostMapping(path = "/signout")
     public String logout(HttpServletResponse response) {
         loginService.logout();
         Cookie cookie = new Cookie(accessTokenName, "");
@@ -137,7 +136,7 @@ public class LoginController {
      * Method displaying the signup form
      * @return the view of the signup form
      */
-    @GetMapping(path = "/inscription")
+    @GetMapping(path = "/signup")
     public String signup() {
         return "signup";
     }

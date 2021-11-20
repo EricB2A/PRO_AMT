@@ -87,8 +87,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
             .antMatchers("/admin/**").hasRole("admin")
-            .antMatchers("/deconnexion").authenticated()
-            .antMatchers("/login","/inscription").anonymous()
+            .antMatchers("/signout").authenticated()
+            .antMatchers("/login","/signup").anonymous()
             .antMatchers("/", "/carpets", "/accueil", "/images/**", "/css/**", "/js/**", "/catalog/**", "/cart/**","/carpet-photos/**").permitAll()
             .anyRequest().denyAll(); // Grant access for endpoint to nobody
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
