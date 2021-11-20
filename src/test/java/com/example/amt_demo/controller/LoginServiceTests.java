@@ -2,23 +2,26 @@
  * @team AMT - Silkyroad
  * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
  * @file LoginServiceTests.java
- *
  * @brief
  */
 
 package com.example.amt_demo.controller;
 
 import com.example.amt_demo.model.UserRepository;
-import com.example.amt_demo.utils.login.UserCredentialsDTO;
 import com.example.amt_demo.service.LoginService;
+import com.example.amt_demo.utils.login.UserCredentialsDTO;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
 
@@ -40,6 +43,15 @@ public class LoginServiceTests {
         mockLogin.start();
         String url = String.format("http://localhost:%s", mockLogin.getPort());
         loginService = new LoginService(url, userRepository);
+    }
+
+    /**
+     *
+     * @throws IOException
+     */
+    @AfterAll
+    static void tearDown() throws IOException {
+        mockLogin.shutdown();
     }
 
     /**
@@ -69,25 +81,6 @@ public class LoginServiceTests {
      * @throws InterruptedException
      * @throws JSONException
      */
-    @Test
-    void wrongCredentials() throws InterruptedException, JSONException {
-        UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
-        JSONObject error = new JSONObject()
-                .put("error", "testError");
-        mockLogin.enqueue(new MockResponse()
-                .setResponseCode(403)
-                .setBody(error.toString()));
-        Assertions.assertEquals(loginService.login(credentials).getStatusCode(), 403);
-        RecordedRequest recordedRequest = mockLogin.takeRequest();
-        Assertions.assertEquals("POST", recordedRequest.getMethod());
-        Assertions.assertEquals("/auth/login", recordedRequest.getPath());
-    }
-
-    /**
-     *
-     * @throws InterruptedException
-     * @throws JSONException
-     */
     //TODO:FIX THIS TEST
     /*
     @Test
@@ -107,6 +100,24 @@ public class LoginServiceTests {
     }
     */
 
+    /**
+     *
+     * @throws InterruptedException
+     * @throws JSONException
+     */
+    @Test
+    void wrongCredentials() throws InterruptedException, JSONException {
+        UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
+        JSONObject error = new JSONObject()
+                .put("error", "testError");
+        mockLogin.enqueue(new MockResponse()
+                .setResponseCode(403)
+                .setBody(error.toString()));
+        Assertions.assertEquals(loginService.login(credentials).getStatusCode(), 403);
+        RecordedRequest recordedRequest = mockLogin.takeRequest();
+        Assertions.assertEquals("POST", recordedRequest.getMethod());
+        Assertions.assertEquals("/auth/login", recordedRequest.getPath());
+    }
 
     /**
      *
@@ -114,17 +125,21 @@ public class LoginServiceTests {
      * @throws JSONException
      */
     @Test
-    public void invalidRegister409() throws InterruptedException, JSONException {
-        UserCredentialsDTO credentials = new UserCredentialsDTO("username","password");
-        JSONObject credentialsJson = new JSONObject()
-                .put("error", "testError");
-        mockLogin.enqueue(new MockResponse()
-                .setResponseCode(409)
-                .setBody(credentialsJson.toString()));
-        Assertions.assertEquals(loginService.registerUser(credentials).getStatusCode(), 409);
-        RecordedRequest recordedRequest = mockLogin.takeRequest();
-        Assertions.assertEquals("POST", recordedRequest.getMethod());
-        Assertions.assertEquals("/accounts/register", recordedRequest.getPath());
+    public void invalidRegister409() throws InterruptedException, JSONException, HttpClientErrorException.Conflict {
+
+        Assertions.assertThrows(HttpClientErrorException.Conflict.class, () -> {
+            UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
+            JSONObject credentialsJson = new JSONObject()
+                    .put("error", "testError");
+            mockLogin.enqueue(new MockResponse()
+                    .setResponseCode(409)
+                    .setBody(credentialsJson.toString()));
+            Assertions.assertEquals(loginService.registerUser(credentials).getStatusCode(), 409);
+            RecordedRequest recordedRequest = mockLogin.takeRequest();
+            Assertions.assertEquals("POST", recordedRequest.getMethod());
+            Assertions.assertEquals("/accounts/register", recordedRequest.getPath());
+        });
+
     }
 
     /**
@@ -134,24 +149,17 @@ public class LoginServiceTests {
      */
     @Test
     public void invalidRegister422() throws InterruptedException, JSONException {
-        UserCredentialsDTO credentials = new UserCredentialsDTO("username","password");
-        JSONObject credentialsJson = new JSONObject()
-                .put("error", "testError");
-        mockLogin.enqueue(new MockResponse()
-                .setResponseCode(422)
-                .setBody(credentialsJson.toString()));
-        Assertions.assertEquals(loginService.registerUser(credentials).getStatusCode(), 422);
-        RecordedRequest recordedRequest = mockLogin.takeRequest();
-        Assertions.assertEquals("POST", recordedRequest.getMethod());
-        Assertions.assertEquals("/accounts/register", recordedRequest.getPath());
-    }
-
-    /**
-     *
-     * @throws IOException
-     */
-    @AfterAll
-    static void tearDown() throws IOException {
-        mockLogin.shutdown();
+        Assertions.assertThrows(HttpClientErrorException.UnprocessableEntity.class, () -> {
+            UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
+            JSONObject credentialsJson = new JSONObject()
+                    .put("error", "testError");
+            mockLogin.enqueue(new MockResponse()
+                    .setResponseCode(422)
+                    .setBody(credentialsJson.toString()));
+            Assertions.assertEquals(loginService.registerUser(credentials).getStatusCode(), 422);
+            RecordedRequest recordedRequest = mockLogin.takeRequest();
+            Assertions.assertEquals("POST", recordedRequest.getMethod());
+            Assertions.assertEquals("/accounts/register", recordedRequest.getPath());
+        });
     }
 }
