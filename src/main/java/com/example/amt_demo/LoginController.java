@@ -80,10 +80,11 @@ public class LoginController {
             mp.addAttribute("userAlreadyExists", true);
         } catch (HttpClientErrorException.UnprocessableEntity e) {
             JsonObject elem = jsonParser.parse(e.getResponseBodyAsString()).getAsJsonObject();
-            Arrays.stream(gson.fromJson( elem.getAsJsonArray(), SignupErrorDTO[].class))
+            Arrays.stream(gson.fromJson( elem.get("errors").getAsJsonArray(), SignupErrorDTO[].class))
                     .forEach(error -> mp.put(error.getProperty(), error.getMessage()));
             mp.addAttribute("errorform", true);
         } catch (Exception ignored) {
+            logger.info(ignored.getClass().getSimpleName());
             mp.addAttribute("error", true);
         }
         return "signup";
