@@ -22,7 +22,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-//ANOTHER USELESS COMMENT
+//COMMENTAIRE
 @Service
 public class AuthProvider implements AuthenticationProvider {
 
