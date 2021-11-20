@@ -32,6 +32,19 @@ cd docker/docker-mysql && touch silkyRoad.sql && docker compose up
 4. Lancer Spring boot et le Tomcat Server *(^R)*.
 5. Allez à l'adresse [localhost:8080](http://localhost:8080/) et vous voilà prêt à contribuer :cool:. 
 
+### Variables d'enrivonnement
+Afin de pouvoir utiliser notre application en local, il faut ajouter plusieurs variables d'environnement :
+
+<ul>
+<li>AUTH_SERVICE_SECRET</li> 
+<li>AUTH_SERVICE_IP</li>
+</ul>
+
+Pour ajouter des variables d'environnement, aller sous Run->Edit Configuration
+
+Dans la configuration Spring Boot correspondant à l'application, sous Environment -> environment variables, cliquez sur l'icône de bloc note
+et ajoutez les deux variables ci-dessus avec leur valeurs respectives
+
 ## SGBD 🐋
 Notre application utilise le SGBD relationnel `mySQL`, que nous avons Dockerisé via l'image [mysql-server](https://hub.docker.com/r/mysql/mysql-server/).
 Par défaut, le conteneur Docker sera accessible depuis l'hôte sur le ``port 3307`` avec le mot de passe ``root``. Les données sont stockées dans le fichier `silkyRoad.sql`.  
