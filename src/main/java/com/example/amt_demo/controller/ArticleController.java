@@ -12,6 +12,7 @@ import com.example.amt_demo.model.*;
 import com.example.amt_demo.service.ArticleService;
 import com.example.amt_demo.service.CategoryService;
 import com.example.amt_demo.service.PhotoUploadService;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,17 +83,12 @@ public class ArticleController {
      */
     @PostMapping("/add/post")
     public RedirectView addCarpet(Article newArticle, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
-        if(newArticle.getName().length() == 0){
-            RedirectView redirectView = new RedirectView("/admin/articles/add",true);
-            redir.addFlashAttribute("msg_missing_name",true);
-            return redirectView;
-        }
-        if(newArticle.getPrice() == null || newArticle.getPrice() < 0) newArticle.setPrice(0.0);
-        if(newArticle.getQuantity() == null || newArticle.getQuantity() < 0) newArticle.setQuantity(0);
+        RedirectView redirectView = checkArticleName(newArticle, redir, "/admin/articles/add");
+        if (redirectView != null) return redirectView;
 
         Article tryFind = articleService.findByName(newArticle.getName());
         if(tryFind != null){
-            RedirectView redirectView = new RedirectView("/admin/articles/add",true);
+            redirectView = new RedirectView("/admin/articles/add",true);
             redir.addFlashAttribute("msg_already_existing_article",true);
             return redirectView;
         }
@@ -100,7 +96,7 @@ public class ArticleController {
         this.uploadImages(newArticle, images);
         articleService.save(newArticle);
 
-        RedirectView redirectView = new RedirectView("/admin/articles",true);
+        redirectView = new RedirectView("/admin/articles",true);
         redir.addFlashAttribute("msg_article_added",true);
         return redirectView;
     }
@@ -195,8 +191,14 @@ public class ArticleController {
      */
     @PostMapping("/edit/post")
     public RedirectView editArticle(Article updated, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
-        if(updated.getPrice() == null || updated.getPrice() < 0) updated.setPrice(0.0);
-        if(updated.getQuantity() == null || updated.getQuantity() < 0) updated.setQuantity(0);
+        Article tryFind = articleService.findByName(updated.getName());
+        if(tryFind != null && !tryFind.getId().equals(updated.getId())){
+            RedirectView redirectView = new RedirectView("/admin/articles/edit/"+updated.getId(),true);
+            redir.addFlashAttribute("msg_already_existing_article",true);
+            return redirectView;
+        }
+        RedirectView redirectView1 = checkArticleName(updated, redir, "/admin/articles/edit/"+updated.getId());
+        if (redirectView1 != null) return redirectView1;
         Optional<Article> optional = articleService.findById(updated.getId());
         optional.ifPresent(article -> updated.setPhotos(article.getPhotos()));
         this.uploadImages(updated, images);
@@ -206,6 +208,8 @@ public class ArticleController {
         redir.addFlashAttribute("msg_article_edited",true);
         return redirectView;
     }
+
+
 
     /**
      *
@@ -249,6 +253,19 @@ public class ArticleController {
         mp.addAttribute("msg_article_deleted", true);
 
         return "admin/articles";
+    }
+
+    @Nullable
+    private RedirectView checkArticleName(Article updated, RedirectAttributes redir, String redirTo) {
+        if(updated.getName().length() == 0){
+            RedirectView redirectView = new RedirectView(redirTo,true);
+            redir.addFlashAttribute("msg_missing_name",true);
+            return redirectView;
+        }
+
+        if(updated.getPrice() == null || updated.getPrice() < 0) updated.setPrice(0.0);
+        if(updated.getQuantity() == null || updated.getQuantity() < 0) updated.setQuantity(0);
+        return null;
     }
 
     /**
