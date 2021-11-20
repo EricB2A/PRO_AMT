@@ -3,7 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <t:base_layout>
     <jsp:attribute name="title">
-        Silky Road: ${article}
+        Silky Road: - Article
     </jsp:attribute>
     <jsp:attribute name="withbanner">
         false

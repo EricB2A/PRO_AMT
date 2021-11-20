@@ -1,3 +1,11 @@
+/**
+ * @team AMT - Silkyroad
+ * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file HomeControllerTests.java
+ *
+ * @brief
+ */
+
 package com.example.amt_demo;
 
 import org.junit.jupiter.api.Test;
@@ -13,14 +21,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class HomeControllerTests {
+
     @Autowired
     private MockMvc mvc;
-
 
     @Test
     void HomeControllerTests_contextLoads() {
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Test
     public void HomeControllerTests_getIndex() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/accueil").accept(MediaType.TEXT_HTML))

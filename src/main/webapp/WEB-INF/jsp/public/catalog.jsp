@@ -23,11 +23,11 @@
                 <div id="Catalogue" >
                     <h2 class="text-white">Articles</h2>
 
-                    <c:if test="${empty carpets}">
+                    <c:if test="${empty articles}">
                         <p>Aucun article disponible</p>
                     </c:if>
 
-                    <c:if test="${not empty carpets}">
+                    <c:if test="${not empty articles}">
                         <c:if test="${not empty categories}">
                             <div class="category-filters btn-group btn-group-toggle mb-4">
                                 <a href="/catalog" class="btn btn-primary ${empty filter ? 'active' : '' }">
@@ -41,14 +41,14 @@
                             </div>
                         </c:if>
                         <div class="d-flex flex-wrap">
-                           <c:forEach varStatus="idx" items="${carpets}" var="carpet">
-                               <a href="/carpets/${carpet.id}">
+                           <c:forEach varStatus="idx" items="${articles}" var="article">
+                               <a href="/articles/${article.id}">
                                    <t:article_thumbnail>
-                                       <jsp:attribute name="article_id">${carpet.id}</jsp:attribute>
-                                       <jsp:attribute name="article_name">${carpet.name}</jsp:attribute>
-                                       <jsp:attribute name="article_price">${carpet.price}</jsp:attribute>
-                                       <jsp:attribute name="article_quantity">${carpet.quantity}</jsp:attribute>
-                                       <jsp:attribute name="article_img_path">${carpet.getFirstPhotoPath()}</jsp:attribute>
+                                       <jsp:attribute name="article_id">${article.id}</jsp:attribute>
+                                       <jsp:attribute name="article_name">${article.name}</jsp:attribute>
+                                       <jsp:attribute name="article_price">${article.price}</jsp:attribute>
+                                       <jsp:attribute name="article_quantity">${article.quantity}</jsp:attribute>
+                                       <jsp:attribute name="article_img_path">${article.getFirstPhotoPath()}</jsp:attribute>
                                        <jsp:attribute name="article_nb_stars">${3}</jsp:attribute>
                                    </t:article_thumbnail>
                                </a>

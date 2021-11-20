@@ -8,7 +8,7 @@
 
 package com.example.amt_demo;
 
-import com.example.amt_demo.model.Carpet;
+import com.example.amt_demo.model.Article;
 import com.example.amt_demo.model.Category;
 import com.example.amt_demo.service.CategoryService;
 import org.junit.jupiter.api.BeforeAll;
@@ -40,7 +40,7 @@ public class CategoryControllerTest {
     private CategoryService categoryService;
 
     private static List<Category> mockCategory;
-    private static final List<Carpet> mockCarpet = new ArrayList<>();
+    private static final List<Article> mockArticle = new ArrayList<>();
 
     /**
      * Initializing the mock data with dummy categories & carpets
@@ -54,15 +54,15 @@ public class CategoryControllerTest {
         mockCategory = new ArrayList<>(Arrays.asList(turkish, arabic, orient));
 
         for(int i = 1; i <= 4; i++) {
-            Carpet carpet = new Carpet("test name " + i, "test desc " + i, i * 10.00);
+            Article article = new Article("test name " + i, "test desc " + i, i * 10.00);
             if(i % 2 == 0) {
-                carpet.getCategories().add(turkish);
-                turkish.addCarpet(carpet);
+                article.getCategories().add(turkish);
+                turkish.addCarpet(article);
             } else {
-                carpet.getCategories().add(arabic);
-                arabic.addCarpet(carpet);
+                article.getCategories().add(arabic);
+                arabic.addCarpet(article);
             }
-            mockCarpet.add(carpet);
+            mockArticle.add(article);
         }
     }
 
@@ -103,7 +103,7 @@ public class CategoryControllerTest {
      */
     @Test
     @WithMockUser(roles={"admin"})
-    public void CategoryControllerTest_formShouldAppear() throws Exception {
+    public void CategoryControllerTest_formShouldAppearOnAddition() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/admin/categories/add"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/categoryForm"))
@@ -155,19 +155,19 @@ public class CategoryControllerTest {
                 .andExpect(model().attribute("error", "Cette catégorie existe déjà"));
     }
 
-    //TODO Checker dans le controlleur s'il faut supprimer ou non
+    /**
+     * Test about displaying the form for adding a category
+     * @throws Exception
+     */
     @Test
     @WithMockUser(roles={"admin"})
-    public void CategoryControllerTest_addingCategoriesToACarpet() throws Exception {
-        Carpet carpet = new Carpet(5, "Dummy name", "Dummy desc", 23.00, 1);
-        mockCarpet.add(carpet);
-        categoryService.addCategoryToCarpet(1, carpet.getId());
-
-        mvc.perform(MockMvcRequestBuilders.post("/admin/categories/add/{id}", 1)
-                        .with(csrf())
-                        .param("name", "1"))
-                .andExpect(status().isOk());
+    public void CategoryControllerTest_formShouldAppearOnEdition() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/admin/categories/edit/{id}", 1))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/categoryForm"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/admin/categoryForm.jsp"));
     }
+
 
     /**
      * Test about deleting a category associated with 0 article
@@ -180,7 +180,7 @@ public class CategoryControllerTest {
         Set<Category> temp = new HashSet<>();
 
         // TODO Y a pas plus simple ? -> Checker la requête niveau SQL
-        for(Carpet c : mockCarpet) {
+        for(Article c : mockArticle) {
             if (c.getCategories().contains(mockCategory.get(2))) {
                 temp.add(mockCategory.get(2));
             }
@@ -197,7 +197,6 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/categories"))
                 .andExpect(forwardedUrl("/WEB-INF/jsp/admin/categories.jsp"))
-
                 .andExpect(model().attribute("categories", hasSize(2)))
                 .andExpect(model().attribute("categories", hasItem(
                         allOf(
@@ -223,7 +222,7 @@ public class CategoryControllerTest {
         Set<Category> temp = new HashSet<>();
 
         //TODO Voir remarque plus haut
-        for(Carpet c : mockCarpet) {
+        for(Article c : mockArticle) {
             if (c.getCategories().contains(mockCategory.get(0))) {
                 temp.add(mockCategory.get(0));
             }
