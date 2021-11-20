@@ -13,10 +13,14 @@
         <div class="vh-100">
             <div class="layout_padding gallery_section">
                 <div class="container ">
-                    <c:if test="${param.error}">
+                    <c:if test="${badcredential}">
                         <div class="alert alert-warning" role="alert">
                             Les informations fournies sont incorrectes <span style='font-size:20px;'>&#128546;</span>
                         </div>
+                    </c:if>
+                    <c:if test="${error}">
+                        <t:internal_error>
+                        </t:internal_error>
                     </c:if>
                     <c:if test="${param.signup.equals(\"success\")}">
                         <div class="alert alert-primary" role="alert">

@@ -4,6 +4,7 @@ package com.example.amt_demo.auth;
 import com.example.amt_demo.config.SpringSecurityConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class JwtUtil {
         this.secretKey = secretKey;
     }
 
-    public JwtTokenPayload getJwtTokenPayload(String token) {
+    public JwtTokenPayload  getJwtTokenPayload(String token) throws SignatureException {
 
         Claims claims = Jwts.parser().setSigningKey(encodeSecret()).
                 parseClaimsJws(token).getBody();

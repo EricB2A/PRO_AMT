@@ -2,6 +2,7 @@ package com.example.amt_demo.auth;
 
 import com.example.amt_demo.service.CustomUserDetails;
 import com.example.amt_demo.service.CustomUserDetailsServiceImpl;
+import io.jsonwebtoken.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,25 +57,24 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         JwtTokenPayload jwtPayload = null;
         String jwt = null;
-
-        if (accessCookie != null && accessCookie.isPresent() && !accessCookie.get().getValue().isEmpty()) {
-            jwt = accessCookie.get().getValue();
-            jwtPayload = jwtUtil.getJwtTokenPayload(jwt);
-        }
-
-        if (jwtPayload != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetails.loadUserByUsername(jwtPayload.getUsername());
-            if (jwtUtil.isTokenValid(jwt)) {
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + jwtPayload.getRole()));
-                logger.info("====>>> ROLE : " + jwtPayload.getRole());
-                // FIXME: si je suis encore présent et que tout fonctionne, supprime-moi 🔫
-               usernamePasswordAuthenticationToken
-                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
+        try{
+            if (accessCookie != null && accessCookie.isPresent() && !accessCookie.get().getValue().isEmpty()) {
+                jwt = accessCookie.get().getValue();
+                jwtPayload = jwtUtil.getJwtTokenPayload(jwt);
             }
+
+            if (jwtPayload != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetails.loadUserByUsername(jwtPayload.getUsername());
+                if (jwtUtil.isTokenValid(jwt)) {
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + jwtPayload.getRole()));
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                }
+            }
+        }catch(SignatureException ignored){
+
         }
+
         chain.doFilter(request, response);
     }
 

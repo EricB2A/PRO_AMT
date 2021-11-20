@@ -22,14 +22,8 @@
                                 </div>
                             </c:if>
                             <c:if test="${error}">
-                                <div class="alert alert-warning" role="alert">
-                                    Il semblerait que nous ayons un problème, veuillez réessayer plus tard
-                                </div>
-                                <div class="row">
-                                    <div class="offset-3 col-6">
-                                        <img src="/images/nothingToSeeHere.gif"/>
-                                    </div>
-                                </div>
+                                <t:internal_error>
+                                </t:internal_error>
                             </c:if>
                         </div>
                     </div>
@@ -41,10 +35,9 @@
                             <div class="row">
                                 <div class="offset-3 col-6">
                                     <label for="signup_username" class="form-label">Nom d'utilisateur</label>
-                                    <input id="signup_username" type="text" class="enter_email form-control signup-input"
+                                    <input id="signup_username" type="text"
+                                           class="enter_email form-control signup-input"
                                            placeholder="Entrez votre nom d'utilisateur" name="username">
-
-
                                     <c:if test="${errorform && not empty username}">
                                         <div class="custom-feedback">
                                                 ${username}
