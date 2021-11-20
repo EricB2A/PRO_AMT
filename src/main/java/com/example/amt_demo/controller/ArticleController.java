@@ -197,13 +197,9 @@ public class ArticleController {
     public RedirectView editArticle(Article updated, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
         if(updated.getPrice() == null || updated.getPrice() < 0) updated.setPrice(0.0);
         if(updated.getQuantity() == null || updated.getQuantity() < 0) updated.setQuantity(0);
-
-        if(!this.uploadImages(updated, images)) {
-            Optional<Article> optional = articleService.findById(updated.getId());
-            if(optional.isPresent()) {
-                updated.setPhotos(optional.get().getPhotos());
-            }
-        }
+        Optional<Article> optional = articleService.findById(updated.getId());
+        optional.ifPresent(article -> updated.setPhotos(article.getPhotos()));
+        this.uploadImages(updated, images);
         articleService.save(updated);
 
         RedirectView redirectView = new RedirectView("/admin/articles/edit/" + updated.getId(),true);
@@ -242,10 +238,12 @@ public class ArticleController {
      */
     @GetMapping("/delete/{id}")
     public String deleteCarpet(ModelMap mp, @PathVariable String id) {
-        Optional<Article> article = articleService.findById(Integer.parseInt(id));
-
-        articleService.delete(article.get());
-
+        Optional<Article> optional = articleService.findById(Integer.parseInt(id));
+        if(optional.isPresent()){
+            Article article = optional.get();
+            articleService.delete(article);
+            photoStorageService.deleteFolder("carpet-photos/carpet"+ article.getId());
+        }
         mp.addAttribute("categories", categoryService.findAll());
         mp.addAttribute("articles", articleService.findAll());
         mp.addAttribute("msg_article_deleted", true);
@@ -263,10 +261,11 @@ public class ArticleController {
         Arrays.asList(images).stream().forEach(image -> {
             String filename = image.getOriginalFilename();
             if(filename.length() > 4){
-                String ext = filename.substring(filename.lastIndexOf(".") + 1);
                 String location = "/carpet"+ article.getId()+"/";
-                photoStorageService.save(image, location, filename);
-                article.getPhotos().add(new ArticlePhoto(photoStorageService.getRoot() + location + filename));
+                if(photoStorageService.save(image, location, filename)) {
+                    article.getPhotos().add(new ArticlePhoto(photoStorageService.getRoot() + location + filename));
+                    i.incrementAndGet();
+                }
             }
         });
         return i.get() > 1;

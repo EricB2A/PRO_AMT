@@ -25,9 +25,15 @@ public class PhotoUploadService{
      * @param location
      * @param filename
      */
-    public void save(MultipartFile file, String location, String filename) {
+    public boolean save(MultipartFile file, String location, String filename) {
         try {
-            FileUploadUtils.saveFile("carpet-photos" + location, filename, file);
+            String directoryPath = root + location;
+            File f = new File(directoryPath + filename);
+            if(!f.exists() && !f.isDirectory()) {
+                FileUploadUtils.saveFile(directoryPath, filename, file);
+                return true;
+            }
+            return false;
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
