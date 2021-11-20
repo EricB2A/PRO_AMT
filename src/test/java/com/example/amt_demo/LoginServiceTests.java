@@ -1,3 +1,11 @@
+/**
+ * @team AMT - Silkyroad
+ * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file LoginServiceTests.java
+ *
+ * @brief
+ */
+
 package com.example.amt_demo;
 
 import com.example.amt_demo.model.UserRepository;
@@ -12,13 +20,16 @@ import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 
-
 public class LoginServiceTests {
 
     public static MockWebServer mockLogin;
     public static LoginService loginService;
     private static UserRepository userRepository;
 
+    /**
+     *
+     * @throws IOException
+     */
     @BeforeAll
     static void setup() throws IOException {
         mockLogin = new MockWebServer();
@@ -27,6 +38,11 @@ public class LoginServiceTests {
         loginService = new LoginService(url, userRepository);
     }
 
+    /**
+     *
+     * @throws InterruptedException
+     * @throws JSONException
+     */
     @Test
     void correctCredentials() throws InterruptedException, JSONException {
         UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
@@ -44,6 +60,11 @@ public class LoginServiceTests {
         Assertions.assertEquals("/auth/login", recordedRequest.getPath());
     }
 
+    /**
+     *
+     * @throws InterruptedException
+     * @throws JSONException
+     */
     @Test
     void wrongCredentials() throws InterruptedException, JSONException {
         UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
@@ -58,6 +79,11 @@ public class LoginServiceTests {
         Assertions.assertEquals("/auth/login", recordedRequest.getPath());
     }
 
+    /**
+     *
+     * @throws InterruptedException
+     * @throws JSONException
+     */
     @Test
     public void validRegister() throws InterruptedException, JSONException {
         UserCredentialsDTO credentials = new UserCredentialsDTO("username","password");
@@ -73,6 +99,11 @@ public class LoginServiceTests {
         Assertions.assertEquals("/accounts/register", recordedRequest.getPath());
     }
 
+    /**
+     *
+     * @throws InterruptedException
+     * @throws JSONException
+     */
     @Test
     public void invalidRegister409() throws InterruptedException, JSONException {
         UserCredentialsDTO credentials = new UserCredentialsDTO("username","password");
@@ -87,6 +118,11 @@ public class LoginServiceTests {
         Assertions.assertEquals("/accounts/register", recordedRequest.getPath());
     }
 
+    /**
+     *
+     * @throws InterruptedException
+     * @throws JSONException
+     */
     @Test
     public void invalidRegister422() throws InterruptedException, JSONException {
         UserCredentialsDTO credentials = new UserCredentialsDTO("username","password");
@@ -101,10 +137,12 @@ public class LoginServiceTests {
         Assertions.assertEquals("/accounts/register", recordedRequest.getPath());
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     @AfterAll
     static void tearDown() throws IOException {
         mockLogin.shutdown();
     }
-
-
 }

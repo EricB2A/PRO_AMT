@@ -1,3 +1,11 @@
+/**
+ * @team AMT - Silkyroad
+ * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file PhotoUpload.java
+ *
+ * @brief
+ */
+
 package com.example.amt_demo.service;
 
 import com.example.amt_demo.utils.FileUploadUtils;
@@ -11,6 +19,12 @@ public class PhotoUploadService{
 
     private final String root = "carpet-photos";
 
+    /**
+     *
+     * @param file
+     * @param location
+     * @param filename
+     */
     public void save(MultipartFile file, String location, String filename) {
         try {
             FileUploadUtils.saveFile("carpet-photos" + location, filename, file);
@@ -19,10 +33,16 @@ public class PhotoUploadService{
         }
     }
 
+    /**
+     *
+     * @param filePath
+     * @return
+     */
     public boolean delete(String filePath){
         return (new File(filePath)).delete();
     }
 
+    //TODO EST-CE ENCORE UTILE ?
     public boolean deleteFolder(String folderPath){
         File directory = new File(folderPath);
         File[] allContents = directory.listFiles();
@@ -34,9 +54,11 @@ public class PhotoUploadService{
         return directory.delete();
     }
 
-
+    /**
+     *
+     * @return
+     */
     public String getRoot(){
         return root;
     }
-
 }

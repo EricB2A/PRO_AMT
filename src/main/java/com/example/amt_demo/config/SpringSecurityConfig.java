@@ -1,3 +1,11 @@
+/**
+ * @team AMT - Silkyroad
+ * @authors Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file SpringSecurityConfig.java
+ *
+ * @brief
+ */
+
 package com.example.amt_demo.config;
 
 import com.example.amt_demo.auth.AuthProvider;
@@ -13,7 +21,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -28,7 +35,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtRequestFilter jwtRequestFilter;
     private CustomUserDetailsServiceImpl userDetailsService;
 
-
+    /**
+     *
+     * @param authProvider
+     * @param applicationContext
+     * @param jwtRequestFilter
+     */
     @Autowired
     public SpringSecurityConfig(AuthProvider authProvider, WebApplicationContext applicationContext, JwtRequestFilter jwtRequestFilter) {
         this.authProvider = authProvider;
@@ -36,22 +48,40 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
+    /**
+     *
+     * @return
+     * @throws Exception
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    /**
+     *
+     */
     @PostConstruct
     public void completeSetup() {
         userDetailsService = applicationContext.getBean(CustomUserDetailsServiceImpl.class);
     }
 
+    /**
+     *
+     * @param auth
+     * @throws Exception
+     */
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authProvider);
     }
 
+    /**
+     *
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http

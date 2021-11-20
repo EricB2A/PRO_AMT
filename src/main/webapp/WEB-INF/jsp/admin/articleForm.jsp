@@ -4,7 +4,7 @@
 <t:base_layout>
 
     <jsp:attribute name="title">
-        Silky Road: ${articleForm}
+        Silky Road: - Administration
     </jsp:attribute>
     <jsp:attribute name="withbanner">
         false
@@ -36,7 +36,7 @@
 
         </script>
         <c:if test="${not empty article}">
-            <c:set var="carpet" value="${article.get()}" />
+            <c:set var="article" value="${article.get()}" />
         </c:if>
         <div class="vh-100">
             <div class="gallery_section">
@@ -84,8 +84,8 @@
                                         <input type="hidden"
                                                name="${_csrf.parameterName}"
                                                value="${_csrf.token}"/>
-                                                <c:if test="${not empty carpet}">
-                                                    <input type="hidden" name="id" value="${carpet.id}"/>
+                                                <c:if test="${not empty article}">
+                                                    <input type="hidden" name="id" value="${article.id}"/>
                                                 </c:if>
 
                                         <div class="form-group row">
@@ -108,14 +108,14 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Nom*</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" name="name" value="<c:if test="${not empty carpet}">${carpet.name}</c:if>" />
+                                                <input class="form-control" type="text" name="name" value="<c:if test="${not empty article}">${article.name}</c:if>" />
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Description</label>
                                             <div class="col-sm-10">
-                                                <textarea class="form-control" name="description"><c:if test="${not empty carpet}">${carpet.description}</c:if></textarea>
+                                                <textarea class="form-control" name="description"><c:if test="${not empty article}">${article.description}</c:if></textarea>
                                                 <small class="form-text text-muted">Décrivez en quelques phrases votre produit.</small>
                                             </div>
                                         </div>
@@ -123,26 +123,26 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Prix</label>
                                             <div class="col-sm-10">
-                                                <input type="number" name="price" value="${not empty carpet ? carpet.price : 0}" step="0.01" required/>
+                                                <input type="number" name="price" value="${not empty article ? article.price : 0}" step="0.01" required/>
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Quantité</label>
                                             <div class="col-sm-10">
-                                                <input type="number" name="quantity" value="<c:if test="${not empty carpet}">${carpet.quantity}</c:if>" />
+                                                <input type="number" name="quantity" value="<c:if test="${not empty article}">${article.quantity}</c:if>" />
                                             </div>
                                         </div>
 
 
-                                        <c:if test="${not empty carpet.photos}">
+                                        <c:if test="${not empty article.photos}">
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Photos</label>
                                             <div class="col-sm-10 d-flex flex-wrap">
-                                                <c:forEach varStatus="idx" items="${carpet.photos}" var="photo">
+                                                <c:forEach varStatus="idx" items="${article.photos}" var="photo">
                                                     <div class="d-flex align-self-start m-2">
                                                         <img src="/${photo.path}" width="220" class="img-thumbnail" />
-                                                        <a href="/admin/articles/${carpet.id}/photo/delete/${photo.id}"><button type="button" class="btn btn-danger btn-sm">X</button></a>
+                                                        <a href="/admin/articles/${article.id}/photo/delete/${photo.id}"><button type="button" class="btn btn-danger btn-sm">X</button></a>
                                                     </div>
                                                 </c:forEach>
                                             </div>

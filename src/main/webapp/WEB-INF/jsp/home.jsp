@@ -25,7 +25,7 @@
             <div class="row">
                 </c:if>
                 <div class="col-sm-4">
-                    <a href="/carpets/${article.id}">
+                    <a href="/articles/${article.id}">
                         <t:article_thumbnail>
                             <jsp:attribute name="article_id">${article.id}</jsp:attribute>
                             <jsp:attribute name="article_name">${article.name}</jsp:attribute>

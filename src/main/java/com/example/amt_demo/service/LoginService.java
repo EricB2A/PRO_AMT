@@ -1,3 +1,11 @@
+/**
+ * @team AMT - Silkyroad
+ * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file LoginService.java
+ *
+ * @brief
+ */
+
 package com.example.amt_demo.service;
 
 import com.example.amt_demo.model.User;
@@ -18,28 +26,36 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 @Service
 public class LoginService {
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final WebClient webclient;
     private final UserRepository userRepository;
 
+    /**
+     *
+     * @param url
+     * @param userRepository
+     */
     @Autowired
     public LoginService(@Value("${com.example.amt_demo.config.authservice.url}") String url, UserRepository userRepository) {
         webclient = WebClient.create(url);
         this.userRepository = userRepository;
     }
 
-    public LoginAPIResponse registerUser(UserCredentialsDTO credentials) throws JSONException, HttpClientErrorException {
-        logger.info("register user" + credentials);
+    /**
+     *
+     * @param credentials
+     * @return
+     * @throws JSONException
+     */
+    public LoginAPIResponse registerUser(UserCredentialsDTO credentials) throws JSONException {
+        logger.info("register user"+ credentials);
         JSONObject json = new JSONObject()
                 .put("password", credentials.getPassword())
                 .put("username", credentials.getUsername());
@@ -58,15 +74,20 @@ public class LoginService {
                 .block();
         JSONObject responseBodyJSON = new JSONObject(response.getBody());
 
-        if (response.getStatusCode() == HttpStatus.CREATED) {
+        if( response.getStatusCodeValue() == HttpStatus.CREATED.value()){
+            logger.info("Register ok");
             User user = new User(responseBodyJSON.getInt("id"), responseBodyJSON.getString("role"), credentials);
             userRepository.save(user);
-        } else {
-            throw HttpClientErrorException.create(response.getStatusCode(), "", response.getHeaders(), response.getBody().getBytes(StandardCharsets.UTF_8), Charset.defaultCharset());
         }
         return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue(), LoginAPIResponse.RequestType.REGISTER);
     }
 
+    /**
+     *
+     * @param credentials
+     * @return
+     * @throws JSONException
+     */
     public LoginAPIResponse login(UserCredentialsDTO credentials) throws JSONException {
         JSONObject json = new JSONObject()
                 .put("password", credentials.getPassword())
@@ -86,15 +107,15 @@ public class LoginService {
                 .block();
 
         JSONObject responseBodyJSON = new JSONObject(response.getBody());
-
         System.out.println(responseBodyJSON);
         return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue(), LoginAPIResponse.RequestType.LOGIN);
     }
 
+    /**
+     *
+     */
     public void logout() {
         SecurityContextHolder.getContext().setAuthentication(
-                new AnonymousAuthenticationToken("ANONYMOUS", "ANONYMOUS", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")))
-        ;
+                new AnonymousAuthenticationToken("ANONYMOUS", "ANONYMOUS", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")));
     }
-
 }

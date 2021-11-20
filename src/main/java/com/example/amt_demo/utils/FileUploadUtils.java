@@ -1,3 +1,11 @@
+/**
+ * @team AMT - Silkyroad
+ * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file FileUploadHtils.java
+ *
+ * @brief TODO
+ */
+
 package com.example.amt_demo.utils;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -5,10 +13,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.*;
 
-/**
- * @author Eric (@EricB2A)
- */
 public class FileUploadUtils {
+
+    /**
+     *
+     * @param uploadDir
+     * @param fileName
+     * @param multipartFile
+     * @throws IOException
+     */
     public static void saveFile(String uploadDir, String fileName, MultipartFile multipartFile) throws IOException {
         Path uploadPath = Paths.get(uploadDir);
 
