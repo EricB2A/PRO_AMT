@@ -8,6 +8,8 @@
 
 package com.example.amt_demo.model;
 
+import reactor.util.annotation.NonNull;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.LinkedList;

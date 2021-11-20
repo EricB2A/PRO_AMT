@@ -6,7 +6,7 @@
  * @brief Unit tests about the category controller
  */
 
-package com.example.amt_demo;
+package com.example.amt_demo.controller;
 
 import com.example.amt_demo.model.Article;
 import com.example.amt_demo.model.Category;

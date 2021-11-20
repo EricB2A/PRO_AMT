@@ -6,7 +6,7 @@
  * @brief
  */
 
-package com.example.amt_demo;
+package com.example.amt_demo.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

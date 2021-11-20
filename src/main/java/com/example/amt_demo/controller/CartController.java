@@ -131,11 +131,11 @@ public class CartController {
 
                 List<CartInfo> cartInfos = cartInfoRepository.findCartInfosByCarpetAndByUser(Integer.parseInt(id), user.getId());
                 if(cartInfos != null && cartInfos.isEmpty()) {
-                    Optional<Article> carpet = articleRepository.findCarpetById(Integer.valueOf(id));
+                    Optional<Article> carpet = articleRepository.findById(Integer.valueOf(id));
                     carpet.ifPresent(value -> cartInfoRepository.save(new CartInfo(carpet.get(), quantity, user)));
 
                 } else if(cartInfos != null) {
-                    Optional<Article> carpet = articleRepository.findCarpetById(Integer.valueOf(id));
+                    Optional<Article> carpet = articleRepository.findById(Integer.valueOf(id));
 
                     for (CartInfo ci : cartInfos) {
                         cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(Integer.parseInt(id), user.getId(), quantity + ci.getQuantity());

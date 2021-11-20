@@ -76,20 +76,19 @@ public class ArticleController {
     /**
      *
      * @param newArticle
-     * @param categories
      * @param images
      * @param redir
-     * @param mp
      * @return
      */
     @PostMapping("/add/post")
-    public RedirectView addCarpet(Article newArticle, @RequestParam(name = "categories", required = false) String categories, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir, ModelMap mp) {
-        // TODO : Image upload
+    public RedirectView addCarpet(Article newArticle, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
         if(newArticle.getName().length() == 0){
             RedirectView redirectView = new RedirectView("/admin/articles/add",true);
             redir.addFlashAttribute("msg_missing_name",true);
             return redirectView;
         }
+        if(newArticle.getPrice() == null || newArticle.getPrice() < 0) newArticle.setPrice(0.0);
+        if(newArticle.getQuantity() == null || newArticle.getQuantity() < 0) newArticle.setQuantity(0);
 
         Article tryFind = articleService.findByName(newArticle.getName());
         if(tryFind != null){
@@ -140,13 +139,18 @@ public class ArticleController {
      * @param carpetId
      * @param toAdd
      */
-    private void handleQuantity(Integer carpetId, Integer toAdd){
-        Article article = articleService.findId(carpetId);
-        Integer current = article.getQuantity();
-        if(current + toAdd >= 0){
-            article.setQuantity(article.getQuantity()+toAdd);
-            articleService.save(article);
+    private boolean handleQuantity(Integer carpetId, Integer toAdd){
+        Optional<Article> optional = articleService.findById(carpetId);
+        if(optional.isPresent()){
+            Article article = optional.get();
+            Integer current = article.getQuantity();
+            if(current + toAdd >= 0){
+                article.setQuantity(article.getQuantity()+toAdd);
+                articleService.save(article);
+                return true;
+            }
         }
+        return false;
     }
 
     /**
@@ -174,9 +178,10 @@ public class ArticleController {
      */
     @GetMapping("/quantity/decrease/{id}")
     public RedirectView decreaseQuantity(ModelMap mp, @PathVariable String id, RedirectAttributes redir) {
-        this.handleQuantity(Integer.parseInt(id), -1);
+        if(this.handleQuantity(Integer.parseInt(id), -1)){
+            redir.addFlashAttribute("msg_article_quantity_decrease",true);
+        }
         RedirectView redirectView = new RedirectView("/admin/articles",true);
-        redir.addFlashAttribute("msg_article_quantity_decrease",true);
         redir.addFlashAttribute("articles", articleService.findAll());
         return redirectView;
     }
@@ -184,24 +189,23 @@ public class ArticleController {
     /**
      *
      * @param updated
-     * @param categories
      * @param images
      * @param redir
      * @return
      */
     @PostMapping("/edit/post")
-    public RedirectView editArticle(Article updated, @RequestParam(name = "categories", required = false) String categories, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
-        this.uploadImages(updated, images);
-        articleService.save(updated);
-        if(categories != null) {
-            // Deleting every link between articles and category
-            categoryService.deleteExistingCategoryToCarpet(updated.getId());
+    public RedirectView editArticle(Article updated, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
+        if(updated.getPrice() == null || updated.getPrice() < 0) updated.setPrice(0.0);
+        if(updated.getQuantity() == null || updated.getQuantity() < 0) updated.setQuantity(0);
 
-            // Replacing with provided categories
-            for (String c : categories.split(",")) {
-                categoryService.addCategoryToCarpet(updated.getId(), Integer.valueOf(c));
+        if(!this.uploadImages(updated, images)) {
+            Optional<Article> optional = articleService.findById(updated.getId());
+            if(optional.isPresent()) {
+                updated.setPhotos(optional.get().getPhotos());
             }
         }
+        articleService.save(updated);
+
         RedirectView redirectView = new RedirectView("/admin/articles/edit/" + updated.getId(),true);
         redir.addFlashAttribute("msg_article_edited",true);
         return redirectView;
@@ -238,9 +242,9 @@ public class ArticleController {
      */
     @GetMapping("/delete/{id}")
     public String deleteCarpet(ModelMap mp, @PathVariable String id) {
-        Article article = articleService.findId(Integer.parseInt(id));
+        Optional<Article> article = articleService.findById(Integer.parseInt(id));
 
-        articleService.delete(article);
+        articleService.delete(article.get());
 
         mp.addAttribute("categories", categoryService.findAll());
         mp.addAttribute("articles", articleService.findAll());
@@ -250,21 +254,21 @@ public class ArticleController {
     }
 
     /**
-     *
-     * @param article
+     *  @param article
      * @param images
+     * @return
      */
-    private void uploadImages(Article article, MultipartFile[] images){
+    private boolean uploadImages(Article article, MultipartFile[] images){
         AtomicInteger i = new AtomicInteger(1);
         Arrays.asList(images).stream().forEach(image -> {
             String filename = image.getOriginalFilename();
             if(filename.length() > 4){
                 String ext = filename.substring(filename.lastIndexOf(".") + 1);
                 String location = "/carpet"+ article.getId()+"/";
-                String name = "carpet"+ i.getAndIncrement() +"."+ext;
-                photoStorageService.save(image, location, name);
-                article.getPhotos().add(new ArticlePhoto(photoStorageService.getRoot() + location + name));
+                photoStorageService.save(image, location, filename);
+                article.getPhotos().add(new ArticlePhoto(photoStorageService.getRoot() + location + filename));
             }
         });
+        return i.get() > 1;
     }
 }

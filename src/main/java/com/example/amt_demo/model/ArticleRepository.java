@@ -48,10 +48,4 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
     @Query (value = "SELECT a FROM Article a WHERE a.id IN (SELECT a.id FROM Article a JOIN a.categories cat WHERE cat.id = ?1)")
     Iterable<Article> findErrorDeletion(int category_id);
 
-    /**
-     *
-     * @param id
-     * @return
-     */
-    Optional<Article> findCarpetById(Integer id);
 }

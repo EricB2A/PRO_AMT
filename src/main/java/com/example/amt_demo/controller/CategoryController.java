@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.Set;
 
 @RequestMapping(path = "/admin/categories")
@@ -83,7 +85,7 @@ public class CategoryController {
      */
     @GetMapping("/edit/{id}")
     public String editCategory(ModelMap mp, @PathVariable String id) {
-        mp.addAttribute("category", categoryService.findId(Integer.parseInt(id)));
+        mp.addAttribute("category", categoryService.findById(Integer.parseInt(id)));
         mp.addAttribute("editing", true);
         mp.addAttribute("post_url", "/admin/categories/edit/post");
         return "admin/categoryForm";
@@ -118,17 +120,15 @@ public class CategoryController {
     @GetMapping("/delete/{id}")
     public String deleteCategory(ModelMap mp, @PathVariable String id) {
         Category category = categoryService.findId(Integer.valueOf(id));
-        if(category != null) {
-            Set<Category> list = categoryService.hasArticlesInCategory(Integer.valueOf(id));
-
-            if (list.isEmpty()) {
-                categoryService.delete(category);
-                mp.addAttribute("success", "Catégorie supprimée");
-            } else {
-                mp.addAttribute("error", "Vous ne pouvez pas supprimer des catégories qui contiennent des articles");
-                mp.addAttribute("error_article", articleService.findErrorDeletion(id));
-            }
+        Set<Category> list = categoryService.hasArticlesInCategory(Integer.valueOf(id));
+        if (list.isEmpty()) {
+            categoryService.delete(category);
+            mp.addAttribute("success", "Catégorie supprimée");
+        } else {
+            mp.addAttribute("error", "Vous ne pouvez pas supprimer des catégories qui contiennent des articles");
+            mp.addAttribute("error_article", articleService.findErrorDeletion(id));
         }
+
         mp.addAttribute("categories", categoryService.findAll());
         return "admin/categories";
     }
