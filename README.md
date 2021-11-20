@@ -63,28 +63,24 @@ L'ORM [Hibernate](https://hibernate.org/) va faire un mapping 1-1 entre ce(s) cl
 Veuillez noter que les méthodes de types `setter` et `getter` ne sont pas présents sur ce schéma afin de simplifier la lisibilité de ce dernier.
 
 ## Routes 👀
-| Verbe HTTP | Route               | Contrôleur            |
-|------------|---------------------|-----------------------|
-| GET        | `/accueil`          | `HomeController`      |
-| GET        | `/carpets`          | `CarpetController`    |
-| POST       | `/carpets`          | `CarpetController`    |
-| GET        | `/carpets/new`      | `CarpetController`    |
-| GET        | `/carpets/{id}`     | `CarpetController`    |
-| DELETE     | `/carpets/{id}`     | `CarpetController`    |
-| GET        | `/api/carpets`      | `CarperControllerAPI` |
-| POST       | `/api/carpets`      | `CarperControllerAPI` |
-| GET        | `/api/carpets/{id}` | `CarperControllerAPI` |
-| PUT        | `/api/carpets/{id}` | `CarperControllerAPI` |
-| DELETE     | `/api/carpets/{id}` | `CarperControllerAPI` |
-| GET        | `/login`            | `LoginController`     |
-| POST       | `/login`            | `LoginController`     |
-| POST       | `/inscription`      | `LoginController`     |
-| GET        | `/inscription`      | `LoginController`     |
-| POST       | `/deconnexion`      | `LoginController`     |
-| GET        | `/cart`             | `CartController`      |
-| PUT        | `/cart/{id}`        | `CartController`      |
-| POST       | `/cart/{id}`        | `CartController`      |
-| DELETE     | `/cart/{id}`        | `CartController`      |
+| Verbe HTTP | Route                         | Contrôleur            |
+|------------|-------------------------------|-----------------------|
+| GET        | `/accueil`                    | `HomeController`      |
+| GET        | `/admin/articles`             | `ArticleController`   |
+| GET        | `/admin/articles/add`         | `ArticleController`   |
+| POST       | `/admin/articles/add/post`    | `ArticleController`   |
+| POST       | `/admin/articles/edit/post`   | `ArticleController`   |
+| GET        | `/admin/articles/edit/{id}`   | `ArticleController`   |
+| GET        | `/admin/articles/delete/{id}` | `ArticleController`   |
+| GET        | `/login`                      | `LoginController`     |
+| POST       | `/login`                      | `LoginController`     |
+| POST       | `/inscription`                | `LoginController`     |
+| GET        | `/inscription`                | `LoginController`     |
+| POST       | `/deconnexion`                | `LoginController`     |
+| GET        | `/cart`                       | `CartController`      |
+| PUT        | `/cart/{id}`                  | `CartController`      |
+| POST       | `/cart/{id}`                  | `CartController`      |
+| DELETE     | `/cart/{id}`                  | `CartController`      |
 
 
 
