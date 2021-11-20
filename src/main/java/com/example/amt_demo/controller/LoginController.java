@@ -62,7 +62,7 @@ public class LoginController {
      * @return the view of the login
      */
     @GetMapping(path = "/login")
-    public String getLoginPage() {
+    public String getLogin() {
         return "login";
     }
 
@@ -98,7 +98,7 @@ public class LoginController {
      * @return
      */
     @PostMapping(path = "/signup")
-    public String getSignup(UserCredentialsDTO userCredentialsDTO, ModelMap mp) {
+    public String signup(UserCredentialsDTO userCredentialsDTO, ModelMap mp) {
         try {
             LoginAPIResponse authResponse = loginService.registerUser(userCredentialsDTO);
             if (authResponse.getStatusCode() == HttpStatus.CREATED.value()) {
@@ -137,7 +137,7 @@ public class LoginController {
      * @return the view of the signup form
      */
     @GetMapping(path = "/signup")
-    public String signup() {
+    public String getSignup() {
         return "signup";
     }
 }

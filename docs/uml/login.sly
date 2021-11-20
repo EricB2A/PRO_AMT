@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="iso-8859-15" standalone="no"?>
+<classDiagram>
+  <diagramElements defaultViewEntities="ALL" defaultViewEnum="true" defaultViewMethods="TYPE_AND_NAME" defaultVisibleTypes="true" informations="" name="">
+    <dependency id="6189" label="use">
+      <source>5783</source>
+      <target>6187</target>
+    </dependency>
+    <dependency id="6188" label="use">
+      <source>5782</source>
+      <target>6187</target>
+    </dependency>
+    <entity entityType="INTERFACE" id="6187" isAbstract="true" name="UserRepository" visibility="PUBLIC"/>
+    <entity entityType="CLASS" id="6186" isAbstract="false" name="UserReposio" visibility="PUBLIC"/>
+    <dependency id="5787" label="authenticate(..)">
+      <source>5779</source>
+      <target>5786</target>
+    </dependency>
+    <dependency id="5791" label="use">
+      <source>5782</source>
+      <target>5783</target>
+    </dependency>
+    <dependency id="5795" label="authenticate(...)">
+      <source>5786</source>
+      <target>5793</target>
+    </dependency>
+    <dependency id="5796" label="register(...)">
+      <source>5779</source>
+      <target>5783</target>
+    </dependency>
+    <inheritance id="5794">
+      <child>5782</child>
+      <parent>5793</parent>
+    </inheritance>
+    <entity entityType="CLASS" id="5779" isAbstract="false" name="LoginController" visibility="PUBLIC">
+      <method isAbstract="false" isStatic="false" name="login" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="getLogin" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="signup" returnType="String" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="getSignup" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="logout" returnType="String" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="response" type="pHttpServletResponse"/>
+      </method>
+    </entity>
+    <entity entityType="CLASS" id="5782" isAbstract="false" name="AuthProvider" visibility="PUBLIC"/>
+    <entity entityType="CLASS" id="5783" isAbstract="false" name="LoginService" visibility="PUBLIC">
+      <method isAbstract="false" isStatic="false" name="login" returnType="JSONObject" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="userCredential" type="UserCredentialsDTO"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="register" returnType="JSONObject" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="userCredentialDTO" type="UserCredentialsDTO"/>
+      </method>
+    </entity>
+    <entity entityType="INTERFACE" id="5786" isAbstract="true" name="AuthenticationManager" visibility="PUBLIC">
+      <method isAbstract="true" isStatic="false" name="authenticate" returnType="Authentication" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="authenticate" type="Authentication"/>
+      </method>
+    </entity>
+    <entity entityType="INTERFACE" id="5793" isAbstract="true" name="AuthenticationProvider" visibility="PUBLIC">
+      <method isAbstract="true" isStatic="false" name="authenticate" returnType="Authentication" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+  </diagramElements>
+  <umlView grid="10" name="Main view" open="true">
+    <relationView color="-12566464" relationId="5794">
+      <line>
+        <point>
+          <x>851</x>
+          <y>451</y>
+        </point>
+        <point>
+          <x>851</x>
+          <y>375</y>
+        </point>
+      </line>
+    </relationView>
+    <relationView color="-12566464" relationId="5796">
+      <line>
+        <point>
+          <x>281</x>
+          <y>271</y>
+        </point>
+        <point>
+          <x>281</x>
+          <y>441</y>
+        </point>
+      </line>
+      <labelAssociation>
+        <x>289</x>
+        <y>332</y>
+        <w>69</w>
+        <h>16</h>
+      </labelAssociation>
+    </relationView>
+    <relationView color="-12566464" relationId="5795">
+      <line>
+        <point>
+          <x>851</x>
+          <y>225</y>
+        </point>
+        <point>
+          <x>851</x>
+          <y>291</y>
+        </point>
+      </line>
+      <labelAssociation>
+        <x>853</x>
+        <y>251</y>
+        <w>101</w>
+        <h>16</h>
+      </labelAssociation>
+    </relationView>
+    <relationView color="-12566464" relationId="5791">
+      <line>
+        <point>
+          <x>761</x>
+          <y>481</y>
+        </point>
+        <point>
+          <x>581</x>
+          <y>481</y>
+        </point>
+      </line>
+      <labelAssociation>
+        <x>665</x>
+        <y>485</y>
+        <w>22</w>
+        <h>16</h>
+      </labelAssociation>
+    </relationView>
+    <relationView color="-12566464" relationId="5787">
+      <line>
+        <point>
+          <x>501</x>
+          <y>161</y>
+        </point>
+        <point>
+          <x>681</x>
+          <y>161</y>
+        </point>
+      </line>
+      <labelAssociation>
+        <x>539</x>
+        <y>172</y>
+        <w>97</w>
+        <h>16</h>
+      </labelAssociation>
+    </relationView>
+    <relationView color="-12566464" relationId="6188">
+      <line>
+        <point>
+          <x>831</x>
+          <y>506</y>
+        </point>
+        <point>
+          <x>751</x>
+          <y>591</y>
+        </point>
+      </line>
+      <labelAssociation>
+        <x>795</x>
+        <y>552</y>
+        <w>22</w>
+        <h>16</h>
+      </labelAssociation>
+    </relationView>
+    <relationView color="-12566464" relationId="6189">
+      <line>
+        <point>
+          <x>501</x>
+          <y>526</y>
+        </point>
+        <point>
+          <x>601</x>
+          <y>591</y>
+        </point>
+      </line>
+      <labelAssociation>
+        <x>555</x>
+        <y>562</y>
+        <w>22</w>
+        <h>16</h>
+      </labelAssociation>
+    </relationView>
+    <componentView color="-2079" componentID="5793" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>760</x>
+        <y>290</y>
+        <w>200</w>
+        <h>84</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="5786" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>680</x>
+        <y>140</y>
+        <w>360</w>
+        <h>84</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="5783" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>190</x>
+        <y>440</y>
+        <w>390</w>
+        <h>85</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="5782" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>760</x>
+        <y>450</y>
+        <w>200</w>
+        <h>55</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="5779" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>200</x>
+        <y>140</y>
+        <w>300</w>
+        <h>130</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="6187" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>600</x>
+        <y>590</y>
+        <w>150</w>
+        <h>69</h>
+      </geometry>
+    </componentView>
+    <note color="-2079" content="Pour le login">
+      <noteGeometry>
+        <x>530</x>
+        <y>90</y>
+        <w>97</w>
+        <h>30</h>
+      </noteGeometry>
+      <noteLine color="-12566464" relationId="5787">
+        <point>
+          <x>581</x>
+          <y>121</y>
+        </point>
+        <point>
+          <x>582</x>
+          <y>161</y>
+        </point>
+      </noteLine>
+    </note>
+    <note color="-2079" content="register">
+      <noteGeometry>
+        <x>180</x>
+        <y>320</y>
+        <w>71</w>
+        <h>30</h>
+      </noteGeometry>
+      <noteLine color="-12566464" relationId="5796">
+        <point>
+          <x>252</x>
+          <y>341</y>
+        </point>
+        <point>
+          <x>281</x>
+          <y>341</y>
+        </point>
+      </noteLine>
+    </note>
+    <note color="-2079" content="Lors du register ajout de l'utilisateur dans la db local ">
+      <noteGeometry>
+        <x>330</x>
+        <y>570</y>
+        <w>160</w>
+        <h>60</h>
+      </noteGeometry>
+      <noteLine color="-12566464" relationId="6189">
+        <point>
+          <x>491</x>
+          <y>581</y>
+        </point>
+        <point>
+          <x>540</x>
+          <y>551</y>
+        </point>
+      </noteLine>
+    </note>
+    <note color="-2079" content="Pour charger les données local du client logguer">
+      <noteGeometry>
+        <x>830</x>
+        <y>570</y>
+        <w>170</w>
+        <h>45</h>
+      </noteGeometry>
+      <noteLine color="-12566464" relationId="6188">
+        <point>
+          <x>806</x>
+          <y>531</y>
+        </point>
+        <point>
+          <x>871</x>
+          <y>571</y>
+        </point>
+      </noteLine>
+    </note>
+  </umlView>
+</classDiagram>
