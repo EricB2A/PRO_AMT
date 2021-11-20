@@ -17,6 +17,6 @@ com.example.amt_demo.config.admin.username=
 com.example.amt_demo.config.admin.id=
 
 com.example.amt_demo.config.jwt.duration=1
-com.example.amt_demo.config.jwt.cookie_name=sta
+com.example.amt_demo.config.jwt.cookie.name=sta
 com.example.amt_demo.config.jwt.secret=rfou
 com.example.amt_demo.config.authservice.url=http://localhost:port
