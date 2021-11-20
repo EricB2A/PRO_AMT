@@ -43,7 +43,7 @@
 
                 <c:if test="${not empty msg_article_quantity_increase}">
                     <div class="alert alert-success">
-                        La quantité a bien été augmenté
+                        La quantité a bien été augmentée
                     </div>
                 </c:if>
 
@@ -82,26 +82,26 @@
                                 <div class="header__item"><a id="name" class="filter__link">Nom de l'article</a></div>
                                 <div class="header__item"><a id="desc" class="filter__link">Description</a></div>
                                 <div class="header__item"><a id="price" class="filter__link filter__link--number">Prix</a></div>
-                                <div class="header__item"><a id="quantity" class="filter__link filter__link--number">Quantity</a></div>
+                                <div class="header__item"><a id="quantity" class="filter__link filter__link--number">Quantité</a></div>
                                 <div class="header__item"><a id="action" class="filter__link filter__link--number">Actions</a></div>
                             </div>
                             <div class="table-content">
 
-                                <c:forEach varStatus="idx" items="${articles}" var="carpets">
+                                <c:forEach varStatus="idx" items="${articles}" var="articles">
                                     <div class="table-row">
-                                        <div class="table-data">${carpets.name}</div>
-                                        <div class="table-data">${carpets.description}</div>
-                                        <div class="table-data">${carpets.price}</div>
+                                        <div class="table-data">${articles.name}</div>
+                                        <div class="table-data">${articles.description}</div>
+                                        <div class="table-data">${articles.price}</div>
                                         <div class="table-data">
-                                            <a class="btn btn-danger btn-sm" href="/admin/articles/quantity/decrease/${carpets.id}">-</a>
-                                                ${carpets.quantity}
-                                            <a class="btn btn-success btn-sm" href="/admin/articles/quantity/increase/${carpets.id}">+</a>
+                                            <a class="btn btn-danger btn-sm" href="/admin/articles/quantity/decrease/${articles.id}">-</a>
+                                                ${articles.quantity}
+                                            <a class="btn btn-success btn-sm" href="/admin/articles/quantity/increase/${articles.id}">+</a>
                                         </div>
                                         <div class="table-data">
-                                            <a href="/admin/articles/edit/${carpets.id}">
+                                            <a href="/admin/articles/edit/${articles.id}">
                                                 <img alt="Edit" src="/images/outline_edit_black_24dp.png">
                                             </a>
-                                            <a href="/admin/articles/delete/${carpets.id}">
+                                            <a href="/admin/articles/delete/${articles.id}">
                                                 <img alt="Delete" src="/images/outline_delete_black_24dp.png">
                                             </a>
                                         </div>

@@ -1,3 +1,11 @@
+/**
+ * @team AMT - Silkyroad
+ * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file Category.java
+ *
+ * @brief Model representing a category
+ */
+
 package com.example.amt_demo.model;
 
 import javax.persistence.*;
@@ -12,53 +20,96 @@ public class Category {
     private String name;
 
     @ManyToMany(mappedBy = "categories")
-    private final Set<Carpet> carpets = new HashSet<>();
+    private final Set<Article> articles = new HashSet<>();
 
     private Boolean checked;
 
-
+    /**
+     * Default constructor of Category
+     */
     public Category() {
 
     }
 
+    /**
+     *
+     * @param name
+     */
     public Category(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @param id
+     * @param name
+     */
     public Category (Integer id, String name) {
         this(name);
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return
+     */
     public Boolean getChecked() {
         return checked;
     }
 
+    /**
+     *
+     * @param checked
+     */
     public void setChecked(Boolean checked) {
         this.checked = checked;
     }
 
-    public Set<Carpet> getCarpets() {
-        return carpets;
+    /**
+     *
+     * @return
+     */
+    public Set<Article> getCarpets() {
+        return articles;
     }
 
-    public void addCarpet(Carpet carpet) {
-        this.carpets.add(carpet);
+    /**
+     *
+     * @param article
+     */
+    public void addCarpet(Article article) {
+        this.articles.add(article);
     }
 }

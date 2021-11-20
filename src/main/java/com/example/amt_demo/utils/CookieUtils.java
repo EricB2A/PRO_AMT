@@ -1,3 +1,11 @@
+/**
+ * @team AMT - Silkyroad
+ * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file CookieUtlis.java
+ *
+ * @brief TODO
+ */
+
 package com.example.amt_demo.utils;
 
 import org.slf4j.Logger;
@@ -21,6 +29,14 @@ public class CookieUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(CookieUtils.class);
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @param productID
+     * @param quantity
+     * @param replaceQuantity
+     */
     public static void storeArticleToCartCookie(HttpServletRequest request, HttpServletResponse response, String productID, int quantity, boolean replaceQuantity) {
         /*
           Si l'utilisateur s'amuse à modifier ses cookies, on aura à coup sûr des problèmes au parsing.
@@ -75,15 +91,33 @@ public class CookieUtils {
         }
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @param productID
+     * @param quantity
+     */
     public static void storeArticleToCartCookie(HttpServletRequest request, HttpServletResponse response, String productID, int quantity) {
         storeArticleToCartCookie(request, response, productID, quantity, false);
     }
 
+    /**
+     *
+     * @param list
+     * @return
+     */
     private static String serialize(List<String> list) {
         // https://curl.se/rfc/cookie_spec.html
         return list.toString().replaceAll("[\\[\\](){} ]","").replace(",", ARTICLE_SEPARATOR);
-
     }
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @param productIDToRemove
+     */
     public static void removeArticleFromCartCookie(HttpServletRequest request, HttpServletResponse response, String productIDToRemove) {
 
         List<String> articlesAsString = getArticlesFromCartCookie(request, response);
@@ -99,7 +133,6 @@ public class CookieUtils {
         cookieUpdated.setPath("/cart");
         cookieUpdated.setMaxAge(COOKIE_AGE);
         response.addCookie(cookieUpdated);
-
     }
 
     public static List<String> getArticlesFromCartCookie(HttpServletRequest request, HttpServletResponse response) {
@@ -136,12 +169,11 @@ public class CookieUtils {
                     destroyCookie(response);
                     return new ArrayList<>();
                 }
-
             }
 
             return new ArrayList<>(Arrays.asList(cookieValue.split(ARTICLE_SEPARATOR)));
 
-        }catch(Exception exception){
+        } catch(Exception exception) {
             logger.error(exception.getMessage());
             destroyCookie(response);
         }
@@ -150,6 +182,10 @@ public class CookieUtils {
 
     }
 
+    /**
+     *
+     * @param response
+     */
     public static void destroyCookie(HttpServletResponse response){
         Cookie cookie = new Cookie(COOKIE_NAME, "");
         cookie.setMaxAge(0);
@@ -157,6 +193,4 @@ public class CookieUtils {
         cookie.setPath("/cart");
         response.addCookie(cookie);
     }
-
-   
 }

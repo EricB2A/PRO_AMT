@@ -1,7 +1,15 @@
+/**
+ * @team AMT - Silkyroad
+ * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file ArticleController.java
+ *
+ * @brief
+ */
+
 package com.example.amt_demo;
 
 import com.example.amt_demo.model.*;
-import com.example.amt_demo.service.CarpetService;
+import com.example.amt_demo.service.ArticleService;
 import com.example.amt_demo.service.CategoryService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterAll;
@@ -32,20 +40,23 @@ public class ArticleControllerTests {
     private MockMvc mvc;
 
     @Mock
-    private CarpetRepository carpetRepository;
+    private ArticleRepository articleRepository;
 
     @Mock
     private CategoryRepository categoryRepository;
 
     @MockBean
-    private CarpetService carpetService;
+    private ArticleService articleService;
 
     @MockBean
     private CategoryService categoryService;
 
-    private static List<Carpet> mockCarpet = new ArrayList<>();
+    private static List<Article> mockArticle = new ArrayList<>();
     private static List<Category> mockCategory;
 
+    /**
+     *
+     */
     @BeforeAll
     public static void CarpetControllerTest_init() {
         Category turkish = new Category("Turkish");
@@ -54,25 +65,28 @@ public class ArticleControllerTests {
         mockCategory = Arrays.asList(turkish, arabic);
 
         for(int i = 1; i <= 6; i++) {
-            Carpet carpet = new Carpet("test name " + i, "test desc " + i, i * 10.00);
+            Article article = new Article("test name " + i, "test desc " + i, i * 10.00);
             if(i % 2 == 0) {
-                carpet.getCategories().add(turkish);
+                article.getCategories().add(turkish);
             } else {
-                carpet.getCategories().add(arabic);
+                article.getCategories().add(arabic);
             }
             for (int j = 1; j <= 6; ++j) {
-                carpet.getPhotos().add(new CarpetPhoto("/carpet-photos/carpet" + i + "/"+"carpet" + j + ".jpg"));
+                article.getPhotos().add(new ArticlePhoto("/carpet-photos/carpet" + i + "/"+"carpet" + j + ".jpg"));
             }
-            mockCarpet.add(carpet);
+            mockArticle.add(article);
         }
     }
 
-    //WORKS
+    /**
+     *
+     * @throws Exception
+     */
     @Test
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_getAllArticles() throws Exception {
 
-        Mockito.when(carpetService.findAll()).thenReturn(mockCarpet);
+        Mockito.when(articleService.findAll()).thenReturn(mockArticle);
 
         mvc.perform(MockMvcRequestBuilders.get("/admin/articles"))
                 .andExpect(status().isOk())
@@ -102,6 +116,10 @@ public class ArticleControllerTests {
                 )));
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Test
     public void ArticleControllerTest_deleteArticle() throws Exception {
 
@@ -133,35 +151,39 @@ public class ArticleControllerTests {
                 )));
     }
 
+    //TODO DELETE THIS IF A SCRIPT WE HAVE
     void AddDummyData() {
         this.generateDummyData();
     }
 
     private void generateDummyData(){
-        carpetRepository.deleteAll();
+        articleRepository.deleteAll();
         categoryRepository.deleteAll();
         Category turkish = new Category("Turkish");
         Category arabic = new Category("Arabic");
         categoryRepository.save(turkish);
         categoryRepository.save(arabic);
         for(int i = 1; i <= 6; i++) {
-            Carpet carpet = new Carpet("test name " + i, "test desc " + i, i * 10.00);
+            Article article = new Article("test name " + i, "test desc " + i, i * 10.00);
             if(i % 2 == 0) {
-                carpet.getCategories().add(turkish);
+                article.getCategories().add(turkish);
             }else{
-                carpet.getCategories().add(arabic);
+                article.getCategories().add(arabic);
             }
             for (int j = 1; j <= 6; ++j) {
-                carpet.getPhotos().add(new CarpetPhoto("/carpet-photos/carpet"+i+"/"+"carpet"+j+".jpg"));
+                article.getPhotos().add(new ArticlePhoto("/carpet-photos/carpet"+i+"/"+"carpet"+j+".jpg"));
 
             }
-            carpetRepository.save(carpet);
+            articleRepository.save(article);
         }
     }
 
+    /**
+     *
+     * @param articleRepository
+     */
     @AfterAll
-    static void cleanUp(@Autowired CarpetRepository carpetRepository) {
-        carpetRepository.deleteAll();
+    static void cleanUp(@Autowired ArticleRepository articleRepository) {
+        articleRepository.deleteAll();
     }
-
 }

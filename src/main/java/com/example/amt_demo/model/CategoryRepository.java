@@ -1,3 +1,11 @@
+/**
+ * @team AMT - Silkyroad
+ * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file CategoryRepository.java
+ *
+ * @brief
+ */
+
 package com.example.amt_demo.model;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -6,45 +14,72 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface CategoryRepository extends CrudRepository<Category, Integer> {
-    @Query("select c from Category c where c.name = ?1")
+
+    /**
+     * Method searching in database a Category by its name
+     * @param name the name
+     * @return the Category with the wanted name
+     */
+    @Query("SELECT c FROM Category c where c.name = ?1")
     Category findByName(String name);
 
-    @Query("select c from Category c where c.id = ?1")
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @Query("SELECT c FROM Category c WHERE c.id = ?1")
     Category findId(int id);
 
-
-    @Query(value = "select * from category c inner join carpet_categories cc on c.id = cc.categories_id where c.id = ?1", nativeQuery = true)
+    /**
+     *
+     * @param id
+     * @return
+     */
+      @Query("SELECT c FROM Category c JOIN c.articles where c.id = ?1")
     Set<Category> hasArticlesInCategory(int id);
 
-    @Query(value = "select * from category c WHERE c.id IN (select c.id from category c inner join carpet_categories cc on c.id = cc.categories_id)", nativeQuery = true)
+    /**
+     *
+     * @return
+     */
+    @Query("SELECT c FROM Category c WHERE c.id IN (SELECT c.id from Category c JOIN c.articles a)")
     List<Category> notEmptyCategory();
 
-    @Query(value = "SELECT * from category where id NOT IN (SELECT category.id FROM carpet \n" +
-            "INNER JOIN carpet_categories ON carpet.id = carpet_categories.carpets_id\n" +
-            "INNER JOIN category on carpet_categories.categories_id = category.id\n" +
-            "WHERE carpet.id = ?1)", nativeQuery = true)
-    Set<Category> findCategoryNotBelongingToCarpet(int id);
+    /**
+     *
+     * @param article_id
+     * @return
+     */
+    @Query("SELECT c from Category c JOIN c.articles a WHERE a.id = ?1")
+    List<Category> getCategoriesOfCarpet(Integer article_id);
 
-    @Query(value = "SELECT category.id, category.name, true as checked FROM category LEFT OUTER JOIN carpet_categories ON category.id = carpet_categories.categories_id\n" +
-            "WHERE carpet_categories.carpets_id = ?1\n" +
-            "UNION \n" +
-            "SELECT category.id, category.name, false as checked FROM category LEFT OUTER JOIN carpet_categories ON category.id = carpet_categories.categories_id\n" +
-            "WHERE carpet_categories.carpets_id != ?1 OR carpet_categories.carpets_id IS NULL", nativeQuery = true)
-    Set<Category> getCategoriesByCarpet2(Integer id);
-
-    @Query(value = "SELECT c from Category c JOIN c.carpets cr WHERE cr.id = ?1")
-    List<Category> getCategoriesOfCarpet(Integer carpetId);
-
-    @Query(value = "SELECT c from Category c")
+    /**
+     *
+     * @return
+     */
+    @Query("SELECT c from Category c")
     List<Category> getAllCategories();
 
+    /**
+     *
+     * @param article_id
+     * @param category_id
+     */
     @Modifying
     @Transactional
-    @Query(value = "Insert into carpet_categories(carpets_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)
-    void addCategoryToCarpet(int carpet_id, int category_id);
+    @Query(value = "Insert into article_categories(articles_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)
+    void addCategoryToCarpet(int article_id, int category_id);
 
+    /**
+     *
+     * @param article_id
+     */
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM article_categories WHERE articles_id = ?1", nativeQuery = true)
+    void deleteExistingCategoryToCarpet(Integer article_id);
 }

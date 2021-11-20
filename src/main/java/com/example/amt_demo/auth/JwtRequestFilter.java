@@ -1,3 +1,11 @@
+/**
+ * @team AMT - Silkyroad
+ * @authors Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file JwtRequestFilter.java
+ *
+ * @brief TODO
+ */
+
 package com.example.amt_demo.auth;
 
 import com.example.amt_demo.service.CustomUserDetails;
@@ -11,9 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -27,14 +33,18 @@ import java.util.Optional;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private final CustomUserDetailsServiceImpl userDetails;
-
     private final JwtUtil jwtUtil;
-
     final private String cookieName;
 
+    /**
+     *
+     * @param userDetails
+     * @param jwtUtil
+     * @param cookieName
+     */
     @Autowired
     public JwtRequestFilter(CustomUserDetailsServiceImpl userDetails, JwtUtil jwtUtil, @Value("${com.example.amt_demo.config.jwt.cookie.name}") String cookieName) {
         logger.info(cookieName);
@@ -43,6 +53,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         this.cookieName = cookieName;
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @param chain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -71,11 +89,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             }
-        }catch(SignatureException ignored){
+        } catch(SignatureException ignored) {
 
         }
-
         chain.doFilter(request, response);
     }
-
 }
