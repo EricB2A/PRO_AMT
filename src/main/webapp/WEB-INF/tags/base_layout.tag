@@ -227,6 +227,29 @@
 
     }
 
+    function removeAllArticlesFromBasket(tokenName, csrfToken, redirect) {
+        // '${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart'
+
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        });
+
+        if(!confirm("Vider le panier ?")){
+            return;
+        }
+
+        fetch(window.location.origin+"/cart/" , { method: 'DELETE', headers })
+            .then((res)=>{
+                if(res.ok){
+                    window.location.href = redirect
+                }else{
+                    //TODO: Rediriger je ne sais pas où.
+                }
+            });
+
+    }
+
 </script>
 </body>
 </html>

@@ -163,6 +163,17 @@ public class CartController {
         }
     }
 
+    @DeleteMapping
+    public void removeAllProductsFromCart(HttpServletRequest request, HttpServletResponse response) {
+        User user = getLoggedUser();
+        if(user != null) {
+            cartInfoRepository.deleteAllCartInfoByUser(user.getId());
+        } else {
+            CookieUtils.destroyCookie(response);
+        }
+
+    }
+
     @PutMapping(path="/{id}")
     public void editProductFromCart(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestBody Map<String, Object> payload) {
         int quantity = Integer.parseInt((String) payload.get("quantity") );

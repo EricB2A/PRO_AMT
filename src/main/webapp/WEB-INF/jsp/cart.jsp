@@ -41,6 +41,8 @@
                             </c:forEach>
 
                         </div>
+
+                        <button class="btn btn-danger" onclick="removeAllArticlesFromBasket('${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Vider panier</button>
                     </c:if>
                 </div>
             </div>

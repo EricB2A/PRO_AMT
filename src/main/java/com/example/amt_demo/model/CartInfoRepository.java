@@ -54,4 +54,9 @@ public interface CartInfoRepository extends CrudRepository<CartInfo, Integer> {
     @Modifying
     @Query("update CartInfo ci set ci.quantity = :quantity where ci.article.id = :carpetId and ci.user.id = :userId")
     void setCartInfoQuantityByCarpetIdAndByUserId(int carpetId, int userId, int quantity);
+
+    @Transactional
+    @Modifying
+    @Query("delete from CartInfo ci where ci.user.id = :userId")
+    void deleteAllCartInfoByUser(int userId);
 }
