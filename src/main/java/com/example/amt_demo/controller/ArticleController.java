@@ -3,7 +3,7 @@
  * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
  * @file ArticleController.java
  *
- * @brief
+ * @brief TODO
  */
 
 package com.example.amt_demo.controller;
@@ -102,7 +102,7 @@ public class ArticleController {
         articleService.save(newArticle);
         if(categories != null) {
             for (String c : categories.split(",")) {
-                categoryService.addCategoryToCarpet(Integer.valueOf(newArticle.getId()), Integer.valueOf(c));
+                categoryService.addCategoryToCarpet(newArticle.getId(), Integer.valueOf(c));
             }
         }
         RedirectView redirectView = new RedirectView("/admin/articles",true);
@@ -147,8 +147,6 @@ public class ArticleController {
     private void handleQuantity(Integer carpetId, Integer toAdd){
         Article article = articleService.findId(carpetId);
         Integer current = article.getQuantity();
-        // TODO What's best ?
-        //Integer current = carpet.getQuantity() != null ? carpet.getQuantity() : 0;
         if(current + toAdd >= 0){
             article.setQuantity(article.getQuantity()+toAdd);
             articleService.save(article);
@@ -197,7 +195,6 @@ public class ArticleController {
      */
     @PostMapping("/edit/post")
     public RedirectView editArticle(Article updated, @RequestParam(name = "categories", required = false) String categories, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
-
         this.uploadImages(updated, images);
         articleService.save(updated);
         if(categories != null) {

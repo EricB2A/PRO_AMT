@@ -1,3 +1,11 @@
+/**
+ * @team AMT - Silkyroad
+ * @authors Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
+ * @file AuthProvider.java
+ *
+ * @brief TODO
+ */
+
 package com.example.amt_demo.auth;
 
 import com.example.amt_demo.exception.AutentificationException;
@@ -13,7 +21,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,16 +29,23 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 //COMMENTAIRE
 @Service
 public class AuthProvider implements AuthenticationProvider {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final UserRepository userRepository;
-
-
     final private CustomUserDetailsService userService;
     private final LoginService loginService;
+
+    /**
+     *
+     * @param userRepository
+     * @param loginService
+     * @param userRepo
+     */
     @Autowired
     public AuthProvider(CustomUserDetailsService userRepository, LoginService loginService, UserRepository userRepo) {
         this.loginService = loginService;
@@ -39,6 +53,12 @@ public class AuthProvider implements AuthenticationProvider {
         this.userRepository = userRepo;
     }
 
+    /**
+     *
+     * @param authentication
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
@@ -71,6 +91,11 @@ public class AuthProvider implements AuthenticationProvider {
         throw new AutentificationException("Bad credential");
     }
 
+    /**
+     *
+     * @param auth
+     * @return
+     */
     @Override
     public boolean supports(Class<?> auth) {
         return auth.equals(UsernamePasswordAuthenticationToken.class);

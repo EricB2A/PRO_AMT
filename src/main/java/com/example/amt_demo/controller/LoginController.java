@@ -3,7 +3,7 @@
  * @author Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
  * @file LoginController.java
  *
- * @brief
+ * @brief TODO
  */
 
 package com.example.amt_demo.controller;
@@ -34,7 +34,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-
 @Controller
 public class LoginController {
 
@@ -44,7 +43,6 @@ public class LoginController {
     private final LoginService loginService;
     private final Gson gson = new GsonBuilder().create();
     private final JsonParser jsonParser = new JsonParser();
-
 
     /**
      * Constructor of LoginController

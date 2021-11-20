@@ -43,7 +43,6 @@ public class CookieUtils {
           Donc si le cookie est illisible -> on catch l'erreur -> suppression du cookie -> plus de panier, mais pas d'erreur !
          */
         try {
-
             List<String> articlesAsString = getArticlesFromCartCookie(request, response);
 
             /*
@@ -140,7 +139,6 @@ public class CookieUtils {
             cf. storeArticleToCartCookie
          */
         try {
-
             Cookie[] cookies = request.getCookies();
 
             Optional<String> maybeCookieValue = Arrays.stream(request.getCookies())
@@ -179,7 +177,6 @@ public class CookieUtils {
         }
 
         return new ArrayList<>();
-
     }
 
     /**
