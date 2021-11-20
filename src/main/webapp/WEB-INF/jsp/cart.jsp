@@ -30,6 +30,7 @@
                                         <h6 class="card-title">${element.article.description}</h6>
                                         <div class="card-text text-black-50">${element.article.price} CHF</div>
 
+                                        Quantité :
                                         <input type="number" id="productQuantity_${element.article.id}" value="${element.quantity}" min="0">
                                         <button class="btn btn-success" onclick="updateArticleToBasket('${element.article.id}', document.getElementById('productQuantity_${element.article.id}').value ,'${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Changer</button>
 

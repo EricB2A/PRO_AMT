@@ -47,7 +47,7 @@
                                         <div class="h2 text-white"><strong>CHF <span style="color: #ffffee">${article.get().price}</span></strong></div>
                                             <c:if test="${article.get().quantity > 0 && article.get().price > 0}">
                                                 <div>
-                                                    <input class="form-control" type="number" id="articleQuantityToCart" name="articles to cart" min="100">
+                                                    <input class="form-control" type="number" id="articleQuantityToCart" name="articles to cart"  value="1" min="0">
                                                     <button class="btn btn-primary" onclick="addArticleToBasket('${article.get().id}', document.getElementById('articleQuantityToCart').value, '${_csrf.parameterName}', '${_csrf.token}', window.location.href)">Ajout au panier</button>
                                                 </div>
                                             </c:if>

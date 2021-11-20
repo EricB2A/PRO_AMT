@@ -35,7 +35,6 @@
                         </c:if>
                         <div class="d-flex flex-wrap">
                            <c:forEach varStatus="idx" items="${articles}" var="article">
-                               <a href="/articles/${article.id}">
                                    <t:article_thumbnail>
                                        <jsp:attribute name="article_id">${article.id}</jsp:attribute>
                                        <jsp:attribute name="article_name">${article.name}</jsp:attribute>
@@ -44,7 +43,6 @@
                                        <jsp:attribute name="article_img_path">${article.getFirstPhotoPath()}</jsp:attribute>
                                        <jsp:attribute name="article_nb_stars">${3}</jsp:attribute>
                                    </t:article_thumbnail>
-                               </a>
                             </c:forEach>
                         </div>
                     </c:if>
