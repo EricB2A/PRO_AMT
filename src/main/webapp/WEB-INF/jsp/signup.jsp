@@ -16,25 +16,19 @@
                     <div class="row">
                         <div class="offset-3 col-6">
                             <h1>Inscription</h1>
+                            ${error}
                             <c:if test="${userAlreadyExists}">
                                 <div class="alert alert-warning" role="alert">
                                     Ce nom d'utilisateur est déjà utilisé <span style='font-size:20px;'>&#128546;</span>
                                 </div>
                             </c:if>
                             <c:if test="${error}">
-                                <div class="alert alert-warning" role="alert">
-                                    Il semblerait que nous ayons un problème, veuillez réessayer plus tard
-                                </div>
-                                <div class="row">
-                                    <div class="offset-3 col-6">
-                                        <img src="/images/nothingToSeeHere.gif"/>
-                                    </div>
-                                </div>
+                              <t:internal_error></t:internal_error>
                             </c:if>
                         </div>
                     </div>
                     <div>
-                        <form id="signup_form" name="signup" action="/inscription" method="POST">
+                        <form id="signup_form" name="signup" action="/signup" method="POST">
                             <input type="hidden"
                                    name="${_csrf.parameterName}"
                                    value="${_csrf.token}"/>

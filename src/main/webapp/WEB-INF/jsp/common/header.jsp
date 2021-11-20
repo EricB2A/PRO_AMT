@@ -23,7 +23,7 @@
                                 <a class="nav-item nav-link" href="/admin/articles">Administration</a>
                             </sec:authorize>
                             <sec:authorize access="isAuthenticated()">
-                                <form action="/deconnexion" method=POST id="logout-form">
+                                <form action="/signout" method=POST id="logout-form">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <a class="nav-item nav-link clickable" onclick="document.getElementById('logout-form').submit()" >Déconnexion de <sec:authentication property="principal.username" /></a>
                                 </form>

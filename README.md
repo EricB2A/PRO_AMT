@@ -74,9 +74,9 @@ Veuillez noter que les méthodes de types `setter` et `getter` ne sont pas prés
 | GET        | `/admin/articles/delete/{id}` | `ArticleController`   |
 | GET        | `/login`                      | `LoginController`     |
 | POST       | `/login`                      | `LoginController`     |
-| POST       | `/inscription`                | `LoginController`     |
-| GET        | `/inscription`                | `LoginController`     |
-| POST       | `/deconnexion`                | `LoginController`     |
+| POST       | `/signup`                     | `LoginController`     |
+| GET        | `/signup`                     | `LoginController`     |
+| POST       | `/logout`                     | `LoginController`     |
 | GET        | `/cart`                       | `CartController`      |
 | PUT        | `/cart/{id}`                  | `CartController`      |
 | POST       | `/cart/{id}`                  | `CartController`      |
