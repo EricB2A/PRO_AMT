@@ -130,7 +130,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Quantité</label>
                                             <div class="col-sm-10">
-                                                <input type="number" name="quantity" value="<c:if test="${not empty article}">${article.quantity}</c:if>" min="0"/>
+                                                <input type="number" name="quantity" value="${not empty article ? article.quantity : 0}" min="0"/>
                                             </div>
                                         </div>
 

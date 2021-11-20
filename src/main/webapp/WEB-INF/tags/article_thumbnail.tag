@@ -23,6 +23,8 @@
         </div>
         </a>
         <c:if test="${not empty article_quantity && Integer.parseInt(article_quantity) > 0 }">
-            <button class="btn btn-primary" onclick="addArticleToBasket('${article_id}', '1', '${_csrf.parameterName}', '${_csrf.token}', '')">Ajout au panier</button>
+            <c:if test="${not empty article_price && Double.parseDouble(article_price) > 0}">
+                <button class="btn btn-primary" onclick="addArticleToBasket('${article_id}', '1', '${_csrf.parameterName}', '${_csrf.token}', '')">Ajout au panier</button>
+            </c:if>
         </c:if>
     </div>

@@ -8,10 +8,8 @@
 
 package com.example.amt_demo.model;
 
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -64,22 +62,5 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
     @Query("SELECT c from Category c")
     List<Category> getAllCategories();
 
-    /**
-     *
-     * @param article_id
-     * @param category_id
-     */
-    @Modifying
-    @Transactional
-    @Query(value = "Insert into article_categories(articles_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)
-    void addCategoryToCarpet(int article_id, int category_id);
 
-    /**
-     *
-     * @param article_id
-     */
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM article_categories WHERE articles_id = ?1", nativeQuery = true)
-    void deleteExistingCategoryToCarpet(Integer article_id);
 }

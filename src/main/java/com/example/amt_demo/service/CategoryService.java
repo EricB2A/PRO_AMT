@@ -71,14 +71,6 @@ public class CategoryService {
         return categoryRepository.getAllCategories();
     }
 
-    /**
-     *
-     * @param valueOf
-     * @param valueOf1
-     */
-    public void addCategoryToCarpet(Integer valueOf, Integer valueOf1) {
-        categoryRepository.addCategoryToCarpet(valueOf, valueOf1);
-    }
 
     /**
      *
@@ -115,11 +107,5 @@ public class CategoryService {
         categoryRepository.delete(category);
     }
 
-    /**
-     *
-     * @param article_id
-     */
-    public void deleteExistingCategoryToCarpet(Integer article_id) {
-        categoryRepository.deleteExistingCategoryToCarpet(article_id);
-    }
+
 }

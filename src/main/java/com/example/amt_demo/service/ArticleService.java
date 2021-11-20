@@ -64,15 +64,6 @@ public class ArticleService {
 
     /**
      *
-     * @param carpetId
-     * @return
-     */
-    public Article findId(Integer carpetId) {
-        return articleRepository.findId(carpetId);
-    }
-
-    /**
-     *
      * @param article
      */
     public void delete(Article article) {
