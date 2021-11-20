@@ -100,11 +100,7 @@ public class ArticleController {
         articleService.save(newArticle);
         this.uploadImages(newArticle, images);
         articleService.save(newArticle);
-        if(categories != null) {
-            for (String c : categories.split(",")) {
-                categoryService.addCategoryToCarpet(newArticle.getId(), Integer.valueOf(c));
-            }
-        }
+
         RedirectView redirectView = new RedirectView("/admin/articles",true);
         redir.addFlashAttribute("msg_article_added",true);
         return redirectView;
