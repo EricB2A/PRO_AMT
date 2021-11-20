@@ -1,6 +1,8 @@
 package com.example.amt_demo.auth;
 
 import com.example.amt_demo.exception.AutentificationException;
+import com.example.amt_demo.model.User;
+import com.example.amt_demo.model.UserRepository;
 import com.example.amt_demo.service.CustomUserDetails;
 import com.example.amt_demo.service.CustomUserDetailsService;
 import com.example.amt_demo.service.LoginService;
@@ -18,20 +20,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
+//COMMENTAIRE
 @Service
 public class AuthProvider implements AuthenticationProvider {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final UserRepository userRepository;
 
 
     final private CustomUserDetailsService userService;
     private final LoginService loginService;
     @Autowired
-    public AuthProvider(CustomUserDetailsService userRepository, LoginService loginService) {
+    public AuthProvider(CustomUserDetailsService userRepository, LoginService loginService, UserRepository userRepo) {
         this.loginService = loginService;
         this.userService = userRepository;
+        this.userRepository = userRepo;
     }
 
     @Override
@@ -42,13 +47,23 @@ public class AuthProvider implements AuthenticationProvider {
 
         try {
             LoginAPIResponse response = loginService.login(new UserCredentialsDTO(username, password));
+
             if (response.getStatusCode() == 200) {
                 JSONObject jsonRes = response.getContent();
                 String token = jsonRes.getString("token");
                 JSONObject account = jsonRes.getJSONObject("account");
+
                 String role = account.getString("role");
-                UserDetails userDetails = userService.loadUserByUsername(authentication.getPrincipal().toString());
-                return new UsernameJwtAuthenticationToken(userDetails, password, token, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + role));
+                try{
+                    UserDetails userDetails = userService.loadUserByUsername(authentication.getPrincipal().toString());
+                    return new UsernameJwtAuthenticationToken(userDetails, password, token, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + role));
+                } catch (UsernameNotFoundException e){
+                    UserCredentialsDTO credentials = new UserCredentialsDTO(username, password);
+                    User user = new User(account.getInt("id"), account.getString("role"), credentials);
+                    userRepository.save(user);
+                    UserDetails userDetails = userService.loadUserByUsername(authentication.getPrincipal().toString());
+                    return new UsernameJwtAuthenticationToken(userDetails, password, token, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + role));
+                }
             }
         } catch (JSONException e) {
             // Ignore
