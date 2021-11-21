@@ -191,13 +191,14 @@ public class ArticleController {
      */
     @PostMapping("/edit/post")
     public RedirectView editArticle(Article updated, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
+        String url = "/admin/articles/edit/"+updated.getId();
         Article tryFind = articleService.findByName(updated.getName());
         if(tryFind != null && !tryFind.getId().equals(updated.getId())){
-            RedirectView redirectView = new RedirectView("/admin/articles/edit/"+updated.getId(),true);
+            RedirectView redirectView = new RedirectView(url,true);
             redir.addFlashAttribute("msg_already_existing_article",true);
             return redirectView;
         }
-        RedirectView redirectView1 = checkArticleName(updated, redir, "/admin/articles/edit/"+updated.getId());
+        RedirectView redirectView1 = checkArticleName(updated, redir, url);
         if (redirectView1 != null) return redirectView1;
         Optional<Article> optional = articleService.findById(updated.getId());
         optional.ifPresent(article -> updated.setPhotos(article.getPhotos()));
@@ -274,16 +275,18 @@ public class ArticleController {
      */
     private boolean uploadImages(Article article, MultipartFile[] images){
         AtomicInteger i = new AtomicInteger(1);
-        Arrays.asList(images).stream().forEach(image -> {
-            String filename = image.getOriginalFilename();
-            if(filename.length() > 4){
-                String location = "/carpet"+ article.getId()+"/";
-                if(photoStorageService.save(image, location, filename)) {
-                    article.getPhotos().add(new ArticlePhoto(photoStorageService.getRoot() + location + filename));
-                    i.incrementAndGet();
+        if(images != null) {
+            Arrays.asList(images).stream().forEach(image -> {
+                String filename = image.getOriginalFilename();
+                if (filename.length() > 4) {
+                    String location = "/carpet" + article.getId() + "/";
+                    if (photoStorageService.save(image, location, filename)) {
+                        article.getPhotos().add(new ArticlePhoto(photoStorageService.getRoot() + location + filename));
+                        i.incrementAndGet();
+                    }
                 }
-            }
-        });
+            });
+        }
         return i.get() > 1;
     }
 }
