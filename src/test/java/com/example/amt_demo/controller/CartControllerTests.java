@@ -55,7 +55,7 @@ public class CartControllerTests {
 
     @Test
     @WithMockUser
-    public void addProductToCartVisitor() throws Exception {
+    public void addAndRemoveProductToCartVisitor() throws Exception {
         Article article = new Article("Tapis", "Desc tapis", 100.);
         Mockito.when(articleRepository.findById(1))
                 .thenReturn(Optional.of(article));
@@ -67,8 +67,12 @@ public class CartControllerTests {
                 )
                 .andExpect(status().isOk());
 
+        mvc.perform(MockMvcRequestBuilders.delete("/cart/1")
+                .with(csrf()))
+                .andExpect(status().isOk());
 
     }
+
 
     @Test
     public void removeProductFromCart() throws Exception {
