@@ -1,7 +1,7 @@
 # Authentification
 Afin de profiter d'une base solide pour notre application, nous avons décider d'intégrer le service d'authentification 
 fourni avec Spring Security.
-![UML login](https://github.com/EricB2A/PRO_AMT/blob/d2d98cb79094e5b049cb52143d4af0fe67d8c71c/docs/uml/model_images/login.png)
+![UML login](uml/model_images/login.png)
 
 ## Login / connexion
 Spring Security laisse la possibilité de déléguer l'authentification à un `AuthentificationProvider` qui se chargera 
