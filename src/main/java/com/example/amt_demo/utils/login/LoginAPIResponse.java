@@ -21,9 +21,9 @@ public class LoginAPIResponse {
 
     /**
      * Constructor of LoginAPIResponse
-     * @param content
-     * @param statusCode
-     * @param requestType
+     * @param content The body
+     * @param statusCode The status code
+     * @param requestType The type of the request
      */
     public LoginAPIResponse(JSONObject content, int statusCode, RequestType requestType) {
         this.content = content;
