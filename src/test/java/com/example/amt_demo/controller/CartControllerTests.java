@@ -54,6 +54,7 @@ public class CartControllerTests {
     }
 
     @Test
+    @WithMockUser
     public void addProductToCartVisitor() throws Exception {
         Article article = new Article("Tapis", "Desc tapis", 100.);
         Mockito.when(articleRepository.findById(1))
@@ -61,9 +62,8 @@ public class CartControllerTests {
 
         mvc.perform(MockMvcRequestBuilders.post("/cart/1")
                         .with(csrf())
-                            .contentType("application/json")
-                        //.param("quantity", """1")
-                        .content("{quantity: \"1\"}")
+                        .contentType("application/json")
+                        .content("{\"quantity\": \"1\"}")
                 )
                 .andExpect(status().isOk());
 
