@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
 @RequestMapping(path = "/catalog")
 @Controller
 public class CatalogController {
@@ -53,7 +55,8 @@ public class CatalogController {
      */
     @GetMapping(path="/{id}", produces = {"application/xml"})
     public String getArticle(ModelMap mp, @PathVariable String id) {
-        mp.addAttribute("article", articleRepository.findById(Integer.valueOf(id)));
+        Optional<Article> optional = articleRepository.findById(Integer.valueOf(id));
+        optional.ifPresent(article -> mp.addAttribute("article", article));
         return "public/article";
     }
 

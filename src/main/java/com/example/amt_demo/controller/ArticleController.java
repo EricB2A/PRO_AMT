@@ -103,7 +103,6 @@ public class ArticleController {
 
     /**
      *
-     * @param mp
      * @param carpet_id
      * @param id
      * @param redir
