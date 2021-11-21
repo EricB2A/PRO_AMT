@@ -32,11 +32,21 @@ public class User {
      * Constructor of User
      * @param id the id of the User
      * @param role the role of the User
-     * @param cred the username of the User
+     * @param cred the credential the user give for register/login, used to extract username
      */
     public User(Integer id, String role, UserCredentialsDTO cred) {
+        this(id,role,cred.getUsername());
+    }
+
+    /**
+     * Constructor of User
+     * @param id the id of the User
+     * @param role the role of the User
+     * @param username the username of the User
+     */
+    public User(Integer id, String role, String username ) {
         this.id = id ;
-        this.username = cred.getUsername();
+        this.username = username;
         this.role= role;
     }
 

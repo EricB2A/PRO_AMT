@@ -82,7 +82,6 @@ public class LoginService {
             User user = new User(responseBodyJSON.getInt("id"), responseBodyJSON.getString("role"), credentials);
             userRepository.save(user);
         } else {
-            logger.info("===>");
             throw HttpClientErrorException.create(response.getStatusCode(), "", response.getHeaders(), response.getBody().getBytes(StandardCharsets.UTF_8), Charset.defaultCharset());
         }
         return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue(), LoginAPIResponse.RequestType.REGISTER);
