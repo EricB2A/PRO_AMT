@@ -83,7 +83,7 @@ public class ArticleController {
      */
     @PostMapping("/add/post")
     public RedirectView addCarpet(Article newArticle, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
-        RedirectView redirectView = checkArticleName(newArticle, redir, "/admin/articles/add");
+        RedirectView redirectView = checkArticleInputs(newArticle, redir, "/admin/articles/add");
         if (redirectView != null) return redirectView;
 
         Article tryFind = articleService.findByName(newArticle.getName());
@@ -110,7 +110,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("{carpet_id}/photo/delete/{id}")
-    public RedirectView deleteCarpetPhoto(ModelMap mp, @PathVariable String carpet_id, @PathVariable String id, RedirectAttributes redir) {
+    public RedirectView deleteCarpetPhoto(@PathVariable String carpet_id, @PathVariable String id, RedirectAttributes redir) {
         Optional<Article> carpet = articleService.findById(Integer.parseInt(carpet_id));
         if(carpet.isPresent()) {
             Article c = carpet.get();
@@ -167,13 +167,12 @@ public class ArticleController {
 
     /**
      *
-     * @param mp
      * @param id
      * @param redir
      * @return
      */
     @GetMapping("/quantity/decrease/{id}")
-    public RedirectView decreaseQuantity(ModelMap mp, @PathVariable String id, RedirectAttributes redir) {
+    public RedirectView decreaseQuantity(@PathVariable String id, RedirectAttributes redir) {
         if(this.handleQuantity(Integer.parseInt(id), -1)){
             redir.addFlashAttribute("msg_article_quantity_decrease",true);
         }
@@ -191,13 +190,14 @@ public class ArticleController {
      */
     @PostMapping("/edit/post")
     public RedirectView editArticle(Article updated, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
+        String url = "/admin/articles/edit/"+updated.getId();
         Article tryFind = articleService.findByName(updated.getName());
         if(tryFind != null && !tryFind.getId().equals(updated.getId())){
-            RedirectView redirectView = new RedirectView("/admin/articles/edit/"+updated.getId(),true);
+            RedirectView redirectView = new RedirectView(url,true);
             redir.addFlashAttribute("msg_already_existing_article",true);
             return redirectView;
         }
-        RedirectView redirectView1 = checkArticleName(updated, redir, "/admin/articles/edit/"+updated.getId());
+        RedirectView redirectView1 = checkArticleInputs(updated, redir, url);
         if (redirectView1 != null) return redirectView1;
         Optional<Article> optional = articleService.findById(updated.getId());
         optional.ifPresent(article -> updated.setPhotos(article.getPhotos()));
@@ -221,7 +221,8 @@ public class ArticleController {
     public String editArticle(ModelMap mp, @PathVariable String id) {
         mp.addAttribute("editing", true);
         mp.addAttribute("post_url", "/admin/articles/edit/post");
-        mp.addAttribute("article", articleService.findById(Integer.valueOf(id)));
+        Optional<Article> optional = articleService.findById(Integer.parseInt(id));
+        optional.ifPresent(article -> mp.addAttribute("article", article));
 
         List<Category> checked = categoryService.getCategoriesOfCarpet(Integer.valueOf(id));
         List<Category> notChecked = categoryService.getAllCategories();
@@ -247,16 +248,14 @@ public class ArticleController {
             Article article = optional.get();
             articleService.delete(article);
             photoStorageService.deleteFolder("carpet-photos/carpet"+ article.getId());
+            mp.addAttribute("msg_article_deleted", true);
         }
-        mp.addAttribute("categories", categoryService.findAll());
         mp.addAttribute("articles", articleService.findAll());
-        mp.addAttribute("msg_article_deleted", true);
-
         return "admin/articles";
     }
 
     @Nullable
-    private RedirectView checkArticleName(Article updated, RedirectAttributes redir, String redirTo) {
+    private RedirectView checkArticleInputs(Article updated, RedirectAttributes redir, String redirTo) {
         if(updated.getName().length() == 0){
             RedirectView redirectView = new RedirectView(redirTo,true);
             redir.addFlashAttribute("msg_missing_name",true);
@@ -275,16 +274,18 @@ public class ArticleController {
      */
     private boolean uploadImages(Article article, MultipartFile[] images){
         AtomicInteger i = new AtomicInteger(1);
-        Arrays.asList(images).stream().forEach(image -> {
-            String filename = image.getOriginalFilename();
-            if(filename.length() > 4){
-                String location = "/carpet"+ article.getId()+"/";
-                if(photoStorageService.save(image, location, filename)) {
-                    article.getPhotos().add(new ArticlePhoto(photoStorageService.getRoot() + location + filename));
-                    i.incrementAndGet();
+        if(images != null) {
+            Arrays.asList(images).stream().forEach(image -> {
+                String filename = image.getOriginalFilename();
+                if (filename.length() > 4) {
+                    String location = "/carpet" + article.getId() + "/";
+                    if (photoStorageService.save(image, location, filename)) {
+                        article.getPhotos().add(new ArticlePhoto(photoStorageService.getRoot() + location + filename));
+                        i.incrementAndGet();
+                    }
                 }
-            }
-        });
+            });
+        }
         return i.get() > 1;
     }
 }

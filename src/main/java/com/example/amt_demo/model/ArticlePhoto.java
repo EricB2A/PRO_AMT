@@ -28,6 +28,15 @@ public class ArticlePhoto {
      * Constructor of ArticlePhoto
      * @param path  the path to the photo of the ArticlePhoto
      */
+    public ArticlePhoto(Integer id, String path) {
+        this.id = id;
+        this.path = path;
+    }
+
+    /**
+     * Constructor of ArticlePhoto
+     * @param path  the path to the photo of the ArticlePhoto
+     */
     public ArticlePhoto(String path) {
         this.path = path;
     }

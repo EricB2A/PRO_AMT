@@ -23,15 +23,7 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
      */
     @Query("SELECT a FROM Article a WHERE a.name = ?1")
     Article findByName(String name);
-
-    /**
-     *
-     * @param id
-     * @return
-     */
-    @Query("SELECT a FROM Article a WHERE a.id = ?1")
-    Article findId(int id);
-
+    
     /**
      *
      * @param name
