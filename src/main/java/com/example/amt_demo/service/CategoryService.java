@@ -22,90 +22,82 @@ public class CategoryService {
     final private CategoryRepository categoryRepository;
 
     /**
-     *
-     * @param categoryRepository
+     * Constructor of CategoryService
+     * @param categoryRepository the CategoryRepository
      */
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
     /**
-     *
-     * @return
+     * Method finding every Category
+     * @return the list of Category objects
      */
     public Iterable<Category> findAll() {
         return categoryRepository.findAll();
     }
 
     /**
-     *
-     * @param id
-     * @return
+     * Method finding the Category by its id
+     * @param id the id of the Category
+     * @return the Category
      */
-    public Optional<Category> findById(int id) {
-        return categoryRepository.findById(id);
+    public Category findById(int id) {
+        Optional<Category> category = categoryRepository.findById(id);
+        if(category.isPresent()) {
+            return category.get();
+        }
+        return null;
     }
 
     /**
-     *
-     * @param name
-     * @return
+     * Method finding the Category by its name
+     * @param name the name of the Category
+     * @return the Category
      */
     public Category findByName(String name) {
         return categoryRepository.findByName(name);
     }
 
     /**
-     *
-     * @param category
+     * Method saving the Category to the database
+     * @param category the Category
      */
     public void save(Category category) {
         categoryRepository.save(category);
     }
 
     /**
-     *
-     * @return
+     * Method getting every Category
+     * @return the list of Category
      */
     public List<Category> getAllCategories() {
         return categoryRepository.getAllCategories();
     }
 
-
     /**
-     *
-     * @param valueOf
-     * @return
+     * Method getting every Category linked to an Article
+     * @param articleId the id of the Article
+     * @return the list of Category
      */
-    public List<Category> getCategoriesOfCarpet(Integer valueOf) {
-        return categoryRepository.getCategoriesOfCarpet(valueOf);
+    public List<Category> getCategoriesOfCarpet(Integer articleId) {
+        return categoryRepository.getCategoriesOfArticle(articleId);
     }
 
     /**
-     *
-     * @param valueOf
-     * @return
+     * Method checking if a Category has any Article object
+     * @param categoryId the id of the Category
+     * @return the list of Category
      */
-    public Category findId(Integer valueOf) {
-        return categoryRepository.findId(valueOf);
+    public Set<Category> hasArticlesInCategory(Integer categoryId) {
+        return categoryRepository.hasArticlesInCategory(categoryId);
     }
 
     /**
-     *
-     * @param valueOf
-     * @return
-     */
-    public Set<Category> hasArticlesInCategory(Integer valueOf) {
-        return categoryRepository.hasArticlesInCategory(valueOf);
-    }
-
-    /**
-     *
-     * @param category
+     * Method deleting a Category
+     * @param category the Category
      */
     public void delete(Category category) {
         categoryRepository.delete(category);
     }
-
-
 }

@@ -15,8 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-import java.util.OptionalInt;
 import java.util.Set;
 
 @RequestMapping(path = "/admin/categories")
@@ -28,8 +26,8 @@ public class CategoryController {
 
     /**
      * Controller of Category
-     * @param categoryService
-     * @param articleService
+     * @param categoryService the CategoryService
+     * @param articleService the ArticleService
      */
     public CategoryController(CategoryService categoryService, ArticleService articleService) {
         this.categoryService = categoryService;
@@ -59,10 +57,10 @@ public class CategoryController {
     }
 
     /**
-     *
-     * @param newCategory
-     * @param mp
-     * @return
+     * Method adding the Category to the database
+     * @param newCategory the Category to add
+     * @param mp the ModelMap
+     * @return the view to the list of Category
      */
     @PostMapping(path="/add/post")
     public String addCategory(Category newCategory, ModelMap mp) {
@@ -78,10 +76,10 @@ public class CategoryController {
     }
 
     /**
-     *
-     * @param mp
-     * @param id
-     * @return
+     * Method displaying the form for editing a category
+     * @param mp the ModelMap
+     * @param id the id of the Category to edit
+     * @return the view to the edition form
      */
     @GetMapping("/edit/{id}")
     public String editCategory(ModelMap mp, @PathVariable String id) {
@@ -92,10 +90,10 @@ public class CategoryController {
     }
 
     /**
-     *
-     * @param updated
-     * @param mp
-     * @return
+     * Method editing the category to the database
+     * @param updated the updated Category
+     * @param mp the ModelMap
+     * @return the view to the list of Category
      */
     @PostMapping("/edit/post")
     public String editArticle(Category updated, ModelMap mp) {
@@ -112,19 +110,19 @@ public class CategoryController {
     }
 
     /**
-     *
-     * @param mp
-     * @param id
-     * @return
+     * Method deleting the category of the database
+     * @param mp the ModelMap
+     * @param id the id of the Category to delete
+     * @return the view to the list of Category
      */
     @GetMapping("/delete/{id}")
     public String deleteCategory(ModelMap mp, @PathVariable String id) {
-        Category category = categoryService.findId(Integer.valueOf(id));
+        Category category = categoryService.findById(Integer.valueOf(id));
         Set<Category> list = categoryService.hasArticlesInCategory(Integer.valueOf(id));
-        if (list.isEmpty()) {
+        if (list.isEmpty()) { // Checking if there is articles linked to the Category
             categoryService.delete(category);
             mp.addAttribute("success", "Catégorie supprimée");
-        } else {
+        } else { // Otherwise, send error message & list of Article objects preventing the deletion
             mp.addAttribute("error", "Vous ne pouvez pas supprimer des catégories qui contiennent des articles");
             mp.addAttribute("error_article", articleService.findErrorDeletion(id));
         }
