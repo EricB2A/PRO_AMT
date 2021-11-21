@@ -83,7 +83,7 @@ public class ArticleController {
      */
     @PostMapping("/add/post")
     public RedirectView addCarpet(Article newArticle, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
-        RedirectView redirectView = checkArticleName(newArticle, redir, "/admin/articles/add");
+        RedirectView redirectView = checkArticleInputs(newArticle, redir, "/admin/articles/add");
         if (redirectView != null) return redirectView;
 
         Article tryFind = articleService.findByName(newArticle.getName());
@@ -110,7 +110,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("{carpet_id}/photo/delete/{id}")
-    public RedirectView deleteCarpetPhoto(ModelMap mp, @PathVariable String carpet_id, @PathVariable String id, RedirectAttributes redir) {
+    public RedirectView deleteCarpetPhoto(@PathVariable String carpet_id, @PathVariable String id, RedirectAttributes redir) {
         Optional<Article> carpet = articleService.findById(Integer.parseInt(carpet_id));
         if(carpet.isPresent()) {
             Article c = carpet.get();
@@ -197,7 +197,7 @@ public class ArticleController {
             redir.addFlashAttribute("msg_already_existing_article",true);
             return redirectView;
         }
-        RedirectView redirectView1 = checkArticleName(updated, redir, url);
+        RedirectView redirectView1 = checkArticleInputs(updated, redir, url);
         if (redirectView1 != null) return redirectView1;
         Optional<Article> optional = articleService.findById(updated.getId());
         optional.ifPresent(article -> updated.setPhotos(article.getPhotos()));
@@ -255,7 +255,7 @@ public class ArticleController {
     }
 
     @Nullable
-    private RedirectView checkArticleName(Article updated, RedirectAttributes redir, String redirTo) {
+    private RedirectView checkArticleInputs(Article updated, RedirectAttributes redir, String redirTo) {
         if(updated.getName().length() == 0){
             RedirectView redirectView = new RedirectView(redirTo,true);
             redir.addFlashAttribute("msg_missing_name",true);

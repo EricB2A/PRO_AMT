@@ -32,8 +32,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -45,19 +43,11 @@ public class ArticleControllerTests {
     @Autowired
     private MockMvc mvc;
 
-    @Mock
-    private ArticleRepository articleRepository;
-
-    @Mock
-    private CategoryRepository categoryRepository;
-
     @MockBean
     private ArticleService articleService;
 
     @MockBean
     private CategoryService categoryService;
-
-
 
 
     /**
@@ -231,6 +221,8 @@ public class ArticleControllerTests {
         Article newArticle = new Article(4,"Carpet2", "Any description", 80.0, 40);
 
         MockMultipartFile emptyPhoto = new MockMultipartFile("images", "", "application/json", "{\"image\": \"\"}".getBytes());
+
+        Mockito.when(articleService.findByName("Carpet2")).thenReturn(null);
 
         mvc.perform(MockMvcRequestBuilders.multipart("/admin/articles/add/post")
                 .file(emptyPhoto)
@@ -576,12 +568,22 @@ public class ArticleControllerTests {
     public void ArticleControllerTest_AddArticleWithCategories() throws Exception {
 
         Article newArticle = new Article(4,"Carpet2", "Any description", 80.0, 40);
+
         newArticle.setCategories(Stream.of(
                 new Category(1, "Turkish"),
                 new Category(2, "Arabic"),
                 new Category(3, "Oriental")
         ).collect(Collectors.toSet()));
         MockMultipartFile emptyPhoto = new MockMultipartFile("images", "", "application/json", "{\"image\": \"\"}".getBytes());
+
+        Mockito.when(articleService.findByName("Carpet2")).thenReturn(null);
+
+        Mockito.when(articleService.findAll()).thenReturn(
+                Stream.of(
+                        newArticle,
+                        new Article(5,"Carpet5", "Any description", 80.0, 40)
+                ).collect(Collectors.toList())
+        );
 
         mvc.perform(MockMvcRequestBuilders.multipart("/admin/articles/add/post")
                 .file(emptyPhoto)
@@ -595,10 +597,128 @@ public class ArticleControllerTests {
         )
                 .andExpect(redirectedUrl("/admin/articles"))
                 .andExpect(flash().attribute("msg_article_added", true));
+
+        mvc.perform(MockMvcRequestBuilders.get("/admin/articles"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articles"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/admin/articles.jsp"))
+                .andExpect(model().attribute("articles", hasSize(2)))
+                .andExpect(model().attribute("articles", hasItem(
+                    allOf(
+                        hasProperty("name", is("Carpet2")),
+                        hasProperty("categories", hasItem(
+                            allOf(
+                                hasProperty("name", is("Turkish"))
+                            )
+                        )),
+                        hasProperty("categories", hasItem(
+                        allOf(
+                                hasProperty("name", is("Arabic"))
+                        )
+                        ))
+                    ))));
+    }
+
+    @Test
+    @WithMockUser(roles={"admin"})
+    public void ArticleControllerTest_editArticleWithCategories() throws Exception {
+
+        Article updated = new Article(4,"Carpet2", "Any description", 80.0, 40);
+
+        updated.setCategories(Stream.of(
+                new Category(1, "Turkish"),
+                new Category(2, "Arabic"),
+                new Category(3, "Oriental")
+        ).collect(Collectors.toSet()));
+        MockMultipartFile emptyPhoto = new MockMultipartFile("images", "", "application/json", "{\"image\": \"\"}".getBytes());
+
+        Mockito.when(articleService.findByName("Carpet2")).thenReturn(null);
+
+        Mockito.when(articleService.findAll()).thenReturn(
+            Stream.of(
+                updated,
+                new Article(5,"Carpet5", "Any description", 80.0, 40)
+            ).collect(Collectors.toList())
+        );
+
+        mvc.perform(MockMvcRequestBuilders.multipart("/admin/articles/edit/post")
+                .file(emptyPhoto)
+                .with(csrf())
+                .param("id", String.valueOf(updated.getId()))
+                .param("name", updated.getName())
+                .param("description", updated.getDescription())
+                .param("price", String.valueOf(updated.getPrice()))
+                .param("quantity", String.valueOf(updated.getQuantity()))
+                .param("categories", "1")
+        )
+                .andExpect(redirectedUrl("/admin/articles/edit/4"))
+                .andExpect(flash().attribute("msg_article_edited", true));
+
+        mvc.perform(MockMvcRequestBuilders.get("/admin/articles"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articles"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/admin/articles.jsp"))
+                .andExpect(model().attribute("articles", hasSize(2)))
+                .andExpect(model().attribute("articles", hasItem(
+                        allOf(
+                                hasProperty("name", is("Carpet2")),
+                                hasProperty("categories", hasItem(
+                                        allOf(
+                                                hasProperty("name", is("Turkish"))
+                                        )
+                                )),
+                                hasProperty("categories", hasItem(
+                                        allOf(
+                                                hasProperty("name", is("Arabic"))
+                                        )
+                                ))
+                        ))));
     }
 
 
     // ####################################### PHOTO DELETE ##################################################
+
+    @Test
+    @WithMockUser(roles={"admin"})
+    public void ArticleControllerTest_testDeletePhoto() throws Exception {
+        Article article = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        article.setPhotos(Stream.of(
+                new ArticlePhoto(1, "carpet1.jpg"),
+                new ArticlePhoto(2, "carpet2.jpg")
+        ).collect(Collectors.toList()));
+
+        Article articleAfter = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        articleAfter.setPhotos(Stream.of(
+                new ArticlePhoto(2, "carpet2.jpg")
+        ).collect(Collectors.toList()));
+
+        Mockito.when(articleService.findById(4)).thenReturn(Optional.of(article)).thenReturn(Optional.of(articleAfter));
+
+        mvc.perform(MockMvcRequestBuilders.get("/admin/articles/4/photo/delete/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/articles/edit/4"))
+                .andExpect(flash().attribute("msg_photo_deleted", true));
+
+        mvc.perform(MockMvcRequestBuilders.get("/admin/articles/edit/4"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articleForm"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/admin/articleForm.jsp"))
+                .andExpect(model().attribute("editing", true))
+                .andExpect(model().attribute("post_url", "/admin/articles/edit/post"))
+                .andExpect(model().attribute("article",
+                        allOf(
+                                hasProperty("name", is("Carpet2")),
+                                hasProperty("photos", hasItem(
+                                        allOf(
+                                                hasProperty("path", is("carpet2.jpg"))
+                                        )
+                                ))
+
+                        )
+                ));
+    }
+
+
     /**
      *
      * @param articleRepository
