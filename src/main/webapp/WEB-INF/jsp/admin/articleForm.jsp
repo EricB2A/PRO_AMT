@@ -35,9 +35,7 @@
             });
 
         </script>
-        <c:if test="${not empty article}">
-            <c:set var="article" value="${article.get()}" />
-        </c:if>
+
         <div class="vh-100">
             <div class="gallery_section">
                 <div class="container">

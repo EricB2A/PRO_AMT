@@ -221,7 +221,10 @@ public class ArticleController {
     public String editArticle(ModelMap mp, @PathVariable String id) {
         mp.addAttribute("editing", true);
         mp.addAttribute("post_url", "/admin/articles/edit/post");
-        mp.addAttribute("article", articleService.findById(Integer.valueOf(id)));
+        Optional<Article> optional = articleService.findById(Integer.parseInt(id));
+        if(optional.isPresent()) {
+            mp.addAttribute("article", optional.get());
+        }
 
         List<Category> checked = categoryService.getCategoriesOfCarpet(Integer.valueOf(id));
         List<Category> notChecked = categoryService.getAllCategories();
@@ -247,11 +250,9 @@ public class ArticleController {
             Article article = optional.get();
             articleService.delete(article);
             photoStorageService.deleteFolder("carpet-photos/carpet"+ article.getId());
+            mp.addAttribute("msg_article_deleted", true);
         }
-        mp.addAttribute("categories", categoryService.findAll());
         mp.addAttribute("articles", articleService.findAll());
-        mp.addAttribute("msg_article_deleted", true);
-
         return "admin/articles";
     }
 
