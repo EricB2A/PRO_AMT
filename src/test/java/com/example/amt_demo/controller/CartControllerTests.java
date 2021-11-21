@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -73,36 +74,41 @@ public class CartControllerTests {
 
     }
 
-
-    @Test
-    public void removeProductFromCart() throws Exception {
-
-    }
-
     @Test
     public void removeAllProductsFromCart() throws Exception {
 
+        Article article = new Article("Tapis", "Desc tapis", 100.);
+        Mockito.when(articleRepository.findById(1))
+                .thenReturn(Optional.of(article));
+
+        Article article2 = new Article("Tapis 2", "Desc tapis 2", 200.);
+        Mockito.when(articleRepository.findById(2))
+                .thenReturn(Optional.of(article2));
+
+        mvc.perform(MockMvcRequestBuilders.post("/cart/1")
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content("{\"quantity\": \"1\"}")
+                )
+                .andExpect(status().isOk());
+
+        mvc.perform(MockMvcRequestBuilders.post("/cart/2")
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content("{\"quantity\": \"1\"}")
+                )
+                .andExpect(status().isOk());
+
+        // Appell de la suppresion du panier
+        mvc.perform(MockMvcRequestBuilders.delete("/cart")
+                .with(csrf())
+        )
+                .andExpect(status().isOk());
+
+        mvc.perform(MockMvcRequestBuilders.get("/cart"))
+                .andExpect(model().attribute("articles", hasSize(0)))
+                .andExpect(model().attributeExists("cartPrice"));
     }
-
-
-
-    /*
-    @BeforeAll
-    public static void setCartInfoRepository(@Autowired CartInfoRepository cartInfoRepository, @Autowired ArticleRepository articleRepository) {
-       int N_ARTICLE = 10;
-
-        for(int i = 0; i < N_ARTICLE; ++i){
-            Article a = new Article("Tapis test" + i, "Desc test" + i, 100. + i);
-            articleRepository.save(a);
-        }
-    }
-
-    @AfterAll
-    public static void cleanUp(@Autowired CartInfoRepository cartInfoRepository, @Autowired ArticleRepository articleRepository) {
-        cartInfoRepository.deleteAll();
-        articleRepository.deleteAll();
-    }
-     */
 
 
 }
