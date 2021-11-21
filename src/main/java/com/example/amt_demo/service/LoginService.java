@@ -43,8 +43,8 @@ public class LoginService {
 
     /**
      *
-     * @param url
-     * @param userRepository
+     * @param url The url of the authentication service
+     * @param userRepository The local user database
      */
     @Autowired
     public LoginService(@Value("${com.example.amt_demo.config.authservice.url}") String url, UserRepository userRepository) {
@@ -54,8 +54,8 @@ public class LoginService {
 
     /**
      *
-     * @param credentials
-     * @return
+     * @param credentials THe user credentials
+     * @return A LoginAPIResponse containing the response
      * @throws JSONException
      */
     public LoginAPIResponse registerUser(UserCredentialsDTO credentials) throws JSONException {
@@ -82,7 +82,6 @@ public class LoginService {
             User user = new User(responseBodyJSON.getInt("id"), responseBodyJSON.getString("role"), credentials);
             userRepository.save(user);
         } else {
-            logger.info("===>");
             throw HttpClientErrorException.create(response.getStatusCode(), "", response.getHeaders(), response.getBody().getBytes(StandardCharsets.UTF_8), Charset.defaultCharset());
         }
         return new LoginAPIResponse(responseBodyJSON, response.getStatusCodeValue(), LoginAPIResponse.RequestType.REGISTER);

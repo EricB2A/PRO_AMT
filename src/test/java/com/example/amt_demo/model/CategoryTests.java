@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class CategoryTests {
 
     /**
-     *
+     * Testing the correct behavior of the constructor
      */
     @Test
     public void Category_ConstructorTest() {
@@ -24,7 +24,7 @@ public class CategoryTests {
     }
 
     /**
-     *
+     * Testing the correct behavior of the getter & the setter of the name of the Category
      */
     @Test
     public void Category_getSetName() {

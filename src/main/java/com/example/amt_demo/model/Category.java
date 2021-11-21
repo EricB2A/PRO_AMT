@@ -32,33 +32,33 @@ public class Category {
     }
 
     /**
-     *
-     * @param name
+     * Constructor of Category
+     * @param name the name of the Category
      */
     public Category(String name) {
         this.name = name;
     }
 
     /**
-     *
-     * @param id
-     * @param name
+     * Constructor of Category
+     * @param id the id of the Category
+     * @param name the name of the Category
      */
-    public Category (Integer id, String name) {
+    public Category(Integer id, String name) {
         this(name);
         this.id = id;
     }
 
     /**
-     *
-     * @return
+     * Getter of the id of the Category
+     * @return the id of the Category
      */
     public Integer getId() {
         return id;
     }
 
     /**
-     *
+     * Setter of the id of the Category
      * @param id
      */
     public void setId(Integer id) {
@@ -66,7 +66,7 @@ public class Category {
     }
 
     /**
-     *
+     * Getter of the name of the Category
      * @return
      */
     public String getName() {
@@ -74,40 +74,40 @@ public class Category {
     }
 
     /**
-     *
-     * @param name
+     * Setter of the name of the Category
+     * @param name the name of the Category
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     *
-     * @return
+     * Getter of the checked of the Category
+     * @return the checked of the Category
      */
     public Boolean getChecked() {
         return checked;
     }
 
     /**
-     *
-     * @param checked
+     * Setter of the checked of the Category
+     * @param checked the checked of the Category
      */
     public void setChecked(Boolean checked) {
         this.checked = checked;
     }
 
     /**
-     *
-     * @return
+     * Getter of the Set of Articles of the Category
+     * @return the Set of Articles
      */
     public Set<Article> getCarpets() {
         return articles;
     }
 
     /**
-     *
-     * @param article
+     * Method adding an Article to the list
+     * @param article the Article
      */
     public void addCarpet(Article article) {
         this.articles.add(article);

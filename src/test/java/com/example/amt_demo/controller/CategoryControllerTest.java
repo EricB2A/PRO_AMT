@@ -179,14 +179,13 @@ public class CategoryControllerTest {
         // On souhaite supprimer la catégorie "Orient" qui n'a pas d'articles associés
         Set<Category> temp = new HashSet<>();
 
-        // TODO Y a pas plus simple ? -> Checker la requête niveau SQL
         for(Article c : mockArticle) {
             if (c.getCategories().contains(mockCategory.get(2))) {
                 temp.add(mockCategory.get(2));
             }
         }
 
-        Mockito.when(categoryService.findId(mockCategory.get(2).getId())).thenReturn(mockCategory.get(2));
+        Mockito.when(categoryService.findById(mockCategory.get(2).getId())).thenReturn(mockCategory.get(2));
         Mockito.when(categoryService.hasArticlesInCategory(mockCategory.get(2).getId())).thenReturn(temp);
 
         mockCategory.remove(mockCategory.get(2));
@@ -228,7 +227,7 @@ public class CategoryControllerTest {
             }
         }
 
-        Mockito.when(categoryService.findId(mockCategory.get(0).getId())).thenReturn(mockCategory.get(0));
+        Mockito.when(categoryService.findById(mockCategory.get(0).getId())).thenReturn(mockCategory.get(0));
         Mockito.when(categoryService.hasArticlesInCategory(mockCategory.get(0).getId())).thenReturn(temp);
 
         mvc.perform(MockMvcRequestBuilders.get("/admin/categories/delete/{id}", 1)

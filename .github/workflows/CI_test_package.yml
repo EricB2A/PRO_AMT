@@ -30,7 +30,7 @@ jobs:
           
       # Runs a single command using the runners shell
       - name: Run All Tests
-        run: mvn test
+        run: mvn -DAUTH_SERVICE_SECRET=something -DAUTH_SERVICE_IP=somethingelse test
 
       # Runs a set of commands using the runners shell
       - name: Stop dockerized mysql

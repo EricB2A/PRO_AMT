@@ -66,18 +66,24 @@ public class AuthProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
 
         try {
+            //Perform request to the authentication service
             LoginAPIResponse response = loginService.login(new UserCredentialsDTO(username, password));
 
+            //If authentified
             if (response.getStatusCode() == 200) {
                 JSONObject jsonRes = response.getContent();
                 String token = jsonRes.getString("token");
                 JSONObject account = jsonRes.getJSONObject("account");
 
                 String role = account.getString("role");
+
+                //Try to find the user in local user database
                 try{
                     UserDetails userDetails = userService.loadUserByUsername(authentication.getPrincipal().toString());
                     return new UsernameJwtAuthenticationToken(userDetails, password, token, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + role));
-                } catch (UsernameNotFoundException e){
+                }
+                //If the user doesn't exist, create it
+                catch (UsernameNotFoundException e) {
                     UserCredentialsDTO credentials = new UserCredentialsDTO(username, password);
                     User user = new User(account.getInt("id"), account.getString("role"), credentials);
                     userRepository.save(user);
@@ -100,4 +106,6 @@ public class AuthProvider implements AuthenticationProvider {
     public boolean supports(Class<?> auth) {
         return auth.equals(UsernamePasswordAuthenticationToken.class);
     }
+
+    public void addUser(User user) throws AutentificationException {}
 }
