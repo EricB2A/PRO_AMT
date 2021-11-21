@@ -62,6 +62,8 @@ mysql -uroot -proot
 L'ORM [Hibernate](https://hibernate.org/) va faire un mapping 1-1 entre ce(s) classe(s) et ses(leurs) attributs et une table éponyme et ses champs associés en base de données.
 Veuillez noter que les méthodes de types `setter` et `getter` ne sont pas présents sur ce schéma afin de simplifier la lisibilité de ce dernier.
 
+## Authentification
+Documentation du login se trouve [ici](docs/Authentification.md) 
 ## Routes 👀
 | Verbe HTTP | Route                         | Contrôleur            |
 |------------|-------------------------------|-----------------------|
