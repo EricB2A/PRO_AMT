@@ -222,9 +222,7 @@ public class ArticleController {
         mp.addAttribute("editing", true);
         mp.addAttribute("post_url", "/admin/articles/edit/post");
         Optional<Article> optional = articleService.findById(Integer.parseInt(id));
-        if(optional.isPresent()) {
-            mp.addAttribute("article", optional.get());
-        }
+        optional.ifPresent(article -> mp.addAttribute("article", article));
 
         List<Category> checked = categoryService.getCategoriesOfCarpet(Integer.valueOf(id));
         List<Category> notChecked = categoryService.getAllCategories();
