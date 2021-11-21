@@ -164,6 +164,157 @@ public class ArticleControllerTests {
             )));
     }
 
+    // ############################### ADD FORM ##################################################
+
+    @Test
+    @WithMockUser(roles={"admin"})
+    public void ArticleControllerTest_addFormArticle() throws Exception {
+
+        Mockito.when(categoryService.getAllCategories()).thenReturn(
+            Stream.of(new Category("Arabic"), new Category("Turkish"), new Category("Oriental"))
+                    .collect(Collectors.toList())
+        );
+
+        mvc.perform(MockMvcRequestBuilders.get("/admin/articles/add"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articleForm"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/admin/articleForm.jsp"))
+                .andExpect(model().attribute("adding", true))
+                .andExpect(model().attribute("post_url", "/admin/articles/add/post"))
+
+                .andExpect(model().attribute("categories_not_checked", hasSize(3)))
+                .andExpect(model().attribute("categories_not_checked", hasItem(
+                        allOf(
+                                hasProperty("name", is("Arabic"))
+                        )
+                )))
+                .andExpect(model().attribute("categories_not_checked", hasItem(
+                        allOf(
+                                hasProperty("name", is("Turkish"))
+                        )
+                )))
+                .andExpect(model().attribute("categories_not_checked", hasItem(
+                        allOf(
+                                hasProperty("name", is("Oriental"))
+                        )
+                )));
+    }
+
+
+
+    @Test
+    @WithMockUser(roles={"admin"})
+    public void ArticleControllerTest_addArticleFormPostErrorSameName() throws Exception {
+
+        Article newArticle = new Article(4,"Carpet2", "Any description", 80.0, 40);
+
+        Mockito.when(articleService.findByName("Carpet2")).thenReturn(
+                new Article(2,"Carpet2", "Carpet2 description", 50.0, 20)
+        );
+
+        mvc.perform(MockMvcRequestBuilders.post("/admin/articles/add/post")
+                .with(csrf())
+                .param("id", String.valueOf(newArticle.getId()))
+                .param("name", newArticle.getName())
+                .param("description", newArticle.getDescription())
+                .param("price", String.valueOf(newArticle.getPrice()))
+                .param("quantity", String.valueOf(newArticle.getQuantity()))
+        )
+                .andExpect(redirectedUrl("/admin/articles/add"))
+                .andExpect(flash().attribute("msg_already_existing_article", true));
+    }
+
+    @Test
+    @WithMockUser(roles={"admin"})
+    public void ArticleControllerTest_addArticleFormPostOk() throws Exception {
+
+        Article newArticle = new Article(4,"Carpet2", "Any description", 80.0, 40);
+
+        MockMultipartFile emptyPhoto = new MockMultipartFile("images", "", "application/json", "{\"image\": \"\"}".getBytes());
+
+        mvc.perform(MockMvcRequestBuilders.multipart("/admin/articles/add/post")
+                .file(emptyPhoto)
+                .with(csrf())
+                .param("id", String.valueOf(newArticle.getId()))
+                .param("name", newArticle.getName())
+                .param("description", newArticle.getDescription())
+                .param("price", String.valueOf(newArticle.getPrice()))
+                .param("quantity", String.valueOf(newArticle.getQuantity()))
+        )
+                .andExpect(redirectedUrl("/admin/articles"))
+                .andExpect(flash().attribute("msg_article_added", true));
+    }
+
+    @Test
+    @WithMockUser(roles={"admin"})
+    public void ArticleControllerTest_addArticleFormPostOk3Photos() throws Exception {
+
+        Article newArticle = new Article(4,"Carpet2", "Any description", 80.0, 40);
+
+        MockMultipartFile file1 = new MockMultipartFile("images", "carpet_photo1.jpg", "application/json", "{\"image\": \"sdfghjk\"}".getBytes());
+        MockMultipartFile file2 = new MockMultipartFile("images", "carpet_photo2.jpg", "application/json", "{\"image\": \"sdfghjk\"}".getBytes());
+        MockMultipartFile file3 = new MockMultipartFile("images", "carpet_photo3.jpg", "application/json", "{\"image\": \"sdfghjk\"}".getBytes());
+
+        List<ArticlePhoto> photos = Stream.of(
+                new ArticlePhoto(file1.getOriginalFilename()),
+                new ArticlePhoto(file2.getOriginalFilename()),
+                new ArticlePhoto(file3.getOriginalFilename())
+        ).collect(Collectors.toList());
+        newArticle.setPhotos(photos);
+
+        Mockito.when(articleService.findByName("Carpet2")).thenReturn(null);
+
+        Mockito.when(articleService.findById(4)).thenReturn(Optional.of(newArticle));
+
+        // Post and Redirect
+        mvc.perform(MockMvcRequestBuilders.multipart("/admin/articles/add/post")
+                .file(file1)
+                .file(file2)
+                .file(file3)
+                .with(csrf())
+                .param("id", String.valueOf(newArticle.getId()))
+                .param("name", newArticle.getName())
+                .param("description", newArticle.getDescription())
+                .param("price", String.valueOf(newArticle.getPrice()))
+                .param("quantity", String.valueOf(newArticle.getQuantity())))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/articles"))
+                .andExpect(flash().attribute("msg_article_added", true));
+
+        // Get after insert
+        mvc.perform(MockMvcRequestBuilders.get("/admin/articles/edit/4"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articleForm"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/admin/articleForm.jsp"))
+                .andExpect(model().attribute("editing", true))
+                .andExpect(model().attribute("post_url", "/admin/articles/edit/post"))
+                .andExpect(model().attribute("article",
+                        allOf(
+                                hasProperty("name", is(newArticle.getName())),
+                                hasProperty("description", is(newArticle.getDescription())),
+                                hasProperty("price", is(newArticle.getPrice())),
+                                hasProperty("quantity", is(newArticle.getQuantity())),
+                                hasProperty("photos", hasItem(
+                                        allOf(
+                                                hasProperty("path", is("carpet_photo1.jpg"))
+                                        )
+                                )),
+                                hasProperty("photos", hasItem(
+                                        allOf(
+                                                hasProperty("path", is("carpet_photo2.jpg"))
+                                        )
+                                )),
+                                hasProperty("photos", hasItem(
+                                        allOf(
+                                                hasProperty("path", is("carpet_photo3.jpg"))
+                                        )
+                                ))
+                        )
+                ));
+    }
+
+
+    // ############################### EDIT FORM #################################################
     @Test
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_editFormArticle() throws Exception {
@@ -269,8 +420,6 @@ public class ArticleControllerTests {
     public void ArticleControllerTest_editArticleFormPostOk3Photos() throws Exception {
 
         Article initial = new Article(4,"Carpet2", "Any description", 80.0, 40);
-        Article updated = new Article(4,"Carpet2 updated", "Any description", 80.0, 40);
-
         Mockito.when(articleService.findByName("Carpet2")).thenReturn(initial);
 
         MockMultipartFile file1 = new MockMultipartFile("images", "carpet_photo1.jpg", "application/json", "{\"image\": \"sdfghjk\"}".getBytes());
@@ -283,8 +432,10 @@ public class ArticleControllerTests {
                 new ArticlePhoto(file3.getOriginalFilename())
         ).collect(Collectors.toList());
 
+        Article updated = new Article(4,"Carpet2 updated", "Any description", 80.0, 40);
         updated.setPhotos(photos);
         Mockito.when(articleService.findById(4)).thenReturn(Optional.of(updated));
+
         // Post and Redirect
         mvc.perform(MockMvcRequestBuilders.multipart("/admin/articles/edit/post")
                 .file(file1)
@@ -332,7 +483,122 @@ public class ArticleControllerTests {
             ));
     }
 
+    // ############################### QUANTITY INCREASE / DECREASE #################################################
+    @Test
+    @WithMockUser(roles={"admin"})
+    public void ArticleControllerTest_articleIncreaseQuantity() throws Exception {
 
+        Mockito.when(articleService.findAll()).thenReturn(
+                Stream.of(
+                        new Article(4,"Carpet2", "Any description", 80.0, 40)
+                ).collect(Collectors.toList())
+        ).thenReturn(
+                Stream.of(
+                        new Article(4,"Carpet2", "Any description", 80.0, 41)
+                ).collect(Collectors.toList())
+        );
+
+        mvc.perform(MockMvcRequestBuilders.get("/admin/articles"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articles"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/admin/articles.jsp"))
+                .andExpect(model().attribute("articles", hasSize(1)))
+                .andExpect(model().attribute("articles", hasItem(
+                        allOf(
+                                hasProperty("name", is("Carpet2")),
+                                hasProperty("quantity", is(40))
+                        ))));
+
+        mvc.perform(MockMvcRequestBuilders.get("/admin/articles/quantity/increase/4"))
+                .andExpect(redirectedUrl("/admin/articles"))
+                .andExpect(flash().attribute("msg_article_quantity_increase", true))
+                .andExpect(flash().attribute("articles", hasItem(
+                        allOf(
+                                hasProperty("name", is("Carpet2")),
+                                hasProperty("quantity", is(41))
+                        ))));
+    }
+
+    @Test
+    @WithMockUser(roles={"admin"})
+    public void ArticleControllerTest_articleDecreaseQuantity() throws Exception {
+
+        Mockito.when(articleService.findById(4)).thenReturn(
+                Optional.of(new Article(4,"Carpet2", "Any description", 80.0, 1))
+        ).thenReturn(
+                Optional.of(new Article(4,"Carpet2", "Any description", 80.0, 0))
+        ).thenReturn(
+                Optional.of(new Article(4,"Carpet2", "Any description", 80.0, 0))
+        );
+
+        Mockito.when(articleService.findAll()).thenReturn(
+                Stream.of(new Article(4,"Carpet2", "Any description", 80.0, 1)).collect(Collectors.toList())
+        ).thenReturn(
+                Stream.of(new Article(4,"Carpet2", "Any description", 80.0, 0)).collect(Collectors.toList())
+        ).thenReturn(
+                Stream.of(new Article(4,"Carpet2", "Any description", 80.0, 0)).collect(Collectors.toList())
+        );
+
+        mvc.perform(MockMvcRequestBuilders.get("/admin/articles"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/articles"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/admin/articles.jsp"))
+                .andExpect(model().attribute("articles", hasSize(1)))
+                .andExpect(model().attribute("articles", hasItem(
+                    allOf(
+                        hasProperty("name", is("Carpet2")),
+                        hasProperty("quantity", is(1))
+                    ))));
+
+        mvc.perform(MockMvcRequestBuilders.get("/admin/articles/quantity/decrease/4"))
+                .andExpect(redirectedUrl("/admin/articles"))
+                .andExpect(flash().attribute("msg_article_quantity_decrease", true))
+                .andExpect(flash().attribute("articles", hasItem(
+                    allOf(
+                        hasProperty("name", is("Carpet2")),
+                        hasProperty("quantity", is(0))
+                    ))));
+        // cant go to negative
+        mvc.perform(MockMvcRequestBuilders.get("/admin/articles/quantity/decrease/4"))
+                .andExpect(redirectedUrl("/admin/articles"))
+                .andExpect(flash().attribute("msg_article_quantity_decrease", nullValue()))
+                .andExpect(flash().attribute("articles", hasItem(
+                    allOf(
+                        hasProperty("name", is("Carpet2")),
+                        hasProperty("quantity", is(0))
+                    ))));
+    }
+
+    // ############################### CATEGORY ADD / REMOVE #################################################
+
+    @Test
+    @WithMockUser(roles={"admin"})
+    public void ArticleControllerTest_AddArticleWithCategories() throws Exception {
+
+        Article newArticle = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        newArticle.setCategories(Stream.of(
+                new Category(1, "Turkish"),
+                new Category(2, "Arabic"),
+                new Category(3, "Oriental")
+        ).collect(Collectors.toSet()));
+        MockMultipartFile emptyPhoto = new MockMultipartFile("images", "", "application/json", "{\"image\": \"\"}".getBytes());
+
+        mvc.perform(MockMvcRequestBuilders.multipart("/admin/articles/add/post")
+                .file(emptyPhoto)
+                .with(csrf())
+                .param("id", String.valueOf(newArticle.getId()))
+                .param("name", newArticle.getName())
+                .param("description", newArticle.getDescription())
+                .param("price", String.valueOf(newArticle.getPrice()))
+                .param("quantity", String.valueOf(newArticle.getQuantity()))
+                .param("categories", "1,2")
+        )
+                .andExpect(redirectedUrl("/admin/articles"))
+                .andExpect(flash().attribute("msg_article_added", true));
+    }
+
+
+    // ####################################### PHOTO DELETE ##################################################
     /**
      *
      * @param articleRepository
@@ -342,13 +608,4 @@ public class ArticleControllerTests {
         articleRepository.deleteAll();
     }
 
-    public static String asJsonString(final Object obj) {
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            final String jsonContent = mapper.writeValueAsString(obj);
-            return jsonContent;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

@@ -167,13 +167,12 @@ public class ArticleController {
 
     /**
      *
-     * @param mp
      * @param id
      * @param redir
      * @return
      */
     @GetMapping("/quantity/decrease/{id}")
-    public RedirectView decreaseQuantity(ModelMap mp, @PathVariable String id, RedirectAttributes redir) {
+    public RedirectView decreaseQuantity(@PathVariable String id, RedirectAttributes redir) {
         if(this.handleQuantity(Integer.parseInt(id), -1)){
             redir.addFlashAttribute("msg_article_quantity_decrease",true);
         }
