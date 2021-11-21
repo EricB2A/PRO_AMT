@@ -21,8 +21,7 @@ Spring Security permet de configurer les droits des routes. Les règles sont dé
 
 - Les routes matchant `/admin/**` sont accessibles avec le role `admin`
 - `/signout` nécessite d'être authentifié sans role spécifique
-- Les routes matchant ``
-- Les routes `/login` & `/signup` sont accessibles lorsqu'on n'est pas loggué
+- Les routes `/login` & `/signup` sont accessibles lorsqu'on n'est pas connecté.
 - Les routes matchant `/`, `/carpets`, `/accueil`, `/images/**`, `/css/**`, `/js/**`, `/catalog/**`, `/cart/**`,`/carpet-photos/**` sont accessibles par tout le monde.
 - Toutes les autres requêtes sont refusées sans autres conditions
 
