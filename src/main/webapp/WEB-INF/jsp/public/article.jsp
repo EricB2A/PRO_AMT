@@ -45,7 +45,7 @@
                                         <h4 class="h4"><strong>${article.name}</strong></h4>
                                         <div class="text-white">${article.description}</div>
                                         <div class="h2 text-white"><strong>CHF <span style="color: #ffffee">${article.price}</span></strong></div>
-                                            <c:if test="${article.quantity > 0 && aarticle.price > 0}">
+                                            <c:if test="${article.quantity > 0 && article.price > 0}">
                                                 <div>
                                                     <input class="form-control" type="number" id="articleQuantityToCart" name="articles to cart"  value="1" min="0">
                                                     <button class="btn btn-primary" onclick="addArticleToBasket('${article.id}', document.getElementById('articleQuantityToCart').value, '${_csrf.parameterName}', '${_csrf.token}', window.location.href)">Ajout au panier</button>
