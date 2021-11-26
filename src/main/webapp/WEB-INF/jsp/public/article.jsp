@@ -12,18 +12,18 @@
         <div class="gallery_section">
             <div class="container">
                 <a class="text-white" style="font-size: 18px;" href="/catalog">< Revenir dans le catalogue</a>
-                <div class="collection_text">${article.get().name}</div>
+                <div class="collection_text">${article.getName()}</div>
                 <div class="about_main layout_padding">
 
                     <div class="collection_section_3">
                         <div class="container">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <c:if test="${not empty article.get().getPhotos()}">
+                                        <c:if test="${not empty article.getPhotos()}">
                                             <div style="display:flex;" class="flex-row justify-content-center">
                                                 <div style="margin-left: 40px;margin-right: 40px;" id="catalog-carousel" class="carousel slide" >
                                                     <div class="carousel-inner">
-                                                        <c:forEach varStatus="idx" items="${article.get().getPhotos()}" var="photo">
+                                                        <c:forEach varStatus="idx" items="${article.getPhotos()}" var="photo">
                                                             <div class="carousel-item ${idx.first ? 'active' : ''}">
                                                                 <img class="d-block w-100" src="/${photo.path}">
                                                             </div>
@@ -42,13 +42,13 @@
                                         </c:if>
                                     </div>
                                     <div class="col-md-4 p-3">
-                                        <h4 class="h4"><strong>${article.get().name}</strong></h4>
-                                        <div class="text-white">${article.get().description}</div>
-                                        <div class="h2 text-white"><strong>CHF <span style="color: #ffffee">${article.get().price}</span></strong></div>
-                                            <c:if test="${article.get().quantity > 0 && article.get().price > 0}">
+                                        <h4 class="h4"><strong>${article.getName()}</strong></h4>
+                                        <div class="text-white">${article.getDescription()}</div>
+                                        <div class="h2 text-white"><strong>CHF <span style="color: #ffffee">${article.getPrice()}</span></strong></div>
+                                            <c:if test="${article.quantity > 0 && article.price > 0}">
                                                 <div>
                                                     <input class="form-control" type="number" id="articleQuantityToCart" name="articles to cart"  value="1" min="0">
-                                                    <button class="btn btn-primary" onclick="addArticleToBasket('${article.get().id}', document.getElementById('articleQuantityToCart').value, '${_csrf.parameterName}', '${_csrf.token}', window.location.href)">Ajout au panier</button>
+                                                    <button class="btn btn-primary" onclick="addArticleToBasket('${article.getId()}', document.getElementById('articleQuantityToCart').value, '${_csrf.parameterName}', '${_csrf.token}', window.location.href)">Ajout au panier</button>
                                                 </div>
                                             </c:if>
                                     </div>
