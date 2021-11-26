@@ -40,6 +40,9 @@
                                                 </div>
                                             </div>
                                         </c:if>
+                                        <c:if test="${empty article.getPhotos()}">
+                                            <img class="d-block w-100" src="${pageContext.request.contextPath}/images/placeholder-image.png">
+                                        </c:if>
                                     </div>
                                     <div class="col-md-4 p-3">
                                         <h4 class="h4"><strong>${article.name}</strong></h4>
