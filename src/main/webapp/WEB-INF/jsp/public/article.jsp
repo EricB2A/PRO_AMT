@@ -12,7 +12,7 @@
         <div class="gallery_section">
             <div class="container">
                 <a class="text-white" style="font-size: 18px;" href="/catalog">< Revenir dans le catalogue</a>
-                <div class="collection_text">${article.getName()}</div>
+                <div class="collection_text">${article.name}</div>
                 <div class="about_main layout_padding">
 
                     <div class="collection_section_3">
@@ -42,13 +42,13 @@
                                         </c:if>
                                     </div>
                                     <div class="col-md-4 p-3">
-                                        <h4 class="h4"><strong>${article.getName()}</strong></h4>
-                                        <div class="text-white">${article.getDescription()}</div>
-                                        <div class="h2 text-white"><strong>CHF <span style="color: #ffffee">${article.getPrice()}</span></strong></div>
+                                        <h4 class="h4"><strong>${article.name}</strong></h4>
+                                        <div class="text-white">${article.description}</div>
+                                        <div class="h2 text-white"><strong>CHF <span style="color: #ffffee">${article.price}</span></strong></div>
                                             <c:if test="${article.quantity > 0 && article.price > 0}">
                                                 <div>
                                                     <input class="form-control" type="number" id="articleQuantityToCart" name="articles to cart"  value="1" min="0">
-                                                    <button class="btn btn-primary" onclick="addArticleToBasket('${article.getId()}', document.getElementById('articleQuantityToCart').value, '${_csrf.parameterName}', '${_csrf.token}', window.location.href)">Ajout au panier</button>
+                                                    <button class="btn btn-primary" onclick="addArticleToBasket('${article.id}', document.getElementById('articleQuantityToCart').value, '${_csrf.parameterName}', '${_csrf.token}', window.location.href)">Ajout au panier</button>
                                                 </div>
                                             </c:if>
                                     </div>
