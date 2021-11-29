@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import java.util.Objects;
 
 @Entity
+
+// DPE - Juste Cart non ?
 public class CartInfo {
 
     @Id

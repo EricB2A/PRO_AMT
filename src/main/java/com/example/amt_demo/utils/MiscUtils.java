@@ -45,6 +45,7 @@ public class MiscUtils {
      * @return
      */
     private static int findCartInfoQuantityOrZero(List<CartInfo> list, CartInfo cartInfo) {
+
         for (CartInfo c : list) {
             if(cartInfo.equals(c)) {
                 return c.getQuantity();

@@ -43,7 +43,6 @@ public class LoginController {
     private final LoginService loginService;
     private final Gson gson = new GsonBuilder().create();
     private final JsonParser jsonParser = new JsonParser();
-
     /**
      * Constructor of LoginController
      * @param authenticationManager
