@@ -85,6 +85,7 @@ public class LoginController {
         } catch (AuthenticationException ignored) {
             mp.addAttribute("badcredential", true);
         } catch (Exception e) {
+            logger.error(e.getMessage());
             mp.addAttribute("error", true);
         }
         return "login";

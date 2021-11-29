@@ -30,14 +30,12 @@
     <link rel="stylesheet" href="/css/responsive.css">
     <link rel="stylesheet" href="/css/catalog.css">
     <!-- fevicon -->
-    <link rel="icon" type="image/png" href="/fav.png"/>
+    <link rel="icon" type="image/png" href="/images/fav.png"/>
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.min.css">
     <!-- Tweaks for older IEs-->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <!-- owl stylesheets -->
-    <link rel="stylesheet" href="/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
           media="screen">
 
@@ -69,7 +67,6 @@
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="/js/custom.js"></script>
 <!-- javascript -->
-<script src="/js/owl.carousel.js"></script>
 <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
 <script src="/js/signup.js"></script>
 <script>
