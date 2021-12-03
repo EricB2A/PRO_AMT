@@ -81,7 +81,7 @@ public class CartController {
             String articleID = articleAsString.split(CookieUtils.SPLIT_CHAR)[0];
             int quantity = Integer.parseInt( articleAsString.split(CookieUtils.SPLIT_CHAR)[1] );
 
-            Optional<Article> carpet = articleRepository.findById(Integer.valueOf(articleID));
+            Optional<Article> carpet = articleRepository.findById(Long.valueOf(articleID));
             carpet.ifPresent(value -> cartInfoFromCookies.add(new CartInfo(value, quantity)));
         }
 
@@ -129,13 +129,13 @@ public class CartController {
             User user = getLoggedUser();
             if(user != null){
 
-                List<CartInfo> cartInfos = cartInfoRepository.findCartInfosByCarpetAndByUser(Integer.parseInt(id), user.getId());
+                List<CartInfo> cartInfos = cartInfoRepository.findCartInfosByCarpetAndByUser(Long.parseLong(id), user.getId());
                 if(cartInfos != null && cartInfos.isEmpty()) {
-                    Optional<Article> carpet = articleRepository.findById(Integer.valueOf(id));
+                    Optional<Article> carpet = articleRepository.findById(Long.valueOf(id));
                     carpet.ifPresent(value -> cartInfoRepository.save(new CartInfo(carpet.get(), quantity, user)));
 
                 } else if(cartInfos != null) {
-                    Optional<Article> carpet = articleRepository.findById(Integer.valueOf(id));
+                    Optional<Article> carpet = articleRepository.findById(Long.valueOf(id));
 
                     for (CartInfo ci : cartInfos) {
                         cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(Integer.parseInt(id), user.getId(), quantity + ci.getQuantity());

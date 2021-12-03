@@ -58,8 +58,12 @@ public class ArticleService {
      * @param id
      * @return
      */
-    public Optional<Article> findById(int id) {
-        return articleRepository.findById(id);
+    public Article findById(Long id) {
+        Optional<Article> article = articleRepository.findById(id);
+        if(article.isPresent()) {
+            return article.get();
+        }
+        return null;
     }
 
     /**

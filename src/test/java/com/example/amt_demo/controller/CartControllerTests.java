@@ -58,7 +58,7 @@ public class CartControllerTests {
     @WithMockUser
     public void addAndRemoveProductToCartVisitor() throws Exception {
         Article article = new Article("Tapis", "Desc tapis", 100.);
-        Mockito.when(articleRepository.findById(1))
+        Mockito.when(articleRepository.findById(1L))
                 .thenReturn(Optional.of(article));
 
         mvc.perform(MockMvcRequestBuilders.post("/cart/1")
@@ -78,11 +78,11 @@ public class CartControllerTests {
     public void removeAllProductsFromCart() throws Exception {
 
         Article article = new Article("Tapis", "Desc tapis", 100.);
-        Mockito.when(articleRepository.findById(1))
+        Mockito.when(articleRepository.findById(1L))
                 .thenReturn(Optional.of(article));
 
         Article article2 = new Article("Tapis 2", "Desc tapis 2", 200.);
-        Mockito.when(articleRepository.findById(2))
+        Mockito.when(articleRepository.findById(2L))
                 .thenReturn(Optional.of(article2));
 
         mvc.perform(MockMvcRequestBuilders.post("/cart/1")

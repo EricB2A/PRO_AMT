@@ -110,13 +110,13 @@ public class ArticleControllerTests {
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_deleteArticle() throws Exception {
 
-        Mockito.when(articleService.findById(2)).thenReturn(
-                Optional.of(new Article(2,"Carpet2", "Carpet2 description", 50.0, 20))
+        Mockito.when(articleService.findById(2L)).thenReturn(
+                new Article(2L,"Carpet2", "Carpet2 description", 50.0, 20)
         );
 
         Mockito.when(articleService.findAll()).thenReturn(Stream.of(
-                new Article(1,"Carpet1", "Carpet1 description", 40.0, 20),
-                new Article(3,"Carpet3", "Carpet3 description", 60.0, 20)
+                new Article(1L,"Carpet1", "Carpet1 description", 40.0, 20),
+                new Article(3L,"Carpet3", "Carpet3 description", 60.0, 20)
         ).collect(Collectors.toList()));
 
         mvc.perform(MockMvcRequestBuilders.get("/admin/articles/delete/2"))
@@ -185,10 +185,10 @@ public class ArticleControllerTests {
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_addArticleFormPostErrorSameName() throws Exception {
 
-        Article newArticle = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        Article newArticle = new Article(4L,"Carpet2", "Any description", 80.0, 40);
 
         Mockito.when(articleService.findByName("Carpet2")).thenReturn(
-                new Article(2,"Carpet2", "Carpet2 description", 50.0, 20)
+                new Article(2L,"Carpet2", "Carpet2 description", 50.0, 20)
         );
 
         mvc.perform(MockMvcRequestBuilders.post("/admin/articles/add/post")
@@ -207,7 +207,7 @@ public class ArticleControllerTests {
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_addArticleFormPostOk() throws Exception {
 
-        Article newArticle = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        Article newArticle = new Article(4L,"Carpet2", "Any description", 80.0, 40);
 
         MockMultipartFile emptyPhoto = new MockMultipartFile("images", "", "application/json", "{\"image\": \"\"}".getBytes());
 
@@ -230,7 +230,7 @@ public class ArticleControllerTests {
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_addArticleFormPostOk3Photos() throws Exception {
 
-        Article newArticle = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        Article newArticle = new Article(4L,"Carpet2", "Any description", 80.0, 40);
 
         MockMultipartFile file1 = new MockMultipartFile("images", "carpet_photo1.jpg", "application/json", "{\"image\": \"sdfghjk\"}".getBytes());
         MockMultipartFile file2 = new MockMultipartFile("images", "carpet_photo2.jpg", "application/json", "{\"image\": \"sdfghjk\"}".getBytes());
@@ -245,7 +245,7 @@ public class ArticleControllerTests {
 
         Mockito.when(articleService.findByName("Carpet2")).thenReturn(null);
 
-        Mockito.when(articleService.findById(4)).thenReturn(Optional.of(newArticle));
+        Mockito.when(articleService.findById(4L)).thenReturn(newArticle);
 
         // Post and Redirect
         mvc.perform(MockMvcRequestBuilders.multipart("/admin/articles/add/post")
@@ -300,11 +300,11 @@ public class ArticleControllerTests {
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_editFormArticle() throws Exception {
 
-        Mockito.when(articleService.findById(2)).thenReturn(
-            Optional.of(new Article(2,"Carpet2", "Carpet2 description", 50.0, 20))
+        Mockito.when(articleService.findById(2L)).thenReturn(
+            new Article(2L,"Carpet2", "Carpet2 description", 50.0, 20)
         );
         Category commonForBoth = new Category("Arabic");
-        Mockito.when(categoryService.getCategoriesOfCarpet(2)).thenReturn(
+        Mockito.when(categoryService.getCategoriesOfCarpet(2L)).thenReturn(
             Stream.of(commonForBoth)
                 .collect(Collectors.toList())
         );
@@ -353,10 +353,10 @@ public class ArticleControllerTests {
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_editArticleFormPostErrorSameName() throws Exception {
 
-        Article updated = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        Article updated = new Article(4L,"Carpet2", "Any description", 80.0, 40);
 
         Mockito.when(articleService.findByName("Carpet2")).thenReturn(
-           new Article(2,"Carpet2", "Carpet2 description", 50.0, 20)
+           new Article(2L,"Carpet2", "Carpet2 description", 50.0, 20)
         );
 
         mvc.perform(MockMvcRequestBuilders.post("/admin/articles/edit/post")
@@ -375,10 +375,10 @@ public class ArticleControllerTests {
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_editArticleFormPostOk() throws Exception {
 
-        Article updated = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        Article updated = new Article(4L,"Carpet2", "Any description", 80.0, 40);
 
         Mockito.when(articleService.findByName("Carpet2")).thenReturn(
-                new Article(4,"Carpet2", "Any description", 80.0, 40)
+                new Article(4L,"Carpet2", "Any description", 80.0, 40)
         );
 
         MockMultipartFile emptyPhoto = new MockMultipartFile("images", "", "application/json", "{\"image\": \"\"}".getBytes());
@@ -400,7 +400,7 @@ public class ArticleControllerTests {
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_editArticleFormPostOk3Photos() throws Exception {
 
-        Article initial = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        Article initial = new Article(4L,"Carpet2", "Any description", 80.0, 40);
         Mockito.when(articleService.findByName("Carpet2")).thenReturn(initial);
 
         MockMultipartFile file1 = new MockMultipartFile("images", "carpet_photo1.jpg", "application/json", "{\"image\": \"sdfghjk\"}".getBytes());
@@ -413,9 +413,9 @@ public class ArticleControllerTests {
                 new ArticlePhoto(file3.getOriginalFilename())
         ).collect(Collectors.toList());
 
-        Article updated = new Article(4,"Carpet2 updated", "Any description", 80.0, 40);
+        Article updated = new Article(4L,"Carpet2 updated", "Any description", 80.0, 40);
         updated.setPhotos(photos);
-        Mockito.when(articleService.findById(4)).thenReturn(Optional.of(updated));
+        Mockito.when(articleService.findById(4L)).thenReturn(updated);
 
         // Post and Redirect
         mvc.perform(MockMvcRequestBuilders.multipart("/admin/articles/edit/post")
@@ -471,11 +471,11 @@ public class ArticleControllerTests {
 
         Mockito.when(articleService.findAll()).thenReturn(
                 Stream.of(
-                        new Article(4,"Carpet2", "Any description", 80.0, 40)
+                        new Article(4L,"Carpet2", "Any description", 80.0, 40)
                 ).collect(Collectors.toList())
         ).thenReturn(
                 Stream.of(
-                        new Article(4,"Carpet2", "Any description", 80.0, 41)
+                        new Article(4L,"Carpet2", "Any description", 80.0, 41)
                 ).collect(Collectors.toList())
         );
 
@@ -504,20 +504,20 @@ public class ArticleControllerTests {
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_articleDecreaseQuantity() throws Exception {
 
-        Mockito.when(articleService.findById(4)).thenReturn(
-                Optional.of(new Article(4,"Carpet2", "Any description", 80.0, 1))
+        Mockito.when(articleService.findById(4L)).thenReturn(
+                new Article(4L,"Carpet2", "Any description", 80.0, 1)
         ).thenReturn(
-                Optional.of(new Article(4,"Carpet2", "Any description", 80.0, 0))
+                new Article(4L,"Carpet2", "Any description", 80.0, 0)
         ).thenReturn(
-                Optional.of(new Article(4,"Carpet2", "Any description", 80.0, 0))
+                new Article(4L,"Carpet2", "Any description", 80.0, 0)
         );
 
         Mockito.when(articleService.findAll()).thenReturn(
-                Stream.of(new Article(4,"Carpet2", "Any description", 80.0, 1)).collect(Collectors.toList())
+                Stream.of(new Article(4L,"Carpet2", "Any description", 80.0, 1)).collect(Collectors.toList())
         ).thenReturn(
-                Stream.of(new Article(4,"Carpet2", "Any description", 80.0, 0)).collect(Collectors.toList())
+                Stream.of(new Article(4L,"Carpet2", "Any description", 80.0, 0)).collect(Collectors.toList())
         ).thenReturn(
-                Stream.of(new Article(4,"Carpet2", "Any description", 80.0, 0)).collect(Collectors.toList())
+                Stream.of(new Article(4L,"Carpet2", "Any description", 80.0, 0)).collect(Collectors.toList())
         );
 
         mvc.perform(MockMvcRequestBuilders.get("/admin/articles"))
@@ -556,7 +556,7 @@ public class ArticleControllerTests {
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_AddArticleWithCategories() throws Exception {
 
-        Article newArticle = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        Article newArticle = new Article(4L,"Carpet2", "Any description", 80.0, 40);
 
         newArticle.setCategories(Stream.of(
                 new Category(1, "Turkish"),
@@ -570,7 +570,7 @@ public class ArticleControllerTests {
         Mockito.when(articleService.findAll()).thenReturn(
                 Stream.of(
                         newArticle,
-                        new Article(5,"Carpet5", "Any description", 80.0, 40)
+                        new Article(5L,"Carpet5", "Any description", 80.0, 40)
                 ).collect(Collectors.toList())
         );
 
@@ -612,7 +612,7 @@ public class ArticleControllerTests {
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_editArticleWithCategories() throws Exception {
 
-        Article updated = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        Article updated = new Article(4L,"Carpet2", "Any description", 80.0, 40);
 
         updated.setCategories(Stream.of(
                 new Category(1, "Turkish"),
@@ -626,7 +626,7 @@ public class ArticleControllerTests {
         Mockito.when(articleService.findAll()).thenReturn(
             Stream.of(
                 updated,
-                new Article(5,"Carpet5", "Any description", 80.0, 40)
+                new Article(5L,"Carpet5", "Any description", 80.0, 40)
             ).collect(Collectors.toList())
         );
 
@@ -670,18 +670,18 @@ public class ArticleControllerTests {
     @Test
     @WithMockUser(roles={"admin"})
     public void ArticleControllerTest_testDeletePhoto() throws Exception {
-        Article article = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        Article article = new Article(4L,"Carpet2", "Any description", 80.0, 40);
         article.setPhotos(Stream.of(
                 new ArticlePhoto(1, "carpet1.jpg"),
                 new ArticlePhoto(2, "carpet2.jpg")
         ).collect(Collectors.toList()));
 
-        Article articleAfter = new Article(4,"Carpet2", "Any description", 80.0, 40);
+        Article articleAfter = new Article(4L,"Carpet2", "Any description", 80.0, 40);
         articleAfter.setPhotos(Stream.of(
                 new ArticlePhoto(2, "carpet2.jpg")
         ).collect(Collectors.toList()));
 
-        Mockito.when(articleService.findById(4)).thenReturn(Optional.of(article)).thenReturn(Optional.of(articleAfter));
+        Mockito.when(articleService.findById(4L)).thenReturn(article).thenReturn(articleAfter);
 
         mvc.perform(MockMvcRequestBuilders.get("/admin/articles/4/photo/delete/1"))
                 .andExpect(status().is3xxRedirection())

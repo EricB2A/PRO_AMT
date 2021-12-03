@@ -32,7 +32,7 @@ public interface CartInfoRepository extends CrudRepository<CartInfo, Integer> {
      * @return
      */
     @Query("select ci from CartInfo ci where ci.article.id = ?1 and ci.user.id = ?2")
-    List<CartInfo> findCartInfosByCarpetAndByUser(int carpetId, int userId);
+    List<CartInfo> findCartInfosByCarpetAndByUser(long carpetId, int userId);
 
     /**
      *
@@ -53,7 +53,7 @@ public interface CartInfoRepository extends CrudRepository<CartInfo, Integer> {
     @Transactional
     @Modifying
     @Query("update CartInfo ci set ci.quantity = :quantity where ci.article.id = :carpetId and ci.user.id = :userId")
-    void setCartInfoQuantityByCarpetIdAndByUserId(int carpetId, int userId, int quantity);
+    void setCartInfoQuantityByCarpetIdAndByUserId(long carpetId, int userId, int quantity);
 
     @Transactional
     @Modifying

@@ -11,10 +11,9 @@ package com.example.amt_demo.model;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
 import java.util.Set;
 
-public interface ArticleRepository extends CrudRepository<Article, Integer> {
+public interface ArticleRepository extends CrudRepository<Article, Long> {
 
     /**
      *

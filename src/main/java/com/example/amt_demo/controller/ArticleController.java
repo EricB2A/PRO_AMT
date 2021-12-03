@@ -12,6 +12,7 @@ import com.example.amt_demo.model.*;
 import com.example.amt_demo.service.ArticleService;
 import com.example.amt_demo.service.CategoryService;
 import com.example.amt_demo.service.PhotoUploadService;
+import lombok.AllArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,13 +27,12 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
 @RequestMapping(path = "/admin/articles")
 @Controller
-
+@AllArgsConstructor
 // DPE - Du moment que vous avez des services autant cacher la logique dans ces services. Et que le controller appel le service.
 public class ArticleController {
 
@@ -41,25 +41,13 @@ public class ArticleController {
     final private CategoryService categoryService;
 
     // DPE - Vous connaissez lombok ? (@AllArgsConstructor)
-
-    /**
-     *
-     * @param photoStorageService
-     * @param articleService
-     * @param categoryService
-     */
-    public ArticleController(PhotoUploadService photoStorageService, ArticleService articleService, CategoryService categoryService) {
-        this.photoStorageService = photoStorageService;
-        this.articleService = articleService;
-        this.categoryService = categoryService;
-    }
+    // TODO - DONE
 
     /**
      *
      * @param mp
      * @return
      */
-
     @GetMapping(path="", produces = {"application/xml"})
     public String getAllCarpets(ModelMap mp) {
         mp.addAttribute("articles", articleService.findAll());
@@ -97,6 +85,7 @@ public class ArticleController {
             redir.addFlashAttribute("msg_already_existing_article",true);
             return redirectView;
         }
+
         articleService.save(newArticle);
         this.uploadImages(newArticle, images);
         articleService.save(newArticle);
@@ -114,21 +103,20 @@ public class ArticleController {
      * @return
      */
     @GetMapping("{carpet_id}/photo/delete/{id}")
-    public RedirectView deleteCarpetPhoto(@PathVariable String carpet_id, @PathVariable String id, RedirectAttributes redir) {
-        Optional<Article> carpet = articleService.findById(Integer.parseInt(carpet_id));
+    public RedirectView deleteCarpetPhoto(@PathVariable Long carpet_id, @PathVariable String id, RedirectAttributes redir) {
+        Article carpet = articleService.findById(carpet_id);
 
-        if(carpet.isPresent()) {
-            Article c = carpet.get();
+        if(carpet != null) {
             String path;
-            for(ArticlePhoto cp : c.getPhotos()){
+            for(ArticlePhoto cp : carpet.getPhotos()){
                 if(cp.getId() == Integer.parseInt(id)){
                     path = cp.getPath();
-                    c.getPhotos().remove(cp);
+                    carpet.getPhotos().remove(cp);
                     photoStorageService.delete(path);
                     break;
                 }
             }
-            articleService.save(c);
+            articleService.save(carpet);
         }
         RedirectView redirectView = new RedirectView("/admin/articles/edit/"+carpet_id,true);
         redir.addFlashAttribute("msg_photo_deleted",true);
@@ -140,37 +128,41 @@ public class ArticleController {
      * @param carpetId
      * @param toAdd
      */
-    private boolean handleQuantity(Integer carpetId, Integer toAdd){
+    private boolean handleQuantity(Long carpetId, Integer toAdd){
 
         // DPE - Si tu mets cette logique avec l'optional dans le service tu peux gérer que l'objet existe pas avec des exceptions
-        Optional<Article> optional = articleService.findById(carpetId);
+        // TODO - DONE, géré l'optional dans Service
+        Article article = articleService.findById(carpetId);
 
         // DPE - https://dev.to/jpswade/return-early-12o5
-        if(optional.isPresent()){
-            Article article = optional.get();
-            Integer current = article.getQuantity();
-            if(current + toAdd >= 0){
-                article.setQuantity(article.getQuantity()+toAdd);
-                articleService.save(article);
-                return true;
-            }
+        // TODO - DONE
+        if(article == null) {
+            return false;
+        }
+
+        Integer current = article.getQuantity();
+        if(current + toAdd >= 0){
+            article.setQuantity(article.getQuantity() + toAdd);
+            articleService.save(article);
+            return true;
         }
         return false;
     }
 
     /**
      *
-     * @param mp
      * @param id
      * @param redir
      * @return
      */
     @GetMapping("/quantity/increase/{id}")
     // DPE - les variables pas utilisés
-    public RedirectView increaseQuantity(ModelMap mp, @PathVariable String id, RedirectAttributes redir) {
-        this.handleQuantity(Integer.parseInt(id), 1);
-        RedirectView redirectView = new RedirectView("/admin/articles",true);
+    // TODO - DONE, removed
+    public RedirectView increaseQuantity(@PathVariable Long id, RedirectAttributes redir) {
+        this.handleQuantity(id, 1);
         redir.addFlashAttribute("msg_article_quantity_increase",true);
+
+        RedirectView redirectView = new RedirectView("/admin/articles",true);
         redir.addFlashAttribute("articles", articleService.findAll());
         return redirectView;
     }
@@ -182,8 +174,8 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/quantity/decrease/{id}")
-    public RedirectView decreaseQuantity(@PathVariable String id, RedirectAttributes redir) {
-        if(this.handleQuantity(Integer.parseInt(id), -1)){
+    public RedirectView decreaseQuantity(@PathVariable Long id, RedirectAttributes redir) {
+        if(this.handleQuantity(id, -1)){
             redir.addFlashAttribute("msg_article_quantity_decrease",true);
         }
         RedirectView redirectView = new RedirectView("/admin/articles",true);
@@ -200,7 +192,7 @@ public class ArticleController {
      */
     @PostMapping("/edit/post")
     public RedirectView editArticle(Article updated, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
-        String url = "/admin/articles/edit/"+updated.getId();
+        String url = "/admin/articles/edit/" + updated.getId();
         Article tryFind = articleService.findByName(updated.getName());
         if(tryFind != null && !tryFind.getId().equals(updated.getId())){
             RedirectView redirectView = new RedirectView(url,true);
@@ -209,8 +201,10 @@ public class ArticleController {
         }
         RedirectView redirectView1 = checkArticleInputs(updated, redir, url);
         if (redirectView1 != null) return redirectView1;
-        Optional<Article> optional = articleService.findById(updated.getId());
-        optional.ifPresent(article -> updated.setPhotos(article.getPhotos()));
+        Article article = articleService.findById(updated.getId());
+        if(article != null) {
+            updated.setPhotos(article.getPhotos());
+        }
         this.uploadImages(updated, images);
         articleService.save(updated);
 
@@ -218,8 +212,6 @@ public class ArticleController {
         redir.addFlashAttribute("msg_article_edited",true);
         return redirectView;
     }
-
-
 
     /**
      *
@@ -229,14 +221,16 @@ public class ArticleController {
      */
     @GetMapping("/edit/{id}")
     // DPE - Tu ne peux pas dire que ton paramètre est directement un Long ?
-    public String editArticle(ModelMap mp, @PathVariable String id) {
+    public String editArticle(ModelMap mp, @PathVariable Long id) {
         mp.addAttribute("editing", true);
         mp.addAttribute("post_url", "/admin/articles/edit/post");
-        Optional<Article> optional = articleService.findById(Integer.parseInt(id));
-        optional.ifPresent(article -> mp.addAttribute("article", article));
+        Article article = articleService.findById(id);
+        if(article != null) {
+            mp.addAttribute("article", article);
+        }
 
         // DPE - Ne peux tu pas faire une seul map qui connait si la catégorie est checkée ou pas ?
-        List<Category> checked = categoryService.getCategoriesOfCarpet(Integer.valueOf(id));
+        List<Category> checked = categoryService.getCategoriesOfCarpet(id);
         List<Category> notChecked = categoryService.getAllCategories();
 
         for(Category cat : checked) {
@@ -254,10 +248,9 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/delete/{id}")
-    public String deleteCarpet(ModelMap mp, @PathVariable String id) {
-        Optional<Article> optional = articleService.findById(Integer.parseInt(id));
-        if(optional.isPresent()){
-            Article article = optional.get();
+    public String deleteCarpet(ModelMap mp, @PathVariable Long id) {
+        Article article = articleService.findById(id);
+        if(article != null){
             articleService.delete(article);
             photoStorageService.deleteFolder("carpet-photos/carpet"+ article.getId());
             mp.addAttribute("msg_article_deleted", true);
@@ -280,7 +273,7 @@ public class ArticleController {
     }
 
     /**
-     *  @param article
+     * @param article
      * @param images
      * @return
      */
