@@ -134,6 +134,7 @@ public class CookieUtils {
         response.addCookie(cookieUpdated);
     }
 
+    // DPE - Pourquoi de pas retourner une List de tuple (id,quantity) ?
     public static List<String> getArticlesFromCartCookie(HttpServletRequest request, HttpServletResponse response) {
          /*
             cf. storeArticleToCartCookie

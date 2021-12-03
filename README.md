@@ -46,6 +46,8 @@ Dans la configuration Spring Boot correspondant à l'application, sous Environme
 et ajoutez les deux variables ci-dessus avec leur valeurs respectives
 
 ## SGBD 🐋
+> DPE - Liars ! Vous utilisez juste mysql ;)
+
 Notre application utilise le SGBD relationnel `mySQL`, que nous avons Dockerisé via l'image [mysql-server](https://hub.docker.com/r/mysql/mysql-server/).
 Par défaut, le conteneur Docker sera accessible depuis l'hôte sur le ``port 3307`` avec le mot de passe ``root``. Les données sont stockées dans le fichier `silkyRoad.sql`.  
 Vous pouvez bien évidemment configurer ces paramètres en modifiant le [docker compose](docker/docker-mysql/docker-compose.yml).

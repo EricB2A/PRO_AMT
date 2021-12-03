@@ -21,6 +21,7 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
      * @param name
      * @return
      */
+    // DPE - C'est très gentil d'écrire la requête SQL mais spring data peut le faire à ta place ;)
     @Query("SELECT a FROM Article a WHERE a.name = ?1")
     Article findByName(String name);
     

@@ -32,11 +32,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @RequestMapping(path = "/admin/articles")
 @Controller
+
+// DPE - Du moment que vous avez des services autant cacher la logique dans ces services. Et que le controller appel le service.
 public class ArticleController {
 
     final private PhotoUploadService photoStorageService;
     final private ArticleService articleService;
     final private CategoryService categoryService;
+
+    // DPE - Vous connaissez lombok ? (@AllArgsConstructor)
 
     /**
      *
@@ -55,6 +59,7 @@ public class ArticleController {
      * @param mp
      * @return
      */
+
     @GetMapping(path="", produces = {"application/xml"})
     public String getAllCarpets(ModelMap mp) {
         mp.addAttribute("articles", articleService.findAll());
@@ -111,6 +116,7 @@ public class ArticleController {
     @GetMapping("{carpet_id}/photo/delete/{id}")
     public RedirectView deleteCarpetPhoto(@PathVariable String carpet_id, @PathVariable String id, RedirectAttributes redir) {
         Optional<Article> carpet = articleService.findById(Integer.parseInt(carpet_id));
+
         if(carpet.isPresent()) {
             Article c = carpet.get();
             String path;
@@ -135,7 +141,11 @@ public class ArticleController {
      * @param toAdd
      */
     private boolean handleQuantity(Integer carpetId, Integer toAdd){
+
+        // DPE - Si tu mets cette logique avec l'optional dans le service tu peux gérer que l'objet existe pas avec des exceptions
         Optional<Article> optional = articleService.findById(carpetId);
+
+        // DPE - https://dev.to/jpswade/return-early-12o5
         if(optional.isPresent()){
             Article article = optional.get();
             Integer current = article.getQuantity();
@@ -156,6 +166,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/quantity/increase/{id}")
+    // DPE - les variables pas utilisés
     public RedirectView increaseQuantity(ModelMap mp, @PathVariable String id, RedirectAttributes redir) {
         this.handleQuantity(Integer.parseInt(id), 1);
         RedirectView redirectView = new RedirectView("/admin/articles",true);
@@ -217,12 +228,14 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/edit/{id}")
+    // DPE - Tu ne peux pas dire que ton paramètre est directement un Long ?
     public String editArticle(ModelMap mp, @PathVariable String id) {
         mp.addAttribute("editing", true);
         mp.addAttribute("post_url", "/admin/articles/edit/post");
         Optional<Article> optional = articleService.findById(Integer.parseInt(id));
         optional.ifPresent(article -> mp.addAttribute("article", article));
 
+        // DPE - Ne peux tu pas faire une seul map qui connait si la catégorie est checkée ou pas ?
         List<Category> checked = categoryService.getCategoriesOfCarpet(Integer.valueOf(id));
         List<Category> notChecked = categoryService.getAllCategories();
 

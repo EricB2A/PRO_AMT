@@ -64,6 +64,7 @@ public class CategoryController {
      */
     @PostMapping(path="/add/post")
     public String addCategory(Category newCategory, ModelMap mp) {
+        // DPE - Optional pour être consistant
         Category category = categoryService.findByName(newCategory.getName());
 
         if(category == null) {
