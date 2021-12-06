@@ -25,11 +25,6 @@ public class Article {
     private Double price = 0.0;
     private Integer quantity = 0;
 
-    // DPE - Relation bidirectionnelle pas nécessaire, on pas besoin de connaitre touts les paniers qui contiennent tels articles
-    // D'ailleurs intelliJ le grise
-    @OneToMany(mappedBy = "article")
-    Set<Cart> carts;
-
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories = new HashSet<>();
 
