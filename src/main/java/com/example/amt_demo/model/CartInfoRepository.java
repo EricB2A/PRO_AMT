@@ -15,15 +15,15 @@ import org.springframework.data.repository.CrudRepository;
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface CartInfoRepository extends CrudRepository<CartInfo, Integer> {
+public interface CartInfoRepository extends CrudRepository<Cart, Integer> {
 
     /**
      *
      * @param userId
      * @return
      */
-    @Query("select ci from CartInfo ci where ci.user.id = :userId")
-    List<CartInfo> findCartInfosByUserId(int userId);
+    @Query("select ci from Cart ci where ci.user.id = :userId")
+    List<Cart> findCartInfosByUserId(int userId);
 
     /**
      *
@@ -31,8 +31,8 @@ public interface CartInfoRepository extends CrudRepository<CartInfo, Integer> {
      * @param userId
      * @return
      */
-    @Query("select ci from CartInfo ci where ci.article.id = ?1 and ci.user.id = ?2")
-    List<CartInfo> findCartInfosByCarpetAndByUser(int carpetId, int userId);
+    @Query("select ci from Cart ci where ci.article.id = ?1 and ci.user.id = ?2")
+    List<Cart> findCartInfosByCarpetAndByUser(int carpetId, int userId);
 
     /**
      *
@@ -41,7 +41,7 @@ public interface CartInfoRepository extends CrudRepository<CartInfo, Integer> {
      */
     @Transactional
     @Modifying
-    @Query("delete from CartInfo ci where ci.article.id = :carpetId and ci.user.id = :userId")
+    @Query("delete from Cart ci where ci.article.id = :carpetId and ci.user.id = :userId")
     void deleteCartInfoByCarpetIdAndByUserId(int carpetId, int userId);
 
     /**
@@ -52,11 +52,11 @@ public interface CartInfoRepository extends CrudRepository<CartInfo, Integer> {
      */
     @Transactional
     @Modifying
-    @Query("update CartInfo ci set ci.quantity = :quantity where ci.article.id = :carpetId and ci.user.id = :userId")
+    @Query("update Cart ci set ci.quantity = :quantity where ci.article.id = :carpetId and ci.user.id = :userId")
     void setCartInfoQuantityByCarpetIdAndByUserId(int carpetId, int userId, int quantity);
 
     @Transactional
     @Modifying
-    @Query("delete from CartInfo ci where ci.user.id = :userId")
+    @Query("delete from Cart ci where ci.user.id = :userId")
     void deleteAllCartInfoByUser(int userId);
 }

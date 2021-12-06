@@ -8,7 +8,7 @@
 
 package com.example.amt_demo.utils;
 
-import com.example.amt_demo.model.CartInfo;
+import com.example.amt_demo.model.Cart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +21,12 @@ public class MiscUtils {
      * @param listB
      * @return
      */
-    public static List<CartInfo> mergeList(List<CartInfo> listA, List<CartInfo> listB) {
+    public static List<Cart> mergeList(List<Cart> listA, List<Cart> listB) {
 
-        List<CartInfo> listC = new ArrayList<>();
-        for (CartInfo a : listA) {
+        List<Cart> listC = new ArrayList<>();
+        for (Cart a : listA) {
             if (listB.contains(a)) {
-                listC.add(new CartInfo(a.getArticle(), a.getQuantity() + findCartInfoQuantityOrZero(listB, a), a.getUser()));
+                listC.add(new Cart(a.getArticle(), a.getQuantity() + findCartInfoQuantityOrZero(listB, a), a.getUser()));
                 listB.remove(a);
             } else {
                 System.out.println("wtf doesnt contains");
@@ -41,13 +41,13 @@ public class MiscUtils {
     /**
      *
      * @param list
-     * @param cartInfo
+     * @param cart
      * @return
      */
-    private static int findCartInfoQuantityOrZero(List<CartInfo> list, CartInfo cartInfo) {
+    private static int findCartInfoQuantityOrZero(List<Cart> list, Cart cart) {
 
-        for (CartInfo c : list) {
-            if(cartInfo.equals(c)) {
+        for (Cart c : list) {
+            if(cart.equals(c)) {
                 return c.getQuantity();
             }
         }

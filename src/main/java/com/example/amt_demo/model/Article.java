@@ -8,8 +8,6 @@
 
 package com.example.amt_demo.model;
 
-import reactor.util.annotation.NonNull;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -30,7 +28,7 @@ public class Article {
     // DPE - Relation bidirectionnelle pas nécessaire, on pas besoin de connaitre touts les paniers qui contiennent tels articles
     // D'ailleurs intelliJ le grise
     @OneToMany(mappedBy = "article")
-    Set<CartInfo> cartInfos;
+    Set<Cart> carts;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories = new HashSet<>();
