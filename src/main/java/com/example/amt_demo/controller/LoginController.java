@@ -84,10 +84,13 @@ public class LoginController {
             return "home";
         } catch (AuthenticationException ignored) {
             mp.addAttribute("badcredential", true);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
         } catch (Exception e) {
             logger.error(e.getMessage());
             mp.addAttribute("error", true);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
+
         return "login";
     }
 
