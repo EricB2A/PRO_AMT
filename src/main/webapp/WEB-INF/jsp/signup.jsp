@@ -39,6 +39,9 @@
                                            placeholder="Entrez votre nom d'utilisateur" name="username">
 
 
+                                    <div id="signup_username_feedback" class="custom-feedback jquery-feedback">
+
+                                    </div>
                                     <c:if test="${errorform && not empty username}">
                                         <div class="custom-feedback">
                                                 ${username}
@@ -53,11 +56,25 @@
                                     <input id="signup_password" type="password"
                                            class="enter_email form-control signup-input"
                                            placeholder="Entrez votre mot de passe" name="password">
+                                    <div id="signup_password_feedback" class="custom-feedback jquery-feedback">
+
+                                    </div>
                                     <c:if test="${errorform && not empty password}">
                                         <div class="custom-feedback">
                                                 ${password}
                                         </div>
                                     </c:if>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="offset-3 col-6">
+                                    <label for="signup_password_repeat" class="form-label">Répétez votre mot de passe</label>
+                                    <input id="signup_password_repeat" type="password"
+                                           class="enter_email form-control signup-input"
+                                           placeholder="Répétez votre mot de passe" name="password">
+                                    <div id="signup_password_repeat_feedback" class="custom-feedback jquery-feedback">
+
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
