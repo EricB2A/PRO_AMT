@@ -19,7 +19,7 @@ import java.util.Objects;
 @Entity
 
 // DPE - Juste Cart non ?
-public class CartInfo {
+public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,7 +38,7 @@ public class CartInfo {
     /**
      * Default constructor of CartInfo
      */
-    public CartInfo() {
+    public Cart() {
 
     }
 
@@ -47,7 +47,7 @@ public class CartInfo {
      * @param article   the Article in the CartInfo
      * @param quantity  the quantity in the CartInfo
      */
-    public CartInfo(Article article, int quantity){
+    public Cart(Article article, int quantity){
         this(article, quantity, null);
     }
 
@@ -57,7 +57,7 @@ public class CartInfo {
      * @param quantity  the quantity associated to the Article
      * @param user      the user willing to buy the Article
      */
-    public CartInfo(Article article, int quantity, User user){
+    public Cart(Article article, int quantity, User user){
         this.article = article;
         this.user = user;
         this.quantity = quantity;
@@ -134,6 +134,6 @@ public class CartInfo {
      */
     @Override
     public boolean equals(Object obj) {
-        return Objects.equals(article.getId(), ((CartInfo) obj).article.getId());
+        return Objects.equals(article.getId(), ((Cart) obj).article.getId());
     }
 }

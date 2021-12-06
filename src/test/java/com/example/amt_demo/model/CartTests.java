@@ -11,17 +11,17 @@ package com.example.amt_demo.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class CartInfoTests {
+public class CartTests {
 
     /**
      * Testing if the getter & the setter of the id work properly
      */
     @Test
     void CartInfoTest_getSetId() {
-        CartInfo cartInfo = new CartInfo();
+        Cart cart = new Cart();
         int id = 10;
-        cartInfo.setId(id);
-        Assertions.assertEquals(id, cartInfo.getId());
+        cart.setId(id);
+        Assertions.assertEquals(id, cart.getId());
     }
 
     /**
@@ -29,10 +29,10 @@ public class CartInfoTests {
      */
     @Test
     void CartInfoTest_getSetArticle() {
-        CartInfo cartInfo = new CartInfo();
+        Cart cart = new Cart();
         Article article = new Article();
-        cartInfo.setArticle(article);
-        Assertions.assertEquals(article, cartInfo.getArticle());
+        cart.setArticle(article);
+        Assertions.assertEquals(article, cart.getArticle());
     }
 
     /**
@@ -40,10 +40,10 @@ public class CartInfoTests {
      */
     @Test
     void CartInfoTest_getSetQuantity() {
-        CartInfo cartInfo = new CartInfo();
+        Cart cart = new Cart();
         int quantity = 42;
-        cartInfo.setQuantity(quantity);
-        Assertions.assertEquals(quantity, cartInfo.getQuantity());
+        cart.setQuantity(quantity);
+        Assertions.assertEquals(quantity, cart.getQuantity());
     }
 
     /**
@@ -51,9 +51,9 @@ public class CartInfoTests {
      */
     @Test
     void CartInfoTest_getSetUser() {
-        CartInfo cartInfo = new CartInfo();
+        Cart cart = new Cart();
         User user = new User();
-        cartInfo.setUser(user);
-        Assertions.assertEquals(user, cartInfo.getUser());
+        cart.setUser(user);
+        Assertions.assertEquals(user, cart.getUser());
     }
 }

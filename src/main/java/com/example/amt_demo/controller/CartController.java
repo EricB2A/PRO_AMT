@@ -75,36 +75,36 @@ public class CartController {
     public String getCart(HttpServletRequest request, HttpServletResponse response, ModelMap mp) {
 
         List<String> cartAsString = CookieUtils.getArticlesFromCartCookie(request, response);
-        List<CartInfo> cartInfoFromCookies = new ArrayList<>();
+        List<Cart> cartFromCookies = new ArrayList<>();
 
         for(String articleAsString: cartAsString) {
             String articleID = articleAsString.split(CookieUtils.SPLIT_CHAR)[0];
             int quantity = Integer.parseInt( articleAsString.split(CookieUtils.SPLIT_CHAR)[1] );
 
             Optional<Article> carpet = articleRepository.findById(Integer.valueOf(articleID));
-            carpet.ifPresent(value -> cartInfoFromCookies.add(new CartInfo(value, quantity)));
+            carpet.ifPresent(value -> cartFromCookies.add(new Cart(value, quantity)));
         }
 
-        List<CartInfo> merged;
+        List<Cart> merged;
         User user = getLoggedUser();
 
         if(user != null){ // Si l'utilisateur est connecté
 
             // On récupère ce qui est en DB
-            List<CartInfo> cartInfoFromDatabase = cartInfoRepository.findCartInfosByUserId(user.getId());
+            List<Cart> cartFromDatabase = cartInfoRepository.findCartInfosByUserId(user.getId());
 
             // On merge ce qui est en DB avec ce qui est dans les cookies
-            merged = MiscUtils.mergeList(cartInfoFromDatabase, cartInfoFromCookies);
+            merged = MiscUtils.mergeList(cartFromDatabase, cartFromCookies);
 
             // Puis, on supprime les cookies
             CookieUtils.destroyCookie(response);
 
             // Et pour finir on save tout ça en DB
-            for (CartInfo c : merged) {
+            for (Cart c : merged) {
                 cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(c.getArticle().getId(), user.getId(), c.getQuantity());
             }
         } else {
-            merged = cartInfoFromCookies;
+            merged = cartFromCookies;
         }
 
         Double sumPrice = merged.stream().mapToDouble(c -> (c.getArticle().getPrice() * c.getQuantity())).sum();
@@ -129,15 +129,15 @@ public class CartController {
             User user = getLoggedUser();
             if(user != null){
 
-                List<CartInfo> cartInfos = cartInfoRepository.findCartInfosByCarpetAndByUser(Integer.parseInt(id), user.getId());
-                if(cartInfos != null && cartInfos.isEmpty()) {
+                List<Cart> carts = cartInfoRepository.findCartInfosByCarpetAndByUser(Integer.parseInt(id), user.getId());
+                if(carts != null && carts.isEmpty()) {
                     Optional<Article> carpet = articleRepository.findById(Integer.valueOf(id));
-                    carpet.ifPresent(value -> cartInfoRepository.save(new CartInfo(carpet.get(), quantity, user)));
+                    carpet.ifPresent(value -> cartInfoRepository.save(new Cart(carpet.get(), quantity, user)));
 
-                } else if(cartInfos != null) {
+                } else if(carts != null) {
                     Optional<Article> carpet = articleRepository.findById(Integer.valueOf(id));
 
-                    for (CartInfo ci : cartInfos) {
+                    for (Cart ci : carts) {
                         cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(Integer.parseInt(id), user.getId(), quantity + ci.getQuantity());
                     }
                 }
