@@ -33,11 +33,6 @@ public class CartControllerTests {
     @Mock
     private ArticleRepository articleRepository;
 
-    @Mock
-    private UserRepository userRepository;
-
-    private User user;
-
 
     @Test
     public void getWorks() throws Exception {

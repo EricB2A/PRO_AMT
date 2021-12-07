@@ -7,8 +7,6 @@
 
 package com.example.amt_demo.controller;
 
-import com.example.amt_demo.model.User;
-import com.example.amt_demo.model.UserRepository;
 import com.example.amt_demo.service.LoginService;
 import com.example.amt_demo.utils.login.UserCredentialsDTO;
 import okhttp3.mockwebserver.MockResponse;
@@ -39,9 +37,6 @@ public class LoginServiceTests {
 
     public static LoginService loginService;
 
-    @Mock
-    public static UserRepository userRepository;
-
     /**
      * @throws IOException
      */
@@ -49,7 +44,7 @@ public class LoginServiceTests {
     public static void setup() throws IOException {
         mockLogin = new MockWebServer();
         mockLogin.start();
-        loginService = new LoginService(String.format("http://localhost:%s", mockLogin.getPort()), userRepository);
+        loginService = new LoginService(String.format("http://localhost:%s", mockLogin.getPort()));
     }
 
 
@@ -88,8 +83,8 @@ public class LoginServiceTests {
      */
     @Test
     public void validRegister() throws InterruptedException, JSONException {
-        Mockito.when(userRepository.save(any(User.class))).thenReturn(new User(0, "user", "username"));
-        loginService = new LoginService(String.format("http://localhost:%s", mockLogin.getPort()), userRepository);
+       // Mockito.when(userRepository.save(any(User.class))).thenReturn(new User(0, "user", "username"));
+        //loginService = new LoginService(String.format("http://localhost:%s", mockLogin.getPort()), userRepository);
         UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
         JSONObject credentialsJson = new JSONObject()
                 .put("id", "0")

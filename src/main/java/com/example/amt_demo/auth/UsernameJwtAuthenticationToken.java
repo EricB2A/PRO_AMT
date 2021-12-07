@@ -8,15 +8,17 @@
 
 package com.example.amt_demo.auth;
 
+import com.example.amt_demo.service.CustomUserDetails;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.util.Assert;
 
 import java.util.Collection;
 
 public class UsernameJwtAuthenticationToken extends AbstractAuthenticationToken {
 
-    private final Object principal;
+    private final CustomUserDetails principal;
     private Object credentials;
     private String jwtToken;
 
@@ -25,7 +27,7 @@ public class UsernameJwtAuthenticationToken extends AbstractAuthenticationToken 
      * @param principal
      * @param credentials
      */
-    public UsernameJwtAuthenticationToken(Object principal, Object credentials) {
+    public UsernameJwtAuthenticationToken(CustomUserDetails principal, Object credentials) {
         super((Collection) null);
         this.principal = principal;
         this.credentials = credentials;
@@ -38,7 +40,7 @@ public class UsernameJwtAuthenticationToken extends AbstractAuthenticationToken 
      * @param credentials
      * @param authorities
      */
-    public UsernameJwtAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+    public UsernameJwtAuthenticationToken(CustomUserDetails principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
@@ -52,7 +54,7 @@ public class UsernameJwtAuthenticationToken extends AbstractAuthenticationToken 
      * @param jwtToken
      * @param authorities
      */
-    public UsernameJwtAuthenticationToken(Object principal, Object credentials, String jwtToken,Collection<? extends GrantedAuthority> authorities) {
+    public UsernameJwtAuthenticationToken(CustomUserDetails principal, Object credentials, String jwtToken, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;

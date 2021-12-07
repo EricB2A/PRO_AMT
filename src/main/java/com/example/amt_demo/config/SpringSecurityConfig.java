@@ -10,7 +10,6 @@ package com.example.amt_demo.config;
 
 import com.example.amt_demo.auth.AuthProvider;
 import com.example.amt_demo.auth.JwtRequestFilter;
-import com.example.amt_demo.service.CustomUserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private final WebApplicationContext applicationContext;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final JwtRequestFilter jwtRequestFilter;
-    private CustomUserDetailsServiceImpl userDetailsService;
 
     /**
      *
@@ -59,15 +57,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    /**
-     *
-     */
-    @PostConstruct
-    public void completeSetup() {
-        userDetailsService = applicationContext.getBean(CustomUserDetailsServiceImpl.class);
-    }
-
-    /**
+       /**
      *
      * @param auth
      * @throws Exception
@@ -75,6 +65,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authProvider);
+
     }
 
     /**
