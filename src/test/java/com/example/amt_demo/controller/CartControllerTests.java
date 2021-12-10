@@ -28,9 +28,6 @@ public class CartControllerTests {
     private MockMvc mvc;
 
     @Mock
-    private CartInfoRepository cartInfoRepository;
-
-    @Mock
     private ArticleRepository articleRepository;
 
 

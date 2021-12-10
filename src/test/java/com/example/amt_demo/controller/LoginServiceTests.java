@@ -83,7 +83,7 @@ public class LoginServiceTests {
      */
     @Test
     public void validRegister() throws InterruptedException, JSONException {
-       // Mockito.when(userRepository.save(any(User.class))).thenReturn(new User(0, "user", "username"));
+        //Mockito.when(userRepository.save(any(User.class))).thenReturn(new User(0, "user", "username"));
         //loginService = new LoginService(String.format("http://localhost:%s", mockLogin.getPort()), userRepository);
         UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
         JSONObject credentialsJson = new JSONObject()
@@ -123,7 +123,7 @@ public class LoginServiceTests {
      * @throws JSONException
      */
     @Test
-    public void invalidRegister409() throws InterruptedException, JSONException,  HttpClientErrorException.Conflict {
+    public void invalidRegister409() throws HttpClientErrorException.Conflict {
 
         Assertions.assertThrows(HttpClientErrorException.Conflict.class, () -> {
             UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
@@ -145,7 +145,7 @@ public class LoginServiceTests {
      * @throws JSONException
      */
     @Test
-    public void invalidRegister422() throws InterruptedException, JSONException {
+    public void invalidRegister422()  {
         Assertions.assertThrows(HttpClientErrorException.UnprocessableEntity.class, () -> {
             UserCredentialsDTO credentials = new UserCredentialsDTO("username", "password");
             JSONObject credentialsJson = new JSONObject()

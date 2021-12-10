@@ -8,9 +8,10 @@
 
 package com.example.amt_demo.controller;
 
+import com.example.amt_demo.model.ArticleRepository;
 import com.example.amt_demo.model.Category;
-import com.example.amt_demo.service.ArticleService;
 import com.example.amt_demo.service.CategoryService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -19,20 +20,11 @@ import java.util.Set;
 
 @RequestMapping(path = "/admin/categories")
 @Controller
+@AllArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final ArticleService articleService;
-
-    /**
-     * Controller of Category
-     * @param categoryService the CategoryService
-     * @param articleService the ArticleService
-     */
-    public CategoryController(CategoryService categoryService, ArticleService articleService) {
-        this.categoryService = categoryService;
-        this.articleService = articleService;
-    }
+    private final ArticleRepository articleRepository;
 
     /**
      * Method getting all carpets in the database
@@ -117,15 +109,15 @@ public class CategoryController {
      * @return the view to the list of Category
      */
     @GetMapping("/delete/{id}")
-    public String deleteCategory(ModelMap mp, @PathVariable String id) {
-        Category category = categoryService.findById(Integer.valueOf(id));
-        Set<Category> list = categoryService.hasArticlesInCategory(Integer.valueOf(id));
+    public String deleteCategory(ModelMap mp, @PathVariable Integer id) {
+        Category category = categoryService.findById(id);
+        Set<Category> list = categoryService.hasArticlesInCategory(id);
         if (list.isEmpty()) { // Checking if there is articles linked to the Category
             categoryService.delete(category);
             mp.addAttribute("success", "Catégorie supprimée");
         } else { // Otherwise, send error message & list of Article objects preventing the deletion
             mp.addAttribute("error", "Vous ne pouvez pas supprimer des catégories qui contiennent des articles");
-            mp.addAttribute("error_article", articleService.findErrorDeletion(id));
+            mp.addAttribute("error_article", articleRepository.findErrorDeletion(id));
         }
 
         mp.addAttribute("categories", categoryService.findAll());

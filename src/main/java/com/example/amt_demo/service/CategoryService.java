@@ -10,6 +10,7 @@ package com.example.amt_demo.service;
 
 import com.example.amt_demo.model.Category;
 import com.example.amt_demo.model.CategoryRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,17 +18,11 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@AllArgsConstructor
 public class CategoryService {
 
     final private CategoryRepository categoryRepository;
 
-    /**
-     * Constructor of CategoryService
-     * @param categoryRepository the CategoryRepository
-     */
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
     /**
      * Method finding every Category
