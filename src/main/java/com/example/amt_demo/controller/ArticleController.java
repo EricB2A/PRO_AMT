@@ -40,9 +40,6 @@ public class ArticleController {
     final private ArticleService articleService;
     final private CategoryService categoryService;
 
-    // DPE - Vous connaissez lombok ? (@AllArgsConstructor)
-    // TODO - DONE
-
     /**
      *
      * @param mp
@@ -130,12 +127,8 @@ public class ArticleController {
      */
     private boolean handleQuantity(Long carpetId, Integer toAdd){
 
-        // DPE - Si tu mets cette logique avec l'optional dans le service tu peux gérer que l'objet existe pas avec des exceptions
-        // TODO - DONE, géré l'optional dans Service
         Article article = articleService.findById(carpetId);
 
-        // DPE - https://dev.to/jpswade/return-early-12o5
-        // TODO - DONE
         if(article == null) {
             return false;
         }
@@ -156,8 +149,6 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/quantity/increase/{id}")
-    // DPE - les variables pas utilisés
-    // TODO - DONE, removed
     public RedirectView increaseQuantity(@PathVariable Long id, RedirectAttributes redir) {
         this.handleQuantity(id, 1);
         redir.addFlashAttribute("msg_article_quantity_increase",true);
@@ -220,7 +211,6 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/edit/{id}")
-    // DPE - Tu ne peux pas dire que ton paramètre est directement un Long ?
     public String editArticle(ModelMap mp, @PathVariable Long id) {
         mp.addAttribute("editing", true);
         mp.addAttribute("post_url", "/admin/articles/edit/post");
