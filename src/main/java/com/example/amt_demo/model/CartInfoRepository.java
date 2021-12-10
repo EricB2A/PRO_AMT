@@ -22,7 +22,7 @@ public interface CartInfoRepository extends CrudRepository<Cart, Integer> {
      * @param userId
      * @return
      */
-    @Query("select ci from Cart ci where ci.user.id = :userId")
+    @Query("select ci from Cart ci where ci.userId = :userId")
     List<Cart> findCartInfosByUserId(int userId);
 
     /**
@@ -31,7 +31,7 @@ public interface CartInfoRepository extends CrudRepository<Cart, Integer> {
      * @param userId
      * @return
      */
-    @Query("select ci from Cart ci where ci.article.id = ?1 and ci.user.id = ?2")
+    @Query("select ci from Cart ci where ci.article.id = ?1 and ci.userId = ?2")
     List<Cart> findCartInfosByCarpetAndByUser(int carpetId, int userId);
 
     /**
@@ -41,7 +41,7 @@ public interface CartInfoRepository extends CrudRepository<Cart, Integer> {
      */
     @Transactional
     @Modifying
-    @Query("delete from Cart ci where ci.article.id = :carpetId and ci.user.id = :userId")
+    @Query("delete from Cart ci where ci.article.id = :carpetId and ci.userId = :userId")
     void deleteCartInfoByCarpetIdAndByUserId(int carpetId, int userId);
 
     /**
@@ -52,11 +52,11 @@ public interface CartInfoRepository extends CrudRepository<Cart, Integer> {
      */
     @Transactional
     @Modifying
-    @Query("update Cart ci set ci.quantity = :quantity where ci.article.id = :carpetId and ci.user.id = :userId")
+    @Query("update Cart ci set ci.quantity = :quantity where ci.article.id = :carpetId and ci.userId = :userId")
     void setCartInfoQuantityByCarpetIdAndByUserId(int carpetId, int userId, int quantity);
 
     @Transactional
     @Modifying
-    @Query("delete from Cart ci where ci.user.id = :userId")
+    @Query("delete from Cart ci where ci.userId = :userId")
     void deleteAllCartInfoByUser(int userId);
 }

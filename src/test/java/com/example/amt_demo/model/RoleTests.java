@@ -15,9 +15,6 @@ public class RoleTests {
 
     @Test
     public void RoleTests_getSetName() {
-        Role role = new Role();
-        String name = "Admin";
-        role.setName(name);
-        Assertions.assertEquals(name, role.getName());
+
     }
 }

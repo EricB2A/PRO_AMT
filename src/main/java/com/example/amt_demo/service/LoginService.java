@@ -8,8 +8,6 @@
 
 package com.example.amt_demo.service;
 
-import com.example.amt_demo.model.User;
-import com.example.amt_demo.model.UserRepository;
 import com.example.amt_demo.utils.login.LoginAPIResponse;
 import com.example.amt_demo.utils.login.UserCredentialsDTO;
 import org.json.JSONException;
@@ -18,10 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,17 +34,14 @@ public class LoginService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final WebClient webclient;
-    private final UserRepository userRepository;
 
     /**
      *
      * @param url The url of the authentication service
-     * @param userRepository The local user database
      */
     @Autowired
-    public LoginService(@Value("${com.example.amt_demo.config.authservice.url}") String url, UserRepository userRepository) {
+    public LoginService(@Value("${com.example.amt_demo.config.authservice.url}") String url) {
         webclient = WebClient.create(url);
-        this.userRepository = userRepository;
     }
 
     /**
@@ -79,8 +71,7 @@ public class LoginService {
         JSONObject responseBodyJSON = new JSONObject(response.getBody());
 
         if (response.getStatusCode() == HttpStatus.CREATED) {
-            User user = new User(responseBodyJSON.getInt("id"), responseBodyJSON.getString("role"), credentials);
-            userRepository.save(user);
+
         } else {
             throw HttpClientErrorException.create(response.getStatusCode(), "", response.getHeaders(), response.getBody().getBytes(StandardCharsets.UTF_8), Charset.defaultCharset());
         }

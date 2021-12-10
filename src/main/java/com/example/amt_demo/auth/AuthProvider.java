@@ -9,10 +9,9 @@
 package com.example.amt_demo.auth;
 
 import com.example.amt_demo.exception.AutentificationException;
-import com.example.amt_demo.model.User;
-import com.example.amt_demo.model.UserRepository;
 import com.example.amt_demo.service.CustomUserDetails;
-import com.example.amt_demo.service.CustomUserDetailsService;
+import org.springframework.security.core.userdetails.User;
+import com.example.amt_demo.service.CustomUserService;
 import com.example.amt_demo.service.LoginService;
 import com.example.amt_demo.utils.login.LoginAPIResponse;
 import com.example.amt_demo.utils.login.UserCredentialsDTO;
@@ -26,8 +25,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 //COMMENTAIRE
@@ -36,21 +33,18 @@ public class AuthProvider implements AuthenticationProvider {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final UserRepository userRepository;
-    final private CustomUserDetailsService userService;
     private final LoginService loginService;
+    private final CustomUserService userService;
 
     /**
      *
-     * @param userRepository
      * @param loginService
-     * @param userRepo
+     * @param userService
      */
     @Autowired
-    public AuthProvider(CustomUserDetailsService userRepository, LoginService loginService, UserRepository userRepo) {
+    public AuthProvider(LoginService loginService, CustomUserService userService) {
         this.loginService = loginService;
-        this.userService = userRepository;
-        this.userRepository = userRepo;
+        this.userService = userService;
     }
 
     /**
@@ -75,21 +69,12 @@ public class AuthProvider implements AuthenticationProvider {
                 String token = jsonRes.getString("token");
                 JSONObject account = jsonRes.getJSONObject("account");
 
+                int id = Integer.parseInt(account.getString("id"));
                 String role = account.getString("role");
-
                 //Try to find the user in local user database
-                try{
-                    UserDetails userDetails = userService.loadUserByUsername(authentication.getPrincipal().toString());
-                    return new UsernameJwtAuthenticationToken(userDetails, password, token, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + role));
-                }
-                //If the user doesn't exist, create it
-                catch (UsernameNotFoundException e) {
-                    UserCredentialsDTO credentials = new UserCredentialsDTO(username, password);
-                    User user = new User(account.getInt("id"), account.getString("role"), credentials);
-                    userRepository.save(user);
-                    UserDetails userDetails = userService.loadUserByUsername(authentication.getPrincipal().toString());
-                    return new UsernameJwtAuthenticationToken(userDetails, password, token, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + role));
-                }
+                CustomUserDetails user = new CustomUserDetails(id, username, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + role));
+                this.userService.setUser(user);
+                return new UsernameJwtAuthenticationToken(user, password, token, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + role));
             }
         } catch (JSONException e) {
             // Ignore

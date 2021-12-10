@@ -31,9 +31,7 @@ public class Cart {
     
     private int quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Integer userId;
 
     /**
      * Default constructor of CartInfo
@@ -55,11 +53,11 @@ public class Cart {
      * Constructor of CartInfo (for an online user)
      * @param article   the object Article in the cart
      * @param quantity  the quantity associated to the Article
-     * @param user      the user willing to buy the Article
+     * @param userId      the user willing to buy the Article
      */
-    public Cart(Article article, int quantity, User user){
+    public Cart(Article article, int quantity, Integer userId){
         this.article = article;
-        this.user = user;
+        this.userId = userId;
         this.quantity = quantity;
     }
 
@@ -115,16 +113,16 @@ public class Cart {
      *
      * @return
      */
-    public User getUser() {
-        return user;
+    public Integer getUser() {
+        return userId;
     }
 
     /**
      *
      * @param user
      */
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Integer userId) {
+        this.userId = userId;
     }
 
     /**

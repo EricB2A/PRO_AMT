@@ -9,7 +9,7 @@
 package com.example.amt_demo.auth;
 
 import com.example.amt_demo.service.CustomUserDetails;
-import com.example.amt_demo.service.CustomUserDetailsServiceImpl;
+import com.example.amt_demo.service.CustomUserService;
 import io.jsonwebtoken.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,20 +35,20 @@ import java.util.Optional;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final CustomUserDetailsServiceImpl userDetails;
+    private final CustomUserService userService;
     private final JwtUtil jwtUtil;
     final private String cookieName;
 
     /**
      *
-     * @param userDetails
+     * @param userService
      * @param jwtUtil
      * @param cookieName
      */
     @Autowired
-    public JwtRequestFilter(CustomUserDetailsServiceImpl userDetails, JwtUtil jwtUtil, @Value("${com.example.amt_demo.config.jwt.cookie.name}") String cookieName) {
+    public JwtRequestFilter(CustomUserService userService, JwtUtil jwtUtil, @Value("${com.example.amt_demo.config.jwt.cookie.name}") String cookieName) {
         logger.info(cookieName);
-        this.userDetails = userDetails;
+        this.userService = userService;
         this.jwtUtil = jwtUtil;
         this.cookieName = cookieName;
     }
@@ -82,7 +82,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
 
             if (jwtPayload != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetails.loadUserByUsername(jwtPayload.getUsername());
+                UserDetails userDetails = this.userService.getUser();
                 if (jwtUtil.isTokenValid(jwt)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + jwtPayload.getRole()));

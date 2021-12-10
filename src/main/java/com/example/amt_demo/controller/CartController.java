@@ -10,10 +10,10 @@ package com.example.amt_demo.controller;
 
 import com.example.amt_demo.model.*;
 import com.example.amt_demo.model.Article;
+import com.example.amt_demo.service.CustomUserDetails;
+import com.example.amt_demo.service.CustomUserService;
 import com.example.amt_demo.utils.CookieUtils;
 import com.example.amt_demo.utils.MiscUtils;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,30 +39,26 @@ public class CartController {
 
     private final CartInfoRepository cartInfoRepository;
     private final ArticleRepository articleRepository;
-    private final UserRepository userRepository;
+    private final CustomUserService userDetails;
 
     /**
-     *
-     * @param cartInfoRepository
+     *  @param cartInfoRepository
      * @param articleRepository
-     * @param userRepository
+     * @param userDetails
      */
-    public CartController(CartInfoRepository cartInfoRepository, ArticleRepository articleRepository, UserRepository userRepository) {
+    public CartController(CartInfoRepository cartInfoRepository, ArticleRepository articleRepository, CustomUserService userDetails) {
         this.cartInfoRepository = cartInfoRepository;
         this.articleRepository = articleRepository;
-        this.userRepository = userRepository;
+        this.userDetails = userDetails;
     }
 
     /**
      *
      * @return
      */
-    private User getLoggedUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(!(auth instanceof AnonymousAuthenticationToken)) {
-            return userRepository.findByUsername(auth.getName());
-        }
-        return null;
+    private Principal getLoggedUser() {
+
+        return (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     /**
@@ -86,12 +83,12 @@ public class CartController {
         }
 
         List<Cart> merged;
-        User user = getLoggedUser();
+        CustomUserDetails user = userDetails.getUser();
 
         if(user != null){ // Si l'utilisateur est connecté
 
             // On récupère ce qui est en DB
-            List<Cart> cartFromDatabase = cartInfoRepository.findCartInfosByUserId(user.getId());
+            List<Cart> cartFromDatabase = cartInfoRepository.findCartInfosByUserId(userDetails.getUser().getId());
 
             // On merge ce qui est en DB avec ce qui est dans les cookies
             merged = MiscUtils.mergeList(cartFromDatabase, cartFromCookies);
@@ -101,7 +98,7 @@ public class CartController {
 
             // Et pour finir on save tout ça en DB
             for (Cart c : merged) {
-                cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(c.getArticle().getId(), user.getId(), c.getQuantity());
+                cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(c.getArticle().getId(), userDetails.getUser().getId(), c.getQuantity());
             }
         } else {
             merged = cartFromCookies;
@@ -126,13 +123,13 @@ public class CartController {
         int quantity = Integer.parseInt((String) payload.get("quantity") );
 
         if(quantity > 0) {
-            User user = getLoggedUser();
+            CustomUserDetails user = userDetails.getUser();
             if(user != null){
 
                 List<Cart> carts = cartInfoRepository.findCartInfosByCarpetAndByUser(Integer.parseInt(id), user.getId());
                 if(carts != null && carts.isEmpty()) {
                     Optional<Article> carpet = articleRepository.findById(Integer.valueOf(id));
-                    carpet.ifPresent(value -> cartInfoRepository.save(new Cart(carpet.get(), quantity, user)));
+                    carpet.ifPresent(value -> cartInfoRepository.save(new Cart(carpet.get(), quantity, user.getId())));
 
                 } else if(carts != null) {
                     Optional<Article> carpet = articleRepository.findById(Integer.valueOf(id));
@@ -155,7 +152,7 @@ public class CartController {
      */
     @DeleteMapping(path="/{id}")
     public void removeProductFromCart(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) {
-        User user = getLoggedUser();
+        CustomUserDetails user = userDetails.getUser();
         if(user != null) {
             cartInfoRepository.deleteCartInfoByCarpetIdAndByUserId(Integer.parseInt(id), user.getId());
         } else {
@@ -165,7 +162,7 @@ public class CartController {
 
     @DeleteMapping
     public void removeAllProductsFromCart(HttpServletRequest request, HttpServletResponse response) {
-        User user = getLoggedUser();
+        CustomUserDetails user = userDetails.getUser();
         if(user != null) {
             cartInfoRepository.deleteAllCartInfoByUser(user.getId());
         } else {
@@ -179,7 +176,7 @@ public class CartController {
         int quantity = Integer.parseInt((String) payload.get("quantity") );
 
         if(quantity > 0) {
-            User user = getLoggedUser();
+            CustomUserDetails user = userDetails.getUser();
             if(user != null) {
                 cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(Integer.parseInt(id), user.getId(), quantity);
 

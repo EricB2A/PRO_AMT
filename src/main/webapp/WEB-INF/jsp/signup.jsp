@@ -71,7 +71,7 @@
                                     <label for="signup_password_repeat" class="form-label">Répétez votre mot de passe</label>
                                     <input id="signup_password_repeat" type="password"
                                            class="enter_email form-control signup-input"
-                                           placeholder="Répétez votre mot de passe" name="password">
+                                           placeholder="Répétez votre mot de passe" name="repeat_password">
                                     <div id="signup_password_repeat_feedback" class="custom-feedback jquery-feedback">
 
                                     </div>
