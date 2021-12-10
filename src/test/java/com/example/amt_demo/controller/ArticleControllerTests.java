@@ -9,9 +9,7 @@
 package com.example.amt_demo.controller;
 
 import com.example.amt_demo.model.*;
-import com.example.amt_demo.service.ArticleService;
 import com.example.amt_demo.service.CategoryService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -45,6 +43,9 @@ public class ArticleControllerTests {
 
     @MockBean
     private CategoryService categoryService;
+
+    @MockBean
+    private CategoryRepository categoryRepository;
 
 
     /**
@@ -304,15 +305,22 @@ public class ArticleControllerTests {
             Optional.of(new Article(2,"Carpet2", "Carpet2 description", 50.0, 20))
         );
         Category commonForBoth = new Category("Arabic");
-        Mockito.when(categoryService.getCategoriesOfCarpet(2)).thenReturn(
+        Category turkish =  new Category("Turkish");
+        Category oriental =  new Category("Oriental");
+
+        Mockito.when(categoryRepository.getCategoriesOfArticle(2)).thenReturn(
             Stream.of(commonForBoth)
                 .collect(Collectors.toList())
         );
 
-        Mockito.when(categoryService.getAllCategories()).thenReturn(
-            Stream.of(commonForBoth, new Category("Turkish"), new Category("Oriental"))
+        Mockito.when(categoryRepository.getAllCategories()).thenReturn(
+            Stream.of(commonForBoth, turkish, oriental)
                 .collect(Collectors.toList())
         );
+        HashMap<Category, Boolean> map = new HashMap<>();
+        map.put(commonForBoth, true);
+        map.put(turkish, false);
+        map.put(oriental, false);
 
         mvc.perform(MockMvcRequestBuilders.get("/admin/articles/edit/2"))
             .andExpect(status().isOk())
@@ -328,23 +336,7 @@ public class ArticleControllerTests {
                     hasProperty("quantity", is(20))
                 )
             ))
-            .andExpect(model().attribute("categories_checked", hasSize(1)))
-            .andExpect(model().attribute("categories_checked", hasItem(
-                allOf(
-                    hasProperty("name", is("Arabic"))
-                )
-            )))
-            .andExpect(model().attribute("categories_not_checked", hasSize(2)))
-            .andExpect(model().attribute("categories_not_checked", hasItem(
-                allOf(
-                    hasProperty("name", is("Turkish"))
-                )
-            )))
-            .andExpect(model().attribute("categories_not_checked", hasItem(
-                allOf(
-                    hasProperty("name", is("Oriental"))
-                )
-            )));
+            .andExpect(model().attribute("categories", map));
     }
 
 
