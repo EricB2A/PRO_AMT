@@ -72,7 +72,7 @@ public class ArticleService {
         return redirectView;
     }
 
-    public RedirectView deleteCarpetPhoto(Integer carpet_id, Integer id, RedirectAttributes redir) {
+    public RedirectView deleteCarpetPhoto(Long carpet_id, Integer id, RedirectAttributes redir) {
         Optional<Article> carpet = articleRepository.findById(carpet_id);
         if(carpet.isPresent()) {
             Article c = carpet.get();
@@ -90,9 +90,10 @@ public class ArticleService {
         RedirectView redirectView = new RedirectView("/admin/articles/edit/"+carpet_id,true);
         redir.addFlashAttribute("msg_photo_deleted",true);
         return redirectView;
+
     }
 
-    public boolean handleQuantity(Integer carpetId, Integer toAdd){
+    public boolean handleQuantity(Long carpetId, Integer toAdd){
         Optional<Article> optional = articleRepository.findById(carpetId);
 
         if(optional.isPresent()){
@@ -127,7 +128,7 @@ public class ArticleService {
         return redirectView;
     }
 
-    public void editArticleForm(ModelMap mp, Integer id) {
+    public void editArticleForm(ModelMap mp, Long id) {
         mp.addAttribute("editing", true);
         mp.addAttribute("post_url", "/admin/articles/edit/post");
         Optional<Article> optional = articleRepository.findById(id);
@@ -140,8 +141,8 @@ public class ArticleService {
         mp.addAttribute("categories", categories);
     }
 
-    public void deleteCarpet(ModelMap mp, String id) {
-        Optional<Article> optional = articleRepository.findById(Integer.parseInt(id));
+    public void deleteCarpet(ModelMap mp, Long id) {
+        Optional<Article> optional = articleRepository.findById(id);
         if(optional.isPresent()){
             Article article = optional.get();
             articleRepository.delete(article);

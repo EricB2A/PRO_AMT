@@ -12,7 +12,7 @@
 
     <jsp:body>
         <script type="text/javascript">
-            document.addEventListener("DOMContentLoaded", function(event) {
+            document.addEventListener("DOMContentLoaded", function() {
                 let categories = document.querySelectorAll(".category-cb");
                 for(let category of categories){
                     category.addEventListener("click", (event) => {

@@ -19,7 +19,7 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     private Double price = 0.0;
@@ -72,7 +72,7 @@ public class Article {
      * @param price         the price of the Article
      * @param quantity      the quantity of the Article
      */
-    public Article(Integer id, String name, String description, Double price, Integer quantity) {
+    public Article(Long id, String name, String description, Double price, Integer quantity) {
         this(name, description, price, quantity);
         this.id = id;
     }
@@ -81,7 +81,7 @@ public class Article {
      * Getter of the id of the Article
      * @return  the id of the Article
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -89,7 +89,7 @@ public class Article {
      * Setter of the id of the Article
      * @param id    the id of the Article
      */
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

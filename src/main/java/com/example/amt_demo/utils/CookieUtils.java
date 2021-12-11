@@ -37,7 +37,7 @@ public class CookieUtils {
      * @param quantity
      * @param replaceQuantity
      */
-    public static void storeArticleToCartCookie(HttpServletRequest request, HttpServletResponse response, String productID, int quantity, boolean replaceQuantity) {
+    public static void storeArticleToCartCookie(HttpServletRequest request, HttpServletResponse response, Long productID, int quantity, boolean replaceQuantity) {
         /*
           Si l'utilisateur s'amuse à modifier ses cookies, on aura à coup sûr des problèmes au parsing.
           Donc si le cookie est illisible -> on catch l'erreur -> suppression du cookie -> plus de panier, mais pas d'erreur !
@@ -97,7 +97,7 @@ public class CookieUtils {
      * @param productID
      * @param quantity
      */
-    public static void storeArticleToCartCookie(HttpServletRequest request, HttpServletResponse response, String productID, int quantity) {
+    public static void storeArticleToCartCookie(HttpServletRequest request, HttpServletResponse response, Long productID, int quantity) {
         storeArticleToCartCookie(request, response, productID, quantity, false);
     }
 
@@ -117,7 +117,7 @@ public class CookieUtils {
      * @param response
      * @param productIDToRemove
      */
-    public static void removeArticleFromCartCookie(HttpServletRequest request, HttpServletResponse response, String productIDToRemove) {
+    public static void removeArticleFromCartCookie(HttpServletRequest request, HttpServletResponse response, Long productIDToRemove) {
 
         List<String> articlesAsString = getArticlesFromCartCookie(request, response);
 

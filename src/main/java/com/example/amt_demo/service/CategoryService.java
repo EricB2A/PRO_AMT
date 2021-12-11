@@ -51,7 +51,11 @@ public class CategoryService {
      * @return the Category
      */
     public Category findByName(String name) {
-        return categoryRepository.findByName(name);
+        Optional<Category> category = categoryRepository.findByName(name);
+        if(category.isPresent()) {
+            return category.get();
+        }
+        return null;
     }
 
     /**
@@ -75,7 +79,7 @@ public class CategoryService {
      * @param articleId the id of the Article
      * @return the list of Category
      */
-    public List<Category> getCategoriesOfCarpet(Integer articleId) {
+    public List<Category> getCategoriesOfCarpet(Long articleId) {
         return categoryRepository.getCategoriesOfArticle(articleId);
     }
 

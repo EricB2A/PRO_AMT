@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface CategoryRepository extends CrudRepository<Category, Integer> {
@@ -22,7 +23,7 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
      * @return the Category with the wanted name
      */
     @Query("SELECT c FROM Category c where c.name = ?1")
-    Category findByName(String name);
+    Optional<Category> findByName(String name);
 
     /**
      * Method finding category with associated Article object
@@ -46,7 +47,7 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
      * @return the list of Category associated with the Article
      */
     @Query("SELECT c from Category c JOIN c.articles a WHERE a.id = ?1")
-    List<Category> getCategoriesOfArticle(Integer article_id);
+    List<Category> getCategoriesOfArticle(Long article_id);
 
     /**
      * Method finding every category in the database

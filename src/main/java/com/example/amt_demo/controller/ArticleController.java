@@ -11,7 +11,9 @@ package com.example.amt_demo.controller;
 import com.example.amt_demo.model.*;
 import com.example.amt_demo.service.ArticleService;
 import com.example.amt_demo.service.CategoryService;
+
 import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +27,18 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @RequestMapping(path = "/admin/articles")
 @Controller
-
 @AllArgsConstructor
 public class ArticleController {
 
     final private ArticleService articleService;
     final private CategoryService categoryService;
+
+
+    /**
+     *
+     * @param mp
+     * @return
+     */
 
     @GetMapping(path="", produces = {"application/xml"})
     public String getAllCarpets(ModelMap mp) {
@@ -60,7 +68,9 @@ public class ArticleController {
      */
     @PostMapping("/add/post")
     public RedirectView addCarpet(Article newArticle, @RequestParam(name = "images", required = false) MultipartFile[] images, RedirectAttributes redir) {
+
        return articleService.addCarpet(newArticle, images, redir);
+
     }
 
     /**
@@ -71,7 +81,8 @@ public class ArticleController {
      * @return
      */
     @GetMapping("{carpet_id}/photo/delete/{id}")
-    public RedirectView deleteCarpetPhoto(@PathVariable Integer carpet_id, @PathVariable Integer id, RedirectAttributes redir) {
+
+    public RedirectView deleteCarpetPhoto(@PathVariable Long carpet_id, @PathVariable Integer id, RedirectAttributes redir) {
         return articleService.deleteCarpetPhoto(carpet_id, id, redir);
     }
 
@@ -80,7 +91,7 @@ public class ArticleController {
      * @param carpetId
      * @param toAdd
      */
-    private boolean handleQuantity(Integer carpetId, Integer toAdd){
+    private boolean handleQuantity(Long carpetId, Integer toAdd){
         return articleService.handleQuantity(carpetId, toAdd);
     }
 
@@ -92,10 +103,10 @@ public class ArticleController {
      */
     @GetMapping("/quantity/increase/{id}")
     // DPE - les variables pas utilisés
-    public RedirectView increaseQuantity(@PathVariable Integer id, RedirectAttributes redir) {
+    public RedirectView increaseQuantity(@PathVariable Long id, RedirectAttributes redir) {
         this.handleQuantity(id, 1);
-        RedirectView redirectView = new RedirectView("/admin/articles",true);
         redir.addFlashAttribute("msg_article_quantity_increase",true);
+        RedirectView redirectView = new RedirectView("/admin/articles",true);
         redir.addFlashAttribute("articles", articleService.findAll());
         return redirectView;
     }
@@ -107,7 +118,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/quantity/decrease/{id}")
-    public RedirectView decreaseQuantity(@PathVariable Integer id, RedirectAttributes redir) {
+    public RedirectView decreaseQuantity(@PathVariable Long id, RedirectAttributes redir) {
         if(this.handleQuantity(id, -1)){
             redir.addFlashAttribute("msg_article_quantity_decrease",true);
         }
@@ -135,7 +146,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/edit/{id}")
-    public String editArticle(ModelMap mp, @PathVariable Integer id) {
+    public String editArticle(ModelMap mp, @PathVariable Long id) {
         articleService.editArticleForm(mp, id);
         return "admin/articleForm";
     }
@@ -147,12 +158,10 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/delete/{id}")
-    public String deleteCarpet(ModelMap mp, @PathVariable String id) {
+    public String deleteCarpet(ModelMap mp, @PathVariable Long id) {
         articleService.deleteCarpet(mp, id);
         return "admin/articles";
     }
-
-
 
 
 }
