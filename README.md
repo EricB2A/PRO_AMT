@@ -47,7 +47,7 @@ et ajoutez les deux variables ci-dessus avec leur valeurs respectives
 
 ## SGBD 🐋
 > DPE - Liars ! Vous utilisez juste mysql ;)
-> ![img.png](docs/img.png)
+> ![img.png](docs/img.png). 
 > Où est-ce qu'on a dit le contraire ?
 
 Notre application utilise le SGBD relationnel `mySQL`, que nous avons Dockerisé via l'image [mysql-server](https://hub.docker.com/r/mysql/mysql-server/).
