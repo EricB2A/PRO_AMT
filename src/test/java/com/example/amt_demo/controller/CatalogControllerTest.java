@@ -66,14 +66,14 @@ public class CatalogControllerTest {
 
         LinkedList<Category> categories = new LinkedList<>(Arrays.asList(turkish, arabic, orient));
 
-        Article carpet1 = new Article(1, "Carpet 1", "Carpet desc", 30.0, 10);
-        Article carpet2 = new Article(2, "Carpet 2", "Carpet desc", 30.0, 10);
-        Article turkishCarpet = new Article(3, "Turkish carpet 1", "Turkish carpet desc", 40.0, 10);
-        Article turkishCarpet2 = new Article(4, "Turkish carpet 2", "Turkish carpet desc", 30.0, 10);
-        Article arabicCarpet1 = new Article(5, "Arabic carpet 1", "Arabic carpet desc", 30.0, 10);
-        Article arabicCarpet2 = new Article(6, "Arabic carpet 2", "Arabic carpet desc", 30.0, 10);
-        Article orientCarpet1 = new Article(7, "Orient carpet 1", "Carpet desc", 30.0, 10);
-        Article orientCarpet2 = new Article(8, "Orient carpet 2", "Carpet desc", 30.0, 10);
+        Article carpet1 = new Article(1L, "Carpet 1", "Carpet desc", 30.0, 10);
+        Article carpet2 = new Article(2L, "Carpet 2", "Carpet desc", 30.0, 10);
+        Article turkishCarpet = new Article(3L, "Turkish carpet 1", "Turkish carpet desc", 40.0, 10);
+        Article turkishCarpet2 = new Article(4L, "Turkish carpet 2", "Turkish carpet desc", 30.0, 10);
+        Article arabicCarpet1 = new Article(5L, "Arabic carpet 1", "Arabic carpet desc", 30.0, 10);
+        Article arabicCarpet2 = new Article(6L, "Arabic carpet 2", "Arabic carpet desc", 30.0, 10);
+        Article orientCarpet1 = new Article(7L, "Orient carpet 1", "Carpet desc", 30.0, 10);
+        Article orientCarpet2 = new Article(8L, "Orient carpet 2", "Carpet desc", 30.0, 10);
 
         turkishCarpet.setCategories(Stream.of(turkish).collect(Collectors.toSet()));
         turkishCarpet2.setCategories(Stream.of(turkish).collect(Collectors.toSet()));
@@ -152,8 +152,8 @@ public class CatalogControllerTest {
 
         LinkedList<Category> categories = new LinkedList<>(Arrays.asList(turkish, arabic, orient));
 
-        Article arabic1 = new Article(5, "Arabic carpet 1", "Arabic carpet desc", 30.0, 10);
-        Article arabic2 = new Article(6, "Arabic carpet 2", "Arabic carpet desc", 30.0, 10);
+        Article arabic1 = new Article(5L, "Arabic carpet 1", "Arabic carpet desc", 30.0, 10);
+        Article arabic2 = new Article(6L, "Arabic carpet 2", "Arabic carpet desc", 30.0, 10);
 
         arabic1.setCategories(Stream.of(arabic).collect(Collectors.toSet()));
         arabic2.setCategories(Stream.of(arabic).collect(Collectors.toSet()));
@@ -208,12 +208,12 @@ public class CatalogControllerTest {
     public void CatalogControllerTest_getDetailedView() throws Exception {
 
         Category arabic = new Category(2, "Arabic");
-        Article arabic1 = new Article(5, "Arabic carpet 1", "Arabic carpet desc", 30.0, 10);
+        Article arabic1 = new Article(5L, "Arabic carpet 1", "Arabic carpet desc", 30.0, 10);
 
         arabic1.setCategories(Stream.of(arabic).collect(Collectors.toSet()));
         arabic.addCarpet(arabic1);
 
-        Mockito.when(articleRepository.findById(5)).thenReturn(
+        Mockito.when(articleRepository.findById(5L)).thenReturn(
                 Optional.of(arabic1)
         );
 

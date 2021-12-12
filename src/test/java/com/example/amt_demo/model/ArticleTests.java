@@ -52,7 +52,7 @@ public class ArticleTests {
     @Test
     public void ArticleTests_getSetId() {
         Article article = new Article();
-        int id = 10000;
+        long id = 10000;
         article.setId(id);
         Assertions.assertEquals(id, article.getId());
     }

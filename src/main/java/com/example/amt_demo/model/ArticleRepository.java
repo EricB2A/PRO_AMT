@@ -11,18 +11,15 @@ package com.example.amt_demo.model;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
 import java.util.Set;
 
-public interface ArticleRepository extends CrudRepository<Article, Integer> {
+public interface ArticleRepository extends CrudRepository<Article, Long> {
 
     /**
      *
      * @param name
      * @return
      */
-    // DPE - C'est très gentil d'écrire la requête SQL mais spring data peut le faire à ta place ;)
-    @Query("SELECT a FROM Article a WHERE a.name = ?1")
     Article findByName(String name);
     
     /**

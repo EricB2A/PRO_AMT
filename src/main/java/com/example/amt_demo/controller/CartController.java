@@ -78,7 +78,7 @@ public class CartController {
             String articleID = articleAsString.split(CookieUtils.SPLIT_CHAR)[0];
             int quantity = Integer.parseInt( articleAsString.split(CookieUtils.SPLIT_CHAR)[1] );
 
-            Optional<Article> carpet = articleRepository.findById(Integer.valueOf(articleID));
+            Optional<Article> carpet = articleRepository.findById(Long.valueOf(articleID));
             carpet.ifPresent(value -> cartFromCookies.add(new Cart(value, quantity)));
         }
 
@@ -119,23 +119,24 @@ public class CartController {
      * @param payload
      */
     @PostMapping(path="/{id}")
-    public void addProductToCart(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestBody Map<String, Object> payload){
+    public void addProductToCart(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestBody Map<String, Object> payload){
         int quantity = Integer.parseInt((String) payload.get("quantity") );
 
         if(quantity > 0) {
             CustomUserDetails user = userDetails.getUser();
             if(user != null){
 
-                List<Cart> carts = cartInfoRepository.findCartInfosByCarpetAndByUser(Integer.parseInt(id), user.getId());
+                List<Cart> carts = cartInfoRepository.findCartInfosByCarpetAndByUser(id, user.getId());
                 if(carts != null && carts.isEmpty()) {
-                    Optional<Article> carpet = articleRepository.findById(Integer.valueOf(id));
+                    Optional<Article> carpet = articleRepository.findById(id);
                     carpet.ifPresent(value -> cartInfoRepository.save(new Cart(carpet.get(), quantity, user.getId())));
 
                 } else if(carts != null) {
-                    Optional<Article> carpet = articleRepository.findById(Integer.valueOf(id));
+                    Optional<Article> carpet = articleRepository.findById(id);
+
 
                     for (Cart ci : carts) {
-                        cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(Integer.parseInt(id), user.getId(), quantity + ci.getQuantity());
+                        cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(id, user.getId(), quantity + ci.getQuantity());
                     }
                 }
             } else {
@@ -151,10 +152,10 @@ public class CartController {
      * @param id
      */
     @DeleteMapping(path="/{id}")
-    public void removeProductFromCart(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) {
+    public void removeProductFromCart(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) {
         CustomUserDetails user = userDetails.getUser();
         if(user != null) {
-            cartInfoRepository.deleteCartInfoByCarpetIdAndByUserId(Integer.parseInt(id), user.getId());
+            cartInfoRepository.deleteCartInfoByCarpetIdAndByUserId(id, user.getId());
         } else {
             CookieUtils.removeArticleFromCartCookie(request, response, id);
         }
@@ -172,13 +173,13 @@ public class CartController {
     }
 
     @PutMapping(path="/{id}")
-    public void editProductFromCart(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestBody Map<String, Object> payload) {
+    public void editProductFromCart(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestBody Map<String, Object> payload) {
         int quantity = Integer.parseInt((String) payload.get("quantity") );
 
         if(quantity > 0) {
             CustomUserDetails user = userDetails.getUser();
             if(user != null) {
-                cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(Integer.parseInt(id), user.getId(), quantity);
+                cartInfoRepository.setCartInfoQuantityByCarpetIdAndByUserId(id, user.getId(), quantity);
 
             } else {
                 CookieUtils.storeArticleToCartCookie(request, response, id, quantity, true);

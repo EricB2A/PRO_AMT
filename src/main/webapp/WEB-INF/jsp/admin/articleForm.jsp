@@ -12,7 +12,7 @@
 
     <jsp:body>
         <script type="text/javascript">
-            document.addEventListener("DOMContentLoaded", function(event) {
+            document.addEventListener("DOMContentLoaded", function() {
                 let categories = document.querySelectorAll(".category-cb");
                 for(let category of categories){
                     category.addEventListener("click", (event) => {
@@ -95,10 +95,18 @@
                                                         <input class="invisible" type="checkbox" id="category_${category.id}" name="categories" value="${category.id}" checked />
                                                     </div>
                                                 </c:forEach>
-                                                <c:forEach varStatus="idx" items="${categories_not_checked}" var="category">
+                                                <c:forEach varStatus="idx" items="${categories.entrySet()}" var="category">
                                                     <div class="d-inline-flex">
-                                                        <span class="btn category-cb badge p-2 rounded-pill bg-secondary text-white" id="category_${category.id}">${category.name}</span>
-                                                        <input class="invisible" type="checkbox" id="category_${category.id}" name="categories" value="${category.id}" />
+                                                        <span class="btn category-cb badge p-2 rounded-pill
+                                                        <c:choose>
+                                                            <c:when test="${category.getValue()}">
+                                                                bg-primary
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                               bg-secondary
+                                                            </c:otherwise>
+                                                        </c:choose> text-white" id="category_${category.getKey().id}">${category.getKey().name}</span>
+                                                        <input class="invisible" type="checkbox" id="category_${category.getKey().id}" name="categories" value="${category.getKey().id}" <c:if test="${category.getValue()}">checked</c:if> />
                                                     </div>
                                                 </c:forEach>
                                             </div>

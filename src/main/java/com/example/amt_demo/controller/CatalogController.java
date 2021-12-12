@@ -55,7 +55,7 @@ public class CatalogController {
      */
     @GetMapping(path="/{id}", produces = {"application/xml"})
     public String getArticle(ModelMap mp, @PathVariable String id) {
-        Optional<Article> optional = articleRepository.findById(Integer.valueOf(id));
+        Optional<Article> optional = articleRepository.findById(Long.valueOf(id));
         optional.ifPresent(article -> mp.addAttribute("article", article));
         return "public/article";
     }

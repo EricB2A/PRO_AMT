@@ -10,6 +10,7 @@ package com.example.amt_demo.service;
 
 import com.example.amt_demo.model.Category;
 import com.example.amt_demo.model.CategoryRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,17 +18,11 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@AllArgsConstructor
 public class CategoryService {
 
     final private CategoryRepository categoryRepository;
 
-    /**
-     * Constructor of CategoryService
-     * @param categoryRepository the CategoryRepository
-     */
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
     /**
      * Method finding every Category
@@ -56,7 +51,11 @@ public class CategoryService {
      * @return the Category
      */
     public Category findByName(String name) {
-        return categoryRepository.findByName(name);
+        Optional<Category> category = categoryRepository.findByName(name);
+        if(category.isPresent()) {
+            return category.get();
+        }
+        return null;
     }
 
     /**
@@ -80,7 +79,7 @@ public class CategoryService {
      * @param articleId the id of the Article
      * @return the list of Category
      */
-    public List<Category> getCategoriesOfCarpet(Integer articleId) {
+    public List<Category> getCategoriesOfCarpet(Long articleId) {
         return categoryRepository.getCategoriesOfArticle(articleId);
     }
 
