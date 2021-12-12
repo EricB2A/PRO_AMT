@@ -9,6 +9,7 @@
 package com.example.amt_demo.controller;
 
 import com.example.amt_demo.model.*;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,20 +20,12 @@ import java.util.Optional;
 
 @RequestMapping(path = "/catalog")
 @Controller
+@AllArgsConstructor
 public class CatalogController {
 
     private ArticleRepository articleRepository;
     private CategoryRepository categoryRepository;
 
-    /**
-     * Constructor of the CatalogController
-     * @param articleRepository
-     * @param categoryRepository
-     */
-    public CatalogController(ArticleRepository articleRepository, CategoryRepository categoryRepository) {
-        this.articleRepository = articleRepository;
-        this.categoryRepository = categoryRepository;
-    }
 
     /**
      * Method getting every article of the database and every category associated with

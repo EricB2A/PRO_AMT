@@ -14,6 +14,7 @@ import com.example.amt_demo.service.CustomUserDetails;
 import com.example.amt_demo.service.CustomUserService;
 import com.example.amt_demo.utils.CookieUtils;
 import com.example.amt_demo.utils.MiscUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,22 +36,13 @@ import java.util.Optional;
 
 @RequestMapping(path = "/cart")
 @Controller
+@AllArgsConstructor
 public class CartController {
 
     private final CartInfoRepository cartInfoRepository;
     private final ArticleRepository articleRepository;
     private final CustomUserService userDetails;
 
-    /**
-     *  @param cartInfoRepository
-     * @param articleRepository
-     * @param userDetails
-     */
-    public CartController(CartInfoRepository cartInfoRepository, ArticleRepository articleRepository, CustomUserService userDetails) {
-        this.cartInfoRepository = cartInfoRepository;
-        this.articleRepository = articleRepository;
-        this.userDetails = userDetails;
-    }
 
     /**
      *

@@ -1,31 +1,17 @@
 <?xml version="1.0" encoding="iso-8859-15" standalone="no"?>
 <classDiagram>
   <diagramElements defaultViewEntities="ALL" defaultViewEnum="true" defaultViewMethods="TYPE_AND_NAME" defaultVisibleTypes="true" informations="" name="">
-    <association aggregation="NONE" direction="BIDIRECTIONAL" id="1995" name="">
-      <role componentId="1659" name="" visibility="PRIVATE">
-        <multiplicity>
-          <min>0</min>
-          <max>2147483647</max>
-        </multiplicity>
-      </role>
-      <role componentId="794" name="" visibility="PRIVATE">
-        <multiplicity>
-          <min>1</min>
-          <max>1</max>
-        </multiplicity>
-      </role>
-    </association>
-    <association aggregation="NONE" direction="BIDIRECTIONAL" id="1986" name="">
-      <role componentId="1659" name="" visibility="PRIVATE">
-        <multiplicity>
-          <min>0</min>
-          <max>2147483647</max>
-        </multiplicity>
-      </role>
+    <association aggregation="NONE" direction="BIDIRECTIONAL" id="3599" name="">
       <role componentId="1" name="" visibility="PRIVATE">
         <multiplicity>
-          <min>1</min>
-          <max>1</max>
+          <min>0</min>
+          <max>2147483647</max>
+        </multiplicity>
+      </role>
+      <role componentId="3492" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>0</min>
+          <max>2147483647</max>
         </multiplicity>
       </role>
     </association>
@@ -43,46 +29,57 @@
         </multiplicity>
       </role>
     </association>
-    <association aggregation="NONE" direction="BIDIRECTIONAL" id="3599" name="">
-      <role componentId="1" name="" visibility="PRIVATE">
+    <association aggregation="NONE" direction="BIDIRECTIONAL" id="1986" name="">
+      <role componentId="1659" name="" visibility="PRIVATE">
         <multiplicity>
           <min>0</min>
           <max>2147483647</max>
         </multiplicity>
       </role>
-      <role componentId="3492" name="" visibility="PRIVATE">
+      <role componentId="1" name="" visibility="PRIVATE">
         <multiplicity>
-          <min>0</min>
-          <max>2147483647</max>
+          <min>1</min>
+          <max>1</max>
         </multiplicity>
       </role>
     </association>
-    <entity entityType="CLASS" id="1659" isAbstract="false" name="CartInfo" visibility="PUBLIC">
+    <association aggregation="NONE" direction="BIDIRECTIONAL" id="1995" name="">
+      <role componentId="1659" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>0</min>
+          <max>2147483647</max>
+        </multiplicity>
+      </role>
+      <role componentId="794" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+    </association>
+    <entity entityType="CLASS" id="3492" isAbstract="false" name="Category" visibility="PUBLIC">
       <attribute const="false" defaultValue="" isStatic="false" name="id" type="Integer" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="quantity" type="void" visibility="PRIVATE"/>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="CartInfo" returnType="" view="DEFAULT" visibility="PUBLIC"/>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="CartInfo" returnType="" view="DEFAULT" visibility="PUBLIC">
-        <variable const="false" name="carpet" type="Carpet"/>
-        <variable const="false" name="p" type="int"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="name" type="String" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="Category" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="Category" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="name" type="String"/>
       </method>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="CartInfo" returnType="" view="DEFAULT" visibility="PUBLIC">
-        <variable const="false" name="carpet" type="Carpet"/>
-        <variable const="false" name="quantity" type="int"/>
-        <variable const="false" name="user" type="User"/>
-      </method>
-      <method isAbstract="false" isStatic="false" name="equals" returnType="Boolean" view="DEFAULT" visibility="PUBLIC">
-        <variable const="false" name="Object" type="obj"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="Category" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="id" type="Integer"/>
+        <variable const="false" name="name" type="String"/>
       </method>
     </entity>
-    <entity entityType="CLASS" id="794" isAbstract="false" name="User" visibility="PUBLIC">
+    <entity entityType="CLASS" id="3356" isAbstract="false" name="ArticlePhoto" visibility="PUBLIC">
       <attribute const="false" defaultValue="" isStatic="false" name="id" type="Integer" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="email" type="String" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="password" type="String" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="username" type="String" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="firstname" type="String" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="lastname" type="String" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="role" type="String" visibility="PRIVATE"/>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="User" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="path" type="String" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="ArticlePhoto" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="ArticlePhoto" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="id" type="Integer"/>
+        <variable const="false" name="path" type="String"/>
+      </method>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="ArticlePhoto" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="path" type="String"/>
+      </method>
     </entity>
     <entity entityType="CLASS" id="1" isAbstract="false" name="Article" visibility="PUBLIC">
       <attribute const="false" defaultValue="" isStatic="false" name="id" type="Integer" visibility="PRIVATE"/>
@@ -110,71 +107,75 @@
         <variable const="false" name="quantity" type="Integer"/>
       </method>
     </entity>
-    <entity entityType="CLASS" id="3356" isAbstract="false" name="ArticlePhoto" visibility="PUBLIC">
+    <entity entityType="CLASS" id="794" isAbstract="false" name="User" visibility="PUBLIC">
       <attribute const="false" defaultValue="" isStatic="false" name="id" type="Integer" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="path" type="String" visibility="PRIVATE"/>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="ArticlePhoto" returnType="" view="DEFAULT" visibility="PUBLIC"/>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="ArticlePhoto" returnType="" view="DEFAULT" visibility="PUBLIC">
-        <variable const="false" name="id" type="Integer"/>
-        <variable const="false" name="path" type="String"/>
-      </method>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="ArticlePhoto" returnType="" view="DEFAULT" visibility="PUBLIC">
-        <variable const="false" name="path" type="String"/>
-      </method>
+      <attribute const="false" defaultValue="" isStatic="false" name="email" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="password" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="username" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="firstname" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="lastname" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="role" type="String" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="User" returnType="" view="DEFAULT" visibility="PUBLIC"/>
     </entity>
-    <entity entityType="CLASS" id="3492" isAbstract="false" name="Category" visibility="PUBLIC">
+    <entity entityType="CLASS" id="1659" isAbstract="false" name="Cart" visibility="PUBLIC">
       <attribute const="false" defaultValue="" isStatic="false" name="id" type="Integer" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="name" type="String" visibility="PRIVATE"/>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="Category" returnType="" view="DEFAULT" visibility="PUBLIC"/>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="Category" returnType="" view="DEFAULT" visibility="PUBLIC">
-        <variable const="false" name="name" type="String"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="quantity" type="void" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="userId" type="Integer" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="CartInfo" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="CartInfo" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="carpet" type="Carpet"/>
+        <variable const="false" name="p" type="int"/>
       </method>
-      <method is-constructor="true" isAbstract="false" isStatic="false" name="Category" returnType="" view="DEFAULT" visibility="PUBLIC">
-        <variable const="false" name="id" type="Integer"/>
-        <variable const="false" name="name" type="String"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="CartInfo" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="carpet" type="Carpet"/>
+        <variable const="false" name="quantity" type="int"/>
+        <variable const="false" name="user" type="User"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="equals" returnType="Boolean" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="Object" type="obj"/>
       </method>
     </entity>
   </diagramElements>
   <umlView grid="10" name="Main view" open="true">
-    <relationView color="-12566464" relationId="3599">
+    <relationView color="-12566464" relationId="1986">
       <line>
         <point>
-          <x>691</x>
-          <y>321</y>
+          <x>951</x>
+          <y>181</y>
         </point>
         <point>
-          <x>691</x>
-          <y>431</y>
+          <x>811</x>
+          <y>181</y>
         </point>
       </line>
       <labelAssociation>
-        <x>695</x>
-        <y>380</y>
+        <x>885</x>
+        <y>185</y>
         <w>0</w>
         <h>16</h>
       </labelAssociation>
       <roleAssociation>
-        <x>695</x>
-        <y>325</y>
+        <x>915</x>
+        <y>185</y>
         <w>0</w>
         <h>16</h>
       </roleAssociation>
       <roleAssociation>
-        <x>695</x>
-        <y>409</y>
+        <x>815</x>
+        <y>185</y>
         <w>0</w>
         <h>16</h>
       </roleAssociation>
       <multipliciteAssociation>
-        <x>677</x>
-        <y>325</y>
-        <w>22</w>
+        <x>916</x>
+        <y>158</y>
+        <w>21</w>
         <h>16</h>
       </multipliciteAssociation>
       <multipliciteAssociation>
-        <x>677</x>
-        <y>409</y>
-        <w>22</w>
+        <x>815</x>
+        <y>159</y>
+        <w>8</w>
         <h>16</h>
       </multipliciteAssociation>
     </relationView>
@@ -216,108 +217,58 @@
       <multipliciteAssociation>
         <x>305</x>
         <y>408</y>
-        <w>22</w>
+        <w>21</w>
         <h>16</h>
       </multipliciteAssociation>
     </relationView>
-    <relationView color="-12566464" relationId="1986">
+    <relationView color="-12566464" relationId="3599">
       <line>
         <point>
-          <x>951</x>
-          <y>181</y>
+          <x>691</x>
+          <y>321</y>
         </point>
         <point>
-          <x>811</x>
-          <y>181</y>
+          <x>691</x>
+          <y>431</y>
         </point>
       </line>
       <labelAssociation>
-        <x>885</x>
-        <y>185</y>
+        <x>695</x>
+        <y>380</y>
         <w>0</w>
         <h>16</h>
       </labelAssociation>
       <roleAssociation>
-        <x>915</x>
-        <y>185</y>
+        <x>695</x>
+        <y>325</y>
         <w>0</w>
         <h>16</h>
       </roleAssociation>
       <roleAssociation>
-        <x>815</x>
-        <y>185</y>
+        <x>695</x>
+        <y>409</y>
         <w>0</w>
         <h>16</h>
       </roleAssociation>
       <multipliciteAssociation>
-        <x>916</x>
-        <y>158</y>
-        <w>22</w>
+        <x>677</x>
+        <y>325</y>
+        <w>21</w>
         <h>16</h>
       </multipliciteAssociation>
       <multipliciteAssociation>
-        <x>815</x>
-        <y>159</y>
-        <w>8</w>
+        <x>677</x>
+        <y>409</y>
+        <w>21</w>
         <h>16</h>
       </multipliciteAssociation>
     </relationView>
-    <relationView color="-12566464" relationId="1995">
-      <line>
-        <point>
-          <x>1011</x>
-          <y>276</y>
-        </point>
-        <point>
-          <x>1011</x>
-          <y>361</y>
-        </point>
-      </line>
-      <labelAssociation>
-        <x>1015</x>
-        <y>322</y>
-        <w>0</w>
-        <h>16</h>
-      </labelAssociation>
-      <roleAssociation>
-        <x>1015</x>
-        <y>280</y>
-        <w>0</w>
-        <h>16</h>
-      </roleAssociation>
-      <roleAssociation>
-        <x>1015</x>
-        <y>339</y>
-        <w>0</w>
-        <h>16</h>
-      </roleAssociation>
-      <multipliciteAssociation>
-        <x>980</x>
-        <y>281</y>
-        <w>22</w>
-        <h>16</h>
-      </multipliciteAssociation>
-      <multipliciteAssociation>
-        <x>997</x>
-        <y>339</y>
-        <w>8</w>
-        <h>16</h>
-      </multipliciteAssociation>
-    </relationView>
-    <componentView color="-2079" componentID="3492" displayAttributes="true" displayDefault="true" displayMethods="true">
+    <componentView color="-2079" componentID="1659" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
-        <x>600</x>
-        <y>430</y>
-        <w>240</w>
-        <h>130</h>
-      </geometry>
-    </componentView>
-    <componentView color="-2079" componentID="3356" displayAttributes="true" displayDefault="true" displayMethods="true">
-      <geometry>
-        <x>300</x>
-        <y>430</y>
-        <w>260</w>
-        <h>130</h>
+        <x>950</x>
+        <y>130</y>
+        <w>340</w>
+        <h>160</h>
       </geometry>
     </componentView>
     <componentView color="-2079" componentID="1" displayAttributes="true" displayDefault="true" displayMethods="true">
@@ -328,20 +279,20 @@
         <h>190</h>
       </geometry>
     </componentView>
-    <componentView color="-2079" componentID="794" displayAttributes="true" displayDefault="true" displayMethods="true">
+    <componentView color="-2079" componentID="3356" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
-        <x>960</x>
-        <y>360</y>
-        <w>150</w>
-        <h>175</h>
+        <x>300</x>
+        <y>430</y>
+        <w>260</w>
+        <h>130</h>
       </geometry>
     </componentView>
-    <componentView color="-2079" componentID="1659" displayAttributes="true" displayDefault="true" displayMethods="true">
+    <componentView color="-2079" componentID="3492" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
-        <x>950</x>
-        <y>130</y>
-        <w>340</w>
-        <h>145</h>
+        <x>600</x>
+        <y>430</y>
+        <w>240</w>
+        <h>130</h>
       </geometry>
     </componentView>
   </umlView>
