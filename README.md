@@ -65,7 +65,11 @@ L'ORM [Hibernate](https://hibernate.org/) va faire un mapping 1-1 entre ce(s) cl
 Veuillez noter que les méthodes de types `setter` et `getter` ne sont pas présents sur ce schéma afin de simplifier la lisibilité de ce dernier.
 
 ## Authentification
-Documentation du login se trouve [ici](docs/Authentification.md) 
+Documentation du login se trouve [ici](docs/Authentification.md). 
+
+Un service d'authentification a été implémenté et est disponible dans [ce repo](https://github.com/EricB2A/PRO_AMT_AUTH) 
+
+
 ## Routes 👀
 | Verbe HTTP | Route                         | Contrôleur            |
 |------------|-------------------------------|-----------------------|
