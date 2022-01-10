@@ -62,7 +62,7 @@ public class ArticlePhoto {
      * @return
      */
     public String getPath() {
-        return path;
+        return "/" + path;
     }
 
 }
