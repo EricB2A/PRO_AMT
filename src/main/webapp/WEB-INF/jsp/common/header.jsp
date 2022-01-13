@@ -33,6 +33,10 @@
                                 <a class="nav-item nav-link" href="/login">Login</a>
                             </sec:authorize>
 
+                            <sec:authorize access="isAuthenticated()">
+                                <a class="nav-item nav-link" href="/purchase">Mes commandes</a>
+                            </sec:authorize>
+
                             <a class="nav-item nav-link" href="/cart">Panier</a>
 
                             <a class="nav-item nav-link last" href="#"><img src="/images/search_icon.png"></a>
