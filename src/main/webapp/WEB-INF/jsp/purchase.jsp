@@ -10,17 +10,21 @@
     </jsp:attribute>
   <jsp:body>
     <div class="layout_padding gallery_section">
-      <div class="container bg-transparent text-white">
+      <div class="container bg-white">
 
-        <div id="Articles" >
-          <h2 class="text-white">Mes commandes</h2>
+        <div id="Commandes" >
+          <div class="p-2">
+            <h3>Mes commandes</h3>
+            <div class="d-flex justify-content-between">
+              <div>Vous trouverez la liste de toutes les commandes réalisées sur ce compte</div>
+            </div>
+          </div>
 
           <c:if test="${empty purchases}">
             <h3>La liste de commandes est vide</h3>
           </c:if>
 
           <c:if test="${not empty purchases}">
-
             <div class="table">
               <div class="table-header">
                 <div class="header__item"><a id="name" class="filter__link">Date</a></div>
@@ -31,12 +35,24 @@
 
                 <c:forEach varStatus="idx" items="${purchases}" var="purchases">
                   <div class="table-row">
-                    <div class="table-data">${purchases.purchaseDate}</div>
-                    <div class="table-data">CHF ${purchases.totalPrice}</div>
-                    <div class="table-data">CHF ${purchases.totalPrice}</div>
+                    <div class="table-data">
+                        ${purchases.purchaseDate}
+                    </div>
+                    <div class="table-data">
 
+                      <c:forEach varStatus="idx" items="${purchases.article}" var="articles">
+                        <c:set var="totalPrice" value="${totalPrice + articles.price}" />
+                        ${articles.name}</br>
+                      </c:forEach>
+
+                    </div>
+                    <div class="table-data">
+                      CHF ${totalPrice}
+                    </div>
+                    <c:set var="totalPrice" value="0" />
                   </div>
                 </c:forEach>
+
               </div>
             </div>
           </c:if>
@@ -44,6 +60,5 @@
         </div>
       </div>
     </div>
-
   </jsp:body>
 </t:base_layout>

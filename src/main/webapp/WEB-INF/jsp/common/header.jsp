@@ -19,25 +19,26 @@
                             <a class="nav-item nav-link" href="/accueil">Accueil</a>
                             <a class="nav-item nav-link" href="/catalog">Tous les Articles</a>
 
-                            <sec:authorize access="isAuthenticated() && hasRole('admin')">
-                                <a class="nav-item nav-link" href="/admin/articles">Administration</a>
-                            </sec:authorize>
+                            <a class="nav-item nav-link" href="/cart">Panier</a>
+
                             <sec:authorize access="isAuthenticated()">
-                                <form action="/signout" method=POST id="logout-form">
-                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                    <a class="nav-item nav-link clickable" onclick="document.getElementById('logout-form').submit()" >Déconnexion de <sec:authentication property="principal.username" /></a>
-                                </form>
+                                <a class="nav-item nav-link" href="/purchase">Mes commandes</a>
                             </sec:authorize>
 
                             <sec:authorize access="!isAuthenticated()">
                                 <a class="nav-item nav-link" href="/login">Login</a>
                             </sec:authorize>
 
-                            <sec:authorize access="isAuthenticated()">
-                                <a class="nav-item nav-link" href="/purchase">Mes commandes</a>
+                            <sec:authorize access="isAuthenticated() && hasRole('admin')">
+                                <a class="nav-item nav-link" href="/admin/articles">Administration</a>
                             </sec:authorize>
 
-                            <a class="nav-item nav-link" href="/cart">Panier</a>
+                            <sec:authorize access="isAuthenticated()">
+                                <form action="/signout" method=POST id="logout-form">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    <a class="nav-item nav-link clickable" onclick="document.getElementById('logout-form').submit()" >Déconnexion de <sec:authentication property="principal.username" /></a>
+                                </form>
+                            </sec:authorize>
 
                             <a class="nav-item nav-link last" href="#"><img src="/images/search_icon.png"></a>
                             <!-- <a class="nav-item nav-link last" href="/cart"><img src="/images/shop_icon.png"></a> -->
