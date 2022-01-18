@@ -6,9 +6,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class S3Repository {
@@ -61,10 +61,27 @@ public class S3Repository {
     }
 
     @Async
+    public void deleteFile(String key) {
+        s3client.deleteObject(bucketName, key);
+    }
+
+    @Async
+    public void deleteFilesWithPrefix(String prefix) {
+        List<S3ObjectSummary> objects = s3client.listObjects(bucketName, prefix).getObjectSummaries();
+        List<DeleteObjectsRequest.KeyVersion> keys = new ArrayList<>();
+        for(S3ObjectSummary summary : objects) {
+            keys.add(new DeleteObjectsRequest.KeyVersion (summary.getKey()));
+        }
+        DeleteObjectsRequest deleteRequest = new DeleteObjectsRequest(bucketName)
+                .withKeys(keys)
+                .withQuiet(false);
+        s3client.deleteObjects(deleteRequest);
+    }
+
+    @Async
     public void uploadFile(final MultipartFile multipartFile, String key) {
         try {
             final File file = convertMultiPartFileToFile(multipartFile);
-
             s3client.putObject(bucketName, key, file);
         }
         catch (Exception e) {

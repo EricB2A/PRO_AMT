@@ -154,7 +154,7 @@ public class ArticleService {
         if(optional.isPresent()){
             Article article = optional.get();
             articleRepository.delete(article);
-            photoService.deleteFolder("carpet-photos/carpet"+ article.getId());
+            photoService.deleteFolder("carpet"+ article.getId());
             mp.addAttribute("msg_article_deleted", true);
         }
         mp.addAttribute("articles", articleRepository.findAll());

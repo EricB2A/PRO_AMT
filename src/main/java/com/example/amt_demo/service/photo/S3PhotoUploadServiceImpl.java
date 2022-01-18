@@ -1,5 +1,6 @@
 package com.example.amt_demo.service.photo;
 
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.example.amt_demo.utils.aws.S3Repository;
 import com.example.amt_demo.utils.aws.Utils;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @Qualifier("amazonService")
@@ -27,12 +29,14 @@ public class S3PhotoUploadServiceImpl implements PhotoUploadService{
 
     @Override
     public boolean delete(String filePath) {
-        return false;
+        amazonRepository.deleteFile(filePath);
+        return true;
     }
 
     @Override
     public boolean deleteFolder(String folderPath) {
-        return false;
+        amazonRepository.deleteFilesWithPrefix(folderPath);
+        return true;
     }
 
     @Override

@@ -195,7 +195,7 @@ public class Article {
      */
     public String getFirstPhotoPath() {
         // Used in View for article_thumbnail to get first photo
-        String path = "/images/placeholder-image.png";
+        String path = "images/placeholder-image.png";
 
         if (!photos.isEmpty()) {
             path = photos.get(0).getPath();
