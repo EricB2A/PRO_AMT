@@ -119,7 +119,7 @@ public class Cart {
 
     /**
      *
-     * @param user
+     * @param userId
      */
     public void setUser(Integer userId) {
         this.userId = userId;
