@@ -1,12 +1,15 @@
 package com.example.amt_demo.controller;
 
+import com.example.amt_demo.model.Article;
 import com.example.amt_demo.model.ArticleRepository;
 import com.example.amt_demo.model.Cart;
 import com.example.amt_demo.model.CartInfoRepository;
+import com.example.amt_demo.service.ArticleService;
 import com.example.amt_demo.service.CustomUserDetails;
 import com.example.amt_demo.service.CustomUserService;
 import lombok.AllArgsConstructor;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,21 +23,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+class PayementInfo {
+    private String amount;
+    private String token;
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public String getToken() {
+        return token;
+    }
+}
+
 @RequestMapping(path = "/payement")
 @RestController
 @AllArgsConstructor
 public class PayementController {
 
     private final CartInfoRepository cartInfoRepository;
-    private final ArticleRepository articleRepository;
+    private final ArticleService articleService;
     private final CustomUserService userDetails;
 
-    private static final String payementServiceUrl = "http://localhost:8083";
+    @Value("${PAYEMENT_SERVICE_IP}")
+    private final String url = "";
 
     @PostMapping(path = "/pay")
-    public ResponseEntity makePayement(@RequestParam String token, @RequestParam String amount) {
+    public ResponseEntity makePayement(@RequestBody PayementInfo info) {
         CustomUserDetails user = userDetails.getUser();
-
         List<Cart> cart = cartInfoRepository.findCartInfosByUserId(user.getId());
         for(Cart item : cart) {
             int number = item.getQuantity();
@@ -44,11 +60,11 @@ public class PayementController {
             }
         }
 
-        WebClient webclient = WebClient.create(payementServiceUrl);
+        WebClient webclient = WebClient.create(url);
 
         JSONObject json = new JSONObject();
         try {
-            json = json.put("amount", amount);
+            json = json.put("amount", info.getAmount());
         } catch (Exception e) {
 
         }
@@ -56,7 +72,7 @@ public class PayementController {
         ResponseEntity<String> serverResponse = webclient
                 .post()
                 .uri("/api/charge")
-                .header("token", token)
+                .header("token", info.getToken())
                 .body(BodyInserters.fromValue(json.toString()))
                 .retrieve()
                 //Prevents error throwing
@@ -70,6 +86,11 @@ public class PayementController {
         if (serverResponse.getStatusCodeValue() == 400) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
+            //Update quantities :
+            for(Cart item : cart) {
+                Article article = item.getArticle();
+                articleService.handleQuantity(article.getId(), -item.getQuantity());
+            }
             return new ResponseEntity(HttpStatus.OK);
         }
     }
