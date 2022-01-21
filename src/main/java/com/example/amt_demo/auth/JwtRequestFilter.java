@@ -39,7 +39,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     final private String cookieName;
 
     /**
-     *
      * @param userService
      * @param jwtUtil
      * @param cookieName
@@ -53,7 +52,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     /**
-     *
      * @param request
      * @param response
      * @param chain
@@ -83,6 +81,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (jwtPayload != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 if (jwtUtil.isTokenValid(jwt)) {
+                    userService.setUser(new CustomUserDetails(jwtPayload.getId(),
+                            jwtPayload.getUsername(),
+                            AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + jwtPayload.getRole())));
+                    
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                             new CustomUserDetails(jwtPayload.getId(),
                                     jwtPayload.getUsername(),
