@@ -20,6 +20,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -81,7 +82,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/signout", "/payement/**", "/purchase").authenticated()
             .antMatchers("/login","/signup").anonymous()
             .antMatchers("/", "/image/**", "/carpets", "/accueil", "/images/**", "/css/**", "/js/**", "/catalog/**", "/cart/**","/carpet-photos/**").permitAll()
-            .anyRequest().denyAll(); // Grant access for endpoint to nobody
+            .anyRequest().denyAll() // Grant access for endpoint to nobody
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

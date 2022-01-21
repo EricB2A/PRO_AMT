@@ -2,7 +2,6 @@
  * @team AMT - Silkyroad
  * @authors Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
  * @file JwtUtil.java
- *
  * @brief TODO
  */
 
@@ -40,11 +39,11 @@ public class JwtUtil {
      * @param token
      * @return
      */
-    public JwtTokenPayload  getJwtTokenPayload(String token) throws SignatureException {
+    public JwtTokenPayload getJwtTokenPayload(String token) throws SignatureException {
         Claims claims = Jwts.parser().setSigningKey(encodeSecret()).
                 parseClaimsJws(token).getBody();
 
-        return new JwtTokenPayload(claims.get(JwtTokenPayload.USERNAME, String.class), claims.get(JwtTokenPayload.ROLE, String.class));
+        return new JwtTokenPayload((Integer) claims.get(JwtTokenPayload.ID), claims.get(JwtTokenPayload.USERNAME, String.class), claims.get(JwtTokenPayload.ROLE, String.class));
     }
 
     /**

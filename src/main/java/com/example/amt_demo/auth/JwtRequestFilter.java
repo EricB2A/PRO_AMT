@@ -2,7 +2,6 @@
  * @team AMT - Silkyroad
  * @authors Bousbaa Eric, Fusi Noah, Goujgali Ilias, Maillefer Dalia, Teofanovic Stefan
  * @file JwtRequestFilter.java
- *
  * @brief TODO
  */
 
@@ -75,21 +74,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         JwtTokenPayload jwtPayload = null;
         String jwt = null;
-        try{
+        try {
             if (accessCookie != null && accessCookie.isPresent() && !accessCookie.get().getValue().isEmpty()) {
                 jwt = accessCookie.get().getValue();
                 jwtPayload = jwtUtil.getJwtTokenPayload(jwt);
             }
 
             if (jwtPayload != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userService.getUser();
+
                 if (jwtUtil.isTokenValid(jwt)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + jwtPayload.getRole()));
+                            new CustomUserDetails(jwtPayload.getId(),
+                                    jwtPayload.getUsername(),
+                                    AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + jwtPayload.getRole())), null, AuthorityUtils.createAuthorityList(CustomUserDetails.ROLE_PREFIX + jwtPayload.getRole()));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             }
-        } catch(SignatureException ignored) {
+        } catch (SignatureException ignored) {
 
         }
         chain.doFilter(request, response);
