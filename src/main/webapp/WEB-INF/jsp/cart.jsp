@@ -24,7 +24,7 @@
                         <div class="d-flex flex-wrap">
                             <c:forEach varStatus="idx" items="${articles}" var="element">
                                 <div class="card shadow-sm" style="width: 22rem;margin: 5px;">
-                                    <img style="min-width: 350px;max-width: 350px;min-height: 250px;max-height: 250px;" class="card-img-top" src="${element.article.firstPhotoPath}"/>
+                                    <img style="min-width: 350px;max-width: 350px;min-height: 250px;max-height: 250px;" class="card-img-top" src="/image/${element.article.firstPhotoPath}"/>
                                     <div class="card-body">
                                         <h5 class="card-title">${element.article.name}</h5>
                                         <h6 class="card-title">${element.article.description}</h6>
