@@ -10,7 +10,12 @@ package com.example.amt_demo.service;
 
 import com.example.amt_demo.model.*;
 
+import com.example.amt_demo.service.photo.LocalPhotoUploadServiceImpl;
+import com.example.amt_demo.service.photo.PhotoUploadService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -25,12 +30,15 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ArticleService {
 
     final private ArticleRepository articleRepository;
     final private CategoryRepository categoryRepository;
-    final private PhotoUploadService photoStorageService;
+
+    @Qualifier("amazonService")
+    @Autowired
+    private PhotoUploadService photoService;
 
     /**
      *
@@ -81,7 +89,7 @@ public class ArticleService {
                 if(cp.getId() == id){
                     path = cp.getPath();
                     c.getPhotos().remove(cp);
-                    photoStorageService.delete(path);
+                    photoService.delete(path);
                     break;
                 }
             }
@@ -146,7 +154,7 @@ public class ArticleService {
         if(optional.isPresent()){
             Article article = optional.get();
             articleRepository.delete(article);
-            photoStorageService.deleteFolder("carpet-photos/carpet"+ article.getId());
+            photoService.deleteFolder("carpet"+ article.getId());
             mp.addAttribute("msg_article_deleted", true);
         }
         mp.addAttribute("articles", articleRepository.findAll());
@@ -163,9 +171,9 @@ public class ArticleService {
             Arrays.asList(images).stream().forEach(image -> {
                 String filename = image.getOriginalFilename();
                 if (filename.length() > 4) {
-                    String location = "/carpet" + article.getId() + "/";
-                    if (photoStorageService.save(image, location, filename)) {
-                        article.getPhotos().add(new ArticlePhoto(photoStorageService.getRoot() + location + filename));
+                    String location = "carpet" + article.getId() + "/";
+                    if (photoService.save(image, location, filename)) {
+                        article.getPhotos().add(new ArticlePhoto(location + filename));
                         i.incrementAndGet();
                     }
                 }

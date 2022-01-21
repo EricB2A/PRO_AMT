@@ -6,16 +6,19 @@
  * @brief TODO
  */
 
-package com.example.amt_demo.service;
+package com.example.amt_demo.service.photo;
 
 import com.example.amt_demo.utils.FileUploadUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 
-@Service
-public class PhotoUploadService{
+@Component
+@Qualifier("localService")
+public class LocalPhotoUploadServiceImpl implements PhotoUploadService{
 
     private final String root = "carpet-photos";
 

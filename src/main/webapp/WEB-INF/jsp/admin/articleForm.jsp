@@ -147,7 +147,7 @@
                                             <div class="col-sm-10 d-flex flex-wrap">
                                                 <c:forEach varStatus="idx" items="${article.photos}" var="photo">
                                                     <div class="d-flex align-self-start m-2">
-                                                        <img src="/${photo.path}" width="220" class="img-thumbnail" />
+                                                        <img src="/image/${photo.path}" width="220" class="img-thumbnail" />
                                                         <a href="/admin/articles/${article.id}/photo/delete/${photo.id}"><button type="button" class="btn btn-danger btn-sm">X</button></a>
                                                     </div>
                                                 </c:forEach>
