@@ -19,24 +19,20 @@ import java.util.List;
 @AllArgsConstructor
 public class S3PhotoUploadServiceImpl implements PhotoUploadService{
     private S3Repository amazonRepository;
-    private static String bucketName = "silkyroad.diduno.education";
 
     @Override
     public boolean save(MultipartFile file, String location, String filename) {
-        amazonRepository.uploadFile(file, location + filename);
-        return true;
+        return amazonRepository.uploadFile(file, location + filename);
     }
 
     @Override
     public boolean delete(String filePath) {
-        amazonRepository.deleteFile(filePath);
-        return true;
+        return amazonRepository.deleteFile(filePath);
     }
 
     @Override
     public boolean deleteFolder(String folderPath) {
-        amazonRepository.deleteFilesWithPrefix(folderPath);
-        return true;
+        return amazonRepository.deleteFilesWithPrefix(folderPath);
     }
 
     @Override

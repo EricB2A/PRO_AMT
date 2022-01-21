@@ -1,5 +1,6 @@
 package com.example.amt_demo.utils.aws;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -21,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class S3Repository {
@@ -61,38 +63,52 @@ public class S3Repository {
     }
 
     @Async
-    public void deleteFile(String key) {
-        s3client.deleteObject(bucketName, key);
+    public boolean deleteFile(String key) {
+        try {
+            s3client.deleteObject(bucketName, key);
+            return true;
+        } catch (AmazonServiceException e) {
+            return false;
+        }
     }
 
     @Async
-    public void deleteFilesWithPrefix(String prefix) {
+    public boolean deleteFilesWithPrefix(String prefix) {
         List<S3ObjectSummary> objects = s3client.listObjects(bucketName, prefix).getObjectSummaries();
         List<DeleteObjectsRequest.KeyVersion> keys = new ArrayList<>();
         for(S3ObjectSummary summary : objects) {
             keys.add(new DeleteObjectsRequest.KeyVersion (summary.getKey()));
         }
-        DeleteObjectsRequest deleteRequest = new DeleteObjectsRequest(bucketName)
-                .withKeys(keys)
-                .withQuiet(false);
-        s3client.deleteObjects(deleteRequest);
+        if(keys.isEmpty()) return true;
+        try {
+            DeleteObjectsRequest deleteRequest = new DeleteObjectsRequest(bucketName)
+                    .withKeys(keys)
+                    .withQuiet(false);
+            s3client.deleteObjects(deleteRequest);
+            return true;
+        } catch (AmazonServiceException e) {
+            return false;
+        }
     }
 
     @Async
-    public void uploadFile(final MultipartFile multipartFile, String key) {
+    public boolean uploadFile(final MultipartFile multipartFile, String key) {
         try {
             final File file = convertMultiPartFileToFile(multipartFile);
             s3client.putObject(bucketName, key, file);
+            file.delete();
+            return true;
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
+            return false;
         }
     }
 
 
 
     private File convertMultiPartFileToFile(final MultipartFile multipartFile) {
-        final File file = new File(multipartFile.getOriginalFilename());
+        final File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         try (final FileOutputStream outputStream = new FileOutputStream(file)) {
             outputStream.write(multipartFile.getBytes());
         } catch (final IOException ex) {
