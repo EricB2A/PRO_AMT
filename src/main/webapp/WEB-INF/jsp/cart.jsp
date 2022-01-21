@@ -12,13 +12,12 @@
         <div class="layout_padding gallery_section">
             <div class="container bg-transparent text-white">
 
-                <div id="Catalogue" >
+                <div id="cart">
                     <h2 class="text-white">Articles<c:if test="${not empty articles}">, total : ${cartPrice} CHF</c:if></h2>
 
                     <c:if test="${empty articles}">
                         <h3>Le panier est vide 🥲</h3>
                     </c:if>
-
                     <c:if test="${not empty articles}">
 
                         <div class="d-flex flex-wrap">
@@ -42,8 +41,21 @@
 
                         </div>
 
+                        <button class="btn btn-primary" onclick="payCart()">Donne argent</button>
                         <button class="btn btn-danger" onclick="removeAllArticlesFromBasket('${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Vider panier</button>
                     </c:if>
+                </div>
+                <div id="payment">
+                    <form id="payment-form">
+                        <div id="payment-element">
+                            <!--Stripe.js injects the Payment Element-->
+                        </div>
+                        <button id="submit">
+                            <div class="spinner hidden" id="spinner"></div>
+                            <span id="button-text">Pay now</span>
+                        </button>
+                        <div id="payment-message" class="hidden"></div>
+                    </form>
                 </div>
             </div>
         </div>

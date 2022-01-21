@@ -1044,3 +1044,6 @@ filter__link.asc::after {
 .jquery-feedback{
     display:none;
 }
+#payment{
+    display: none;
+}

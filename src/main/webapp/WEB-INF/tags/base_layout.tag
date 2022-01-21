@@ -42,6 +42,17 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <!--
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    -->
+    <script src="https://js.stripe.com/v3/"></script>
+<%--    <script src="https://unpkg.com/@stripe/react-stripe-js@latest/dist/react-stripe.umd.js"></script>--%>
+
+    <!--
+    <script src="/js/embeddedCheckout.js"></script>
+    -->
+    <script src="/js/cartCheckout.js" defer></script>
 </head>
 <!-- body -->
 <body class="main-layout">
@@ -223,7 +234,11 @@
             });
 
     }
+    function payCart(){
+        document.getElementById("payment").style.display = "block";
+        document.getElementById("cart").style.display = "none";
 
+    }
     function removeAllArticlesFromBasket(tokenName, csrfToken, redirect) {
         // '${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart'
 

@@ -132,6 +132,11 @@
             <artifactId>spring-cloud-aws-context</artifactId>
             <version>2.3.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>20.97.0</version>
+        </dependency>
     </dependencies>
 
     <build>
