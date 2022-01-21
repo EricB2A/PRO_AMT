@@ -82,7 +82,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/login","/signup").anonymous()
             .antMatchers("/", "/image/**", "/carpets", "/accueil", "/images/**", "/css/**", "/js/**", "/catalog/**", "/cart/**","/carpet-photos/**").permitAll()
             .anyRequest().denyAll(); // Grant access for endpoint to nobody
-        http.csrf().disable();
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
