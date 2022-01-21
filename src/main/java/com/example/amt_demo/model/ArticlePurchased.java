@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -25,4 +24,10 @@ public class ArticlePurchased {
     private Integer quantity;
 
     private Double price;
+
+    public ArticlePurchased(String name, Integer quantity, Double price) {
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+    }
 }

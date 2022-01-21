@@ -11,7 +11,6 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class Purchase {
@@ -26,4 +25,13 @@ public class Purchase {
     @OneToMany
     @JoinColumn(name = "purchase_id")
     private List<ArticlePurchased> article;
+
+    public Purchase(Long userId) {
+        id = userId;
+    }
+
+    public void addArticle(ArticlePurchased article) {
+        this.article.add(article);
+    }
+
 }

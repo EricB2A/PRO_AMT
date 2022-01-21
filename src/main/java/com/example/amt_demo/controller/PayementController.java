@@ -1,9 +1,6 @@
 package com.example.amt_demo.controller;
 
-import com.example.amt_demo.model.Article;
-import com.example.amt_demo.model.ArticleRepository;
-import com.example.amt_demo.model.Cart;
-import com.example.amt_demo.model.CartInfoRepository;
+import com.example.amt_demo.model.*;
 import com.example.amt_demo.service.ArticleService;
 import com.example.amt_demo.service.CustomUserDetails;
 import com.example.amt_demo.service.CustomUserService;
@@ -23,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+
+@AllArgsConstructor
 class PayementInfo {
     private String amount;
     private String token;
@@ -44,6 +43,7 @@ public class PayementController {
     private final CartInfoRepository cartInfoRepository;
     private final ArticleService articleService;
     private final CustomUserService userDetails;
+    private final PurchaseRepository purchaseRepository;
 
     @Value("${PAYEMENT_SERVICE_IP}")
     private final String url = "";
@@ -66,7 +66,7 @@ public class PayementController {
         try {
             json = json.put("amount", info.getAmount());
         } catch (Exception e) {
-
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
         ResponseEntity<String> serverResponse = webclient
@@ -86,11 +86,15 @@ public class PayementController {
         if (serverResponse.getStatusCodeValue() == 400) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
+
+            Purchase purchase = new Purchase((long)user.getId());
             //Update quantities :
             for(Cart item : cart) {
                 Article article = item.getArticle();
                 articleService.handleQuantity(article.getId(), -item.getQuantity());
+                purchase.addArticle(new ArticlePurchased(article.getName(), item.getQuantity(), article.getPrice()));
             }
+            purchaseRepository.save(purchase);
             return new ResponseEntity(HttpStatus.OK);
         }
     }
