@@ -32,10 +32,7 @@ public class PayementController {
     private static final String payementServiceUrl = "http://localhost:8083";
 
     @PostMapping(path = "/pay")
-    public ResponseEntity makePayement(HttpServletRequest request, HttpServletResponse response, @RequestParam String token, @RequestParam String id, @RequestParam String amount) {
-        float total = Float.parseFloat(amount);
-        int cartId = Integer.parseInt(id);
-
+    public ResponseEntity makePayement(@RequestParam String token, @RequestParam String amount) {
         CustomUserDetails user = userDetails.getUser();
 
         List<Cart> cart = cartInfoRepository.findCartInfosByUserId(user.getId());
