@@ -20,18 +20,26 @@ $(document).ready(function () {
 
 // Fetches a payment intent and captures the client secret
 async function initialize() {
-    const response = await fetch("/payement/create-payment-intent", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({items}),
-    });
-    const {clientSecret} = await response.json();
-    const appearance = {
-        theme: 'stripe',
-    };
-    elements = stripe.elements({appearance, clientSecret});
-    const paymentElement = elements.create("payment");
-    paymentElement.mount("#payment-element");
+
+    try {
+        const response = await fetch("/payement/create-payment-intent", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({items}),
+        });
+        const {clientSecret} = await response.json();
+        const appearance = {
+            theme: 'stripe',
+        };
+        elements = stripe.elements({appearance, clientSecret});
+        const paymentElement = elements.create("payment");
+        paymentElement.mount("#payment-element");
+
+    }catch(e){
+        document.getElementById("submit").style.display = "none";
+        console.log("something went wrong... ", e);
+        showMessage("Erreur lors de la commande");
+    }
 }
 
 async function handleSubmit(e) {

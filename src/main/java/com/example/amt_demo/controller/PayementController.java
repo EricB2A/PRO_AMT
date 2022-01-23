@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -21,6 +23,8 @@ import java.util.List;
 import com.stripe.Stripe;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 @AllArgsConstructor
@@ -53,6 +57,40 @@ public class PayementController {
 
     @Value("${PAYEMENT_SERVICE_IP}")
     private final String url = "";
+
+
+    @GetMapping(path = "/command")
+    public RedirectView makeCommand(HttpServletResponse httpServletResponse, final RedirectAttributes redirectAttributes) {
+        CustomUserDetails user = userDetails.getUser();
+        Purchase purchase = new Purchase((long)user.getId());
+        //Update quantities :
+        List<Cart> cart = cartInfoRepository.findCartInfosByUserId(user.getId());
+        for(Cart item : cart) {
+            Article article = item.getArticle();
+            articleService.handleQuantity(article.getId(), -item.getQuantity());
+            ArticlePurchased articlePurchased = new ArticlePurchased(article.getName(), item.getQuantity(), article.getPrice());
+            purchase.addArticle(articlePurchased);
+            cartInfoRepository.delete(item);
+        }
+        purchaseRepository.save(purchase);
+        // "/cart?succeeded=true"
+        //httpServletResponse.setHeader("Location", );
+        //RedirectView rv = new RedirectView("cart")
+        //return "forward:/cart?succeeded=true";
+        redirectAttributes.addAttribute("succeeded", "true");
+        return new RedirectView("/cart");
+
+        //return "redirect:/cart?succeeded=true";
+
+
+
+/*        redirectAttributes.addAttribute("param1", request.getAttribute("param1"));
+        redirectAttributes.addAttribute("param2", request.getAttribute("param2"));
+
+        redirectAttributes.addAttribute("attribute", "forwardedWithParams");
+        return new RedirectView("redirectedUrl");*/
+        //return new ResponseEntity(HttpStatus.OK);
+    }
 
     @PostMapping(path = "/pay")
     public ResponseEntity makePayementTesMorts(@RequestBody PayementInfo info) {
@@ -110,8 +148,19 @@ public class PayementController {
     @PostMapping(path = "/create-payment-intent")
     public ResponseEntity createPaymentIntent(@RequestBody PayementInfo info) throws StripeException {
         // TODO var env
-        Stripe.apiKey = "TODO_METTRE_UNE_KEY";
+        Stripe.apiKey = "TODO";
         System.out.println("uUUuU" + getCartAmount());
+        CustomUserDetails user = userDetails.getUser();
+        if(user != null){
+            List<Cart> cart = cartInfoRepository.findCartInfosByUserId(user.getId());
+            for(Cart item : cart) {
+                int number = item.getQuantity();
+                int stock = item.getArticle().getQuantity();
+                if (number > stock) {
+                    return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                }
+            }
+        }
 
         // CreatePayment postBody = gson.fromJson(, CreatePayment.class);
       PaymentIntentCreateParams params =
