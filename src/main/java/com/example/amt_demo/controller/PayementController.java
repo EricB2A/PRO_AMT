@@ -60,7 +60,7 @@ public class PayementController {
 
 
     @GetMapping(path = "/command")
-    public RedirectView makeCommand(HttpServletResponse httpServletResponse, final RedirectAttributes redirectAttributes) {
+    public RedirectView makeCommand(@RequestParam(value = "payment_intent_client_secret") String stripePaymentSecret, final RedirectAttributes redirectAttributes) {
         CustomUserDetails user = userDetails.getUser();
         Purchase purchase = new Purchase((long)user.getId());
         //Update quantities :
@@ -77,7 +77,8 @@ public class PayementController {
         //httpServletResponse.setHeader("Location", );
         //RedirectView rv = new RedirectView("cart")
         //return "forward:/cart?succeeded=true";
-        redirectAttributes.addAttribute("succeeded", "true");
+
+        redirectAttributes.addAttribute("payment_intent_client_secret", stripePaymentSecret);
         return new RedirectView("/cart");
 
         //return "redirect:/cart?succeeded=true";
@@ -148,7 +149,7 @@ public class PayementController {
     @PostMapping(path = "/create-payment-intent")
     public ResponseEntity createPaymentIntent(@RequestBody PayementInfo info) throws StripeException {
         // TODO var env
-        Stripe.apiKey = "TODO";
+        Stripe.apiKey = "sk_test_51KAXlaI4Clzpl51dk3IHxuF9spq1NquUfhYVMoQnkBLzNygsqezWyRfAt4WX4cAI35WuHFwY6D6SMtjCwf6vnCXT00YgKQVYtO";
         System.out.println("uUUuU" + getCartAmount());
         CustomUserDetails user = userDetails.getUser();
         if(user != null){

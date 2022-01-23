@@ -73,7 +73,7 @@ async function handleSubmit(e) {
 // Fetches the payment intent status after payment submission
 async function checkStatus() {
     const clientSecret = new URLSearchParams(window.location.search).get(
-        "succeeded"
+        "payment_intent_client_secret"
     );
     if (!clientSecret) {
         return;
@@ -81,19 +81,26 @@ async function checkStatus() {
     const {paymentIntent} = await stripe.retrievePaymentIntent(clientSecret);
     switch (paymentIntent.status) {
         case "succeeded":
-            showMessage("Payment succeeded!");
+            showMessage("Paiement accepté");
+            hideButton();
             break;
         case "processing":
-            showMessage("Your payment is processing.");
+            showMessage("Votre paiement est en cours de validation");
+            hideButton();
             break;
         case "requires_payment_method":
-            showMessage("Your payment was not successful, please try again.");
+            showMessage("Votre paiement n'a pas été validé, veuillez réessayer");
             break;
         default:
-            showMessage("Something went wrong.");
+            showMessage("Quelque chose c'est mal passé xD veuillez contacter l'admin");
             break;
     }
 
+}
+
+function hideButton(){
+    const container = document.querySelector("#submit");
+    container.style.display = "none";
 }
 
 

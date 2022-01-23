@@ -41,13 +41,13 @@
 
                         </div>
 
-                        <button class="btn btn-primary mb-4" onclick="payCart()">Payer</button>
-                        <button class="btn btn-danger" onclick="removeAllArticlesFromBasket('${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Vider panier</button>
+                        <button class="btn btn-primary mt-4" onclick="payCart()">Payer</button>
+                        <button class="btn btn-danger mt-4" onclick="removeAllArticlesFromBasket('${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Vider panier</button>
                     </c:if>
                 </div>
                 <div id="payment">
                     <form id="payment-form">
-                        <div id="payment-element">
+                        <div id="payment-element" class="mb-4">
                             <!--Stripe.js injects the Payment Element-->
                         </div>
                         <button id="submit">
