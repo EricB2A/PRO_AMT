@@ -104,6 +104,9 @@ public class PayementController {
             return new ResponseEntity(HttpStatus.OK);
         }
     }
+
+
+
     @PostMapping(path = "/create-payment-intent")
     public ResponseEntity createPaymentIntent(@RequestBody PayementInfo info) throws StripeException {
         // TODO var env

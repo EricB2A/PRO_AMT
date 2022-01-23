@@ -36,14 +36,15 @@ async function initialize() {
 
 async function handleSubmit(e) {
     e.preventDefault();
-    console.log("HANDLE SUBMIT")
+    console.log("HANDLE SUBMIT", "base URL", window.location.host + "/payement/success",)
     //setLoading(true);
 
     const {error} = await stripe.confirmPayment({
         elements,
         confirmParams: {
             // Make sure to change this to your payment completion page
-            return_url: "http://localhost:8080/cart?success=true",
+            return_url: "http://" + window.location.host + "/payement/command",
+
         },
     });
 

@@ -41,7 +41,7 @@
 
                         </div>
 
-                        <button class="btn btn-primary" onclick="payCart()">Donne argent</button>
+                        <button class="btn btn-primary mb-4" onclick="payCart()">Payer</button>
                         <button class="btn btn-danger" onclick="removeAllArticlesFromBasket('${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart')">Vider panier</button>
                     </c:if>
                 </div>
