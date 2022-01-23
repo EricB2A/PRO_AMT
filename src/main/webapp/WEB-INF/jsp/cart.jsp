@@ -52,7 +52,7 @@
                         </div>
                         <button id="submit">
                             <div class="spinner hidden" id="spinner"></div>
-                            <span id="button-text">Pay now</span>
+                            <span class="btn btn-primary">Payer maintenant</span>
                         </button>
                         <div id="payment-message" class="hidden"></div>
                     </form>

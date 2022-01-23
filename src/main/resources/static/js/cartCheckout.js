@@ -8,7 +8,7 @@ const items = [{id: "xl-tshirt"}];
 
 let elements;
 
-initialize();
+
 checkStatus();
 
 $(document).ready(function () {
@@ -65,7 +65,7 @@ async function handleSubmit(e) {
 // Fetches the payment intent status after payment submission
 async function checkStatus() {
     const clientSecret = new URLSearchParams(window.location.search).get(
-        "payment_intent_client_secret"
+        "succeeded"
     );
     if (!clientSecret) {
         return;
@@ -92,7 +92,7 @@ async function checkStatus() {
 // ------- UI helpers -------
 function showMessage(messageText) {
     const paymentDocument = document.querySelector("#payment");
-    payCart();
+    displayPayment();
     const messageContainer = document.querySelector("#payment-message");
     messageContainer.classList.remove("hidden");
     messageContainer.textContent = messageText;

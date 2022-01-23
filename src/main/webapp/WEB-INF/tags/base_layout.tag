@@ -235,9 +235,12 @@
 
     }
     function payCart(){
+        initialize();
+        displayPayment()
+    }
+    function displayPayment(){
         document.getElementById("payment").style.display = "block";
         document.getElementById("cart").style.display = "none";
-
     }
     function removeAllArticlesFromBasket(tokenName, csrfToken, redirect) {
         // '${_csrf.parameterName}', '${_csrf.token}', window.location.origin + '/cart'
