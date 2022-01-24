@@ -30,7 +30,7 @@ jobs:
           
       # Runs a single command using the runners shell
       - name: Run All Tests
-        run: mvn -DAUTH_SERVICE_SECRET=something -DAUTH_SERVICE_IP=somethingelse -DAWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} -DAWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} -DPAYEMENT_SERVICE_IP=placeholder test
+        run: mvn -DAUTH_SERVICE_SECRET=something -DAUTH_SERVICE_IP=somethingelse -DAWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} -DAWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} -DSTRIPE_API_KEY=${{ secret.STRIPE_API_KEY}} -DPAYEMENT_SERVICE_IP=placeholder test
 
       # Runs a set of commands using the runners shell
       - name: Stop dockerized mysql
