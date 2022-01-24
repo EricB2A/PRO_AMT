@@ -133,7 +133,6 @@ public class PayementController {
 
     @PostMapping(path = "/create-payment-intent")
     public ResponseEntity createPaymentIntent(@RequestBody PayementInfo info) throws StripeException {
-        // TODO var env
         Stripe.apiKey = stripeApiKey;
         CustomUserDetails user = userDetails.getUser();
         if(user != null){

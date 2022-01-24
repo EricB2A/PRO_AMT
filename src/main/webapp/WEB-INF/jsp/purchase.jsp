@@ -41,7 +41,7 @@
                     <div class="table-data">
 
                       <c:forEach varStatus="idx" items="${purchases.article}" var="articles">
-                        <c:set var="totalPrice" value="${totalPrice + articles.price}" />
+                        <c:set var="totalPrice" value="${totalPrice + (articles.price * article.quantity)}" />
                         ${articles.name} (Quantité(s) : ${articles.quantity})</br>
                       </c:forEach>
 
