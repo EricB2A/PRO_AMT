@@ -38,6 +38,7 @@ Afin de pouvoir utiliser notre application en local, il faut ajouter plusieurs v
 <ul>
 <li>AUTH_SERVICE_SECRET</li> 
 <li>AUTH_SERVICE_IP</li>
+<li>STRIPE_API_KEY</li>
 </ul>
 
 Pour ajouter des variables d'environnement, aller sous Run->Edit Configuration
@@ -68,6 +69,11 @@ Documentation du login se trouve [ici](docs/Authentification.md).
 
 Un service d'authentification a été implémenté et est disponible dans [ce repo](https://github.com/EricB2A/PRO_AMT_AUTH) 
 
+## Service de paiement 💵
+Notre application intègre un moyen de paiement via [Stripe](https://stripe.com/docs/api?lang=java).
+Les composants les plus pertinents de l'implémentation se trouvent dans :
+- [`PaymentController.java`](src/main/java/com/example/amt_demo/controller/PayementController.java)
+- [`cartCheckout.js`](src/main/resources/static/js/cartCheckout.js)
 
 ## Routes 👀
 | Verbe HTTP | Route                            | Contrôleur            |

@@ -58,6 +58,8 @@ public class PayementController {
     @Value("${PAYEMENT_SERVICE_IP}")
     private final String url = "";
 
+    @Value("${STRIPE_API_KEY}")
+    private final String stripeApiKey = "";
 
     @GetMapping(path = "/command")
     public RedirectView makeCommand(@RequestParam(value = "payment_intent_client_secret") String stripePaymentSecret, final RedirectAttributes redirectAttributes) {
@@ -73,24 +75,9 @@ public class PayementController {
             cartInfoRepository.delete(item);
         }
         purchaseRepository.save(purchase);
-        // "/cart?succeeded=true"
-        //httpServletResponse.setHeader("Location", );
-        //RedirectView rv = new RedirectView("cart")
-        //return "forward:/cart?succeeded=true";
 
         redirectAttributes.addAttribute("payment_intent_client_secret", stripePaymentSecret);
         return new RedirectView("/cart");
-
-        //return "redirect:/cart?succeeded=true";
-
-
-
-/*        redirectAttributes.addAttribute("param1", request.getAttribute("param1"));
-        redirectAttributes.addAttribute("param2", request.getAttribute("param2"));
-
-        redirectAttributes.addAttribute("attribute", "forwardedWithParams");
-        return new RedirectView("redirectedUrl");*/
-        //return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping(path = "/pay")
@@ -144,13 +131,10 @@ public class PayementController {
         }
     }
 
-
-
     @PostMapping(path = "/create-payment-intent")
     public ResponseEntity createPaymentIntent(@RequestBody PayementInfo info) throws StripeException {
         // TODO var env
-        Stripe.apiKey = "sk_test_51KAXlaI4Clzpl51dk3IHxuF9spq1NquUfhYVMoQnkBLzNygsqezWyRfAt4WX4cAI35WuHFwY6D6SMtjCwf6vnCXT00YgKQVYtO";
-        System.out.println("uUUuU" + getCartAmount());
+        Stripe.apiKey = stripeApiKey;
         CustomUserDetails user = userDetails.getUser();
         if(user != null){
             List<Cart> cart = cartInfoRepository.findCartInfosByUserId(user.getId());
@@ -163,7 +147,6 @@ public class PayementController {
             }
         }
 
-        // CreatePayment postBody = gson.fromJson(, CreatePayment.class);
       PaymentIntentCreateParams params =
         PaymentIntentCreateParams.builder()
         /*
