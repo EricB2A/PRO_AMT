@@ -70,26 +70,27 @@ Un service d'authentification a été implémenté et est disponible dans [ce re
 
 
 ## Routes 👀
-| Verbe HTTP | Route                         | Contrôleur            |
-|------------|-------------------------------|-----------------------|
-| GET        | `/accueil`                    | `HomeController`      |
-| GET        | `/admin/articles`             | `ArticleController`   |
-| GET        | `/admin/articles/add`         | `ArticleController`   |
-| POST       | `/admin/articles/add/post`    | `ArticleController`   |
-| POST       | `/admin/articles/edit/post`   | `ArticleController`   |
-| GET        | `/admin/articles/edit/{id}`   | `ArticleController`   |
-| GET        | `/admin/articles/delete/{id}` | `ArticleController`   |
-| GET        | `/login`                      | `LoginController`     |
-| POST       | `/login`                      | `LoginController`     |
-| POST       | `/signup`                     | `LoginController`     |
-| GET        | `/signup`                     | `LoginController`     |
-| POST       | `/logout`                     | `LoginController`     |
-| GET        | `/cart`                       | `CartController`      |
-| PUT        | `/cart/{id}`                  | `CartController`      |
-| POST       | `/cart/{id}`                  | `CartController`      |
-| DELETE     | `/cart/{id}`                  | `CartController`      |
-
-
+| Verbe HTTP | Route                            | Contrôleur            |
+|------------|----------------------------------|-----------------------|
+| GET        | `/accueil`                       | `HomeController`      |
+| GET        | `/admin/articles`                | `ArticleController`   |
+| GET        | `/admin/articles/add`            | `ArticleController`   |
+| POST       | `/admin/articles/add/post`       | `ArticleController`   |
+| POST       | `/admin/articles/edit/post`      | `ArticleController`   |
+| GET        | `/admin/articles/edit/{id}`      | `ArticleController`   |
+| GET        | `/admin/articles/delete/{id}`    | `ArticleController`   |
+| GET        | `/login`                         | `LoginController`     |
+| POST       | `/login`                         | `LoginController`     |
+| POST       | `/signup`                        | `LoginController`     |
+| GET        | `/signup`                        | `LoginController`     |
+| POST       | `/logout`                        | `LoginController`     |
+| GET        | `/cart`                          | `CartController`      |
+| PUT        | `/cart/{id}`                     | `CartController`      |
+| POST       | `/cart/{id}`                     | `CartController`      |
+| DELETE     | `/cart/{id}`                     | `CartController`      |
+| GET        | `/payment/command`               | `PayementController`  |
+| POST       | `/payment/pay`                   | `PayementController`  |
+| POST       | `/payment/create-payment-intent` | `PayementController`  |
 
 ## L'équipe 🦍
 | Développeur       | Github                                                  |
