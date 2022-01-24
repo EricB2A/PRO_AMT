@@ -36,12 +36,14 @@ public class LoginControllerTest {
                 .andExpect(forwardedUrl("/WEB-INF/jsp/signup.jsp"));
     }
 
+    /*
     @Test
     @WithAnonymousUser
     public void anonymousUserLogout() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post("/logout"))
                 .andExpect(status().is4xxClientError());
     }
+     */
 
     @Test
     @WithMockUser(roles = {"admin"})
